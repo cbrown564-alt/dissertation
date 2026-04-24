@@ -74,7 +74,7 @@ Goal: make future design work consistent.
 
 - Treat `DESIGN.md` as the visual source of truth.
 - Treat `PRODUCT.md` as the product intent source.
-- Refactor the current `docs/evidence_notebook.html` styles toward named tokens:
+- Refactor the current `site/assets/styles.css` toward named tokens:
   - paper surfaces;
   - ink text;
   - source ledger borders;
@@ -282,6 +282,6 @@ This gives the biggest improvement without destabilizing the whole generated not
 
 - `DESIGN.md`
 - `PRODUCT.md`
-- `docs/evidence_notebook.html`
+- `site/index.html`, `site/assets/styles.css`, `site/assets/app.js`
 - `docs/agent_visibility_plan.md`
 - `docs/visual_artifacts_direction.md`

@@ -40,8 +40,8 @@ The Evidence Notebook layer now has canonical state pages, a repeatable session 
 - Session log template: [run_logs/session_log_template.md](run_logs/session_log_template.md).
 - Optional companion schema and template: [session_log_companion_schema.json](run_logs/session_log_companion_schema.json), [session_log_companion_template.json](run_logs/session_log_companion_template.json).
 - Backfilled historical logs: [20260424T075111Z_initial_scaffold.md](run_logs/20260424T075111Z_initial_scaffold.md), [20260424T084000Z_harness_protocol_and_smoke_runs.md](run_logs/20260424T084000Z_harness_protocol_and_smoke_runs.md), [20260424T085900Z_candidate_retrieval_iteration.md](run_logs/20260424T085900Z_candidate_retrieval_iteration.md).
-- Local dashboard: [evidence_notebook.html](evidence_notebook.html).
-- Dashboard generator: [src/epilepsy_agents/visibility.py](../src/epilepsy_agents/visibility.py).
+- Deployable notebook site: [site/index.html](../site/index.html) with static assets at [site/assets/](../site/assets/).
+- Dashboard generator: [src/epilepsy_agents/visibility/](../src/epilepsy_agents/visibility/).
 
 ### Uncertainty
 
