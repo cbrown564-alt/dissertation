@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dissertation Research Harness"
+  short_description: "Run reproducible dissertation harness sessions"
+  default_prompt: "Run a fixed-budget harness experiment and update project memory"

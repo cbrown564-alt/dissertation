@@ -1,0 +1,20 @@
+{
+  "name": "dissertation-local-plugins",
+  "interface": {
+    "displayName": "Dissertation Local Plugins"
+  },
+  "plugins": [
+    {
+      "name": "dissertation-research",
+      "source": {
+        "source": "local",
+        "path": "./plugins/dissertation-research"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

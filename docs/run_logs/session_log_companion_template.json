@@ -1,0 +1,23 @@
+{
+  "session_id": "20260424T000000Z_short-session-name",
+  "timestamp_utc": "2026-04-24T00:00:00Z",
+  "markdown_path": "docs/run_logs/20260424T000000Z_short-session-name.md",
+  "objective": "Short session objective.",
+  "related_active_thread": "Evidence Notebook Visibility",
+  "starting_commit": "",
+  "dirty_worktree_at_start": false,
+  "outcome": "What is now true that was not true before.",
+  "evidence": {
+    "files_changed": [],
+    "run_records": [],
+    "tests_or_checks": [],
+    "generated_artifacts": []
+  },
+  "uncertainty": "What was not checked or remains fragile.",
+  "handoff": "Most useful next action.",
+  "decision": "documentation/visibility updated, no metric decision needed",
+  "privacy_check": {
+    "no_raw_real_clinical_text": true,
+    "notes": "No raw real clinical text was written into logs, prompts, screenshots, traces, run records, or exported artifacts."
+  }
+}

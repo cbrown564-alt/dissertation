@@ -4,9 +4,11 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .venv/
+.tools/
 .env
 .coverage
 outputs/evaluation/*.json
 outputs/evaluation/*.csv
+outputs/visibility/*.png
 !outputs/evaluation/.gitkeep
 *.egg-info/

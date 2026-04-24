@@ -1,0 +1,37 @@
+{
+  "name": "dissertation-research",
+  "version": "0.1.0",
+  "description": "Project-specific workflows for reproducible dissertation harness experiments, session orientation, and research-state closeout.",
+  "author": {
+    "name": "Conor Brown"
+  },
+  "homepage": ".",
+  "repository": ".",
+  "license": "MIT",
+  "keywords": [
+    "dissertation",
+    "clinical-nlp",
+    "evaluation",
+    "harness",
+    "agent-visibility"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dissertation Research",
+    "shortDescription": "Repeatable harness experiments and session memory",
+    "longDescription": "Project-specific Codex workflows for the training-free multi-agent epilepsy extraction dissertation. Provides a research-harness skill plus slash commands for orienting a session, running fixed-budget harness experiments, and closing out with project-state updates.",
+    "developerName": "Conor Brown",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Orient on the current dissertation project state",
+      "Run a paired fixed-budget harness experiment",
+      "Close out this session with project-state updates"
+    ],
+    "brandColor": "#0F766E",
+    "screenshots": []
+  }
+}

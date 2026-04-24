@@ -27,6 +27,10 @@ def build_parser() -> argparse.ArgumentParser:
     predict.add_argument("path")
     predict.add_argument("--pipeline", choices=["multi", "single"], default="multi")
 
+    notebook = subparsers.add_parser("notebook", help="Build the local Evidence Notebook dashboard.")
+    notebook.add_argument("--out", default="docs/evidence_notebook.html")
+    notebook.add_argument("--session-limit", type=int, default=6)
+
     return parser
 
 
@@ -36,6 +40,8 @@ def main(argv: list[str] | None = None) -> int:
         return evaluate(args)
     if args.command == "predict":
         return predict(args)
+    if args.command == "notebook":
+        return notebook(args)
     raise ValueError(args.command)
 
 
@@ -90,6 +96,17 @@ def predict(args: argparse.Namespace) -> int:
     letter = Path(args.path).read_text(encoding="utf-8")
     prediction = _pipeline(args.pipeline).predict(letter)
     print(json.dumps(asdict(prediction), indent=2))
+    return 0
+
+
+def notebook(args: argparse.Namespace) -> int:
+    from .visibility import build_dashboard
+
+    out = Path(args.out)
+    html_text = build_dashboard(Path("."), session_limit=args.session_limit)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html_text, encoding="utf-8")
+    print(f"Wrote {out}")
     return 0
 
 

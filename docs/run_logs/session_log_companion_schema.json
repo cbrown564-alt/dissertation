@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "session_log_companion_schema.json",
+  "title": "Evidence Notebook Session Log Companion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "session_id",
+    "timestamp_utc",
+    "markdown_path",
+    "objective",
+    "related_active_thread",
+    "outcome",
+    "evidence",
+    "uncertainty",
+    "handoff",
+    "decision",
+    "privacy_check"
+  ],
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "pattern": "^[0-9]{8}T[0-9]{6}Z_[a-z0-9_\\-]+$"
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "markdown_path": {
+      "type": "string"
+    },
+    "objective": {
+      "type": "string"
+    },
+    "related_active_thread": {
+      "type": "string"
+    },
+    "starting_commit": {
+      "type": "string"
+    },
+    "dirty_worktree_at_start": {
+      "type": "boolean"
+    },
+    "outcome": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "files_changed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "run_records": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tests_or_checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "generated_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "string"
+    },
+    "handoff": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "keep this harness variant",
+        "reject this variant",
+        "inconclusive, rerun on a larger slice",
+        "implementation works but needs full synthetic evaluation",
+        "blocked by local model/runtime setup",
+        "documentation/visibility updated, no metric decision needed"
+      ]
+    },
+    "privacy_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "no_raw_real_clinical_text"
+      ],
+      "properties": {
+        "no_raw_real_clinical_text": {
+          "type": "boolean",
+          "const": true
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+

@@ -228,6 +228,12 @@ Outcome:
 - immediate improvement in project legibility without building a UI first;
 - project-state content that can later render directly into the Evidence Notebook interface.
 
+Implementation status as of 2026-04-24:
+
+- started with `docs/current_state.md`, `docs/milestones.md`, `docs/active_threads.md`, `docs/decisions.md`, and `docs/artifact_registry.md`;
+- added `docs/run_logs/session_log_template.md` as the first session-note pattern;
+- the next visibility task is to use these files at session close, then decide whether to backfill historical session logs or build a small local dashboard first.
+
 ### Phase 2: Session Logging Convention
 
 Add a lightweight session summary workflow so each substantial coding session produces a structured record and a reviewable session note.
@@ -243,6 +249,14 @@ Outcome:
 
 - durable trace of progress and direction over time;
 - recent-session content that can be shown without exposing raw terminal noise.
+
+Implementation status as of 2026-04-24:
+
+- added `docs/run_logs/README.md` as the session logging convention;
+- added `docs/run_logs/session_log_companion_schema.json` and `docs/run_logs/session_log_companion_template.json` for optional machine-readable companions;
+- tightened `docs/run_logs/session_log_template.md` around session IDs, optional companions, and exactly one closing decision label;
+- created `docs/run_logs/20260424T092054Z_visibility_phase2.md` as the Phase 2 implementation note;
+- the next visibility task is Phase 3: build a minimal local Evidence Notebook dashboard over project-state docs and recent session logs.
 
 ### Phase 3: Local Visual Dashboard
 
@@ -261,6 +275,14 @@ Outcome:
 
 - higher-level, always-available project oversight;
 - source-backed claims, margin notes, and evidence links rather than a generic dashboard-card mosaic.
+
+Implementation status as of 2026-04-24:
+
+- added `src/epilepsy_agents/visibility.py` as a dependency-free generator for the local Evidence Notebook dashboard;
+- added the `epilepsy-agents notebook` CLI command to regenerate the dashboard from project-state markdown and recent session logs;
+- generated `docs/evidence_notebook.html` as the first local dashboard artifact;
+- added parser coverage in `tests/test_visibility.py`;
+- the next visibility task is Phase 4: begin curated visual artifact production, while continuing to regenerate the dashboard after meaningful project-state updates.
 
 ### Phase 4: Curated Visual Artifact Production
 
