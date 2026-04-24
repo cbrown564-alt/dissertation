@@ -15,12 +15,14 @@ Observed from the current laptop:
 
 Current local inference status:
 
-- `ollama` command not found and `http://localhost:11434/api/tags` is not responding.
-- LM Studio command not found and `http://localhost:1234/v1/models` is not responding.
+- Ollama is installed locally and its API is responding at `http://localhost:11434/api/tags`.
+- Visible local Ollama models include `qwen3.5:4b`, `qwen3.5:9b`, `qwen3.5:35b-a3b`, and `llama3.1:latest`.
+- The repository now has a `provider-smoke` CLI path that successfully round-trips schema-constrained JSON through the local Ollama adapter.
+- LM Studio command is still not on disk at the probed Windows paths and `http://localhost:1234/v1/models` is not responding.
 - vLLM/llama.cpp-style server at `http://localhost:8000/v1/models` is not responding.
 - Python packages for direct inference are not installed in the active environment: `torch`, `transformers`, `llama_cpp`, `ctransformers`.
 
-Conclusion: this machine is ready for quantized local inference, but a runtime has not yet been installed/configured.
+Conclusion: this machine now has a working local runtime through Ollama. The active problem is no longer installation but achieving acceptable validity and latency for `h003_single_prompt_llm`.
 
 ## Practical Model Tiers for 8 GB VRAM
 
@@ -116,13 +118,9 @@ The implementation should produce comparable records for all providers but mark 
 
 ## Immediate Next Experiments
 
-1. Install one local runtime, preferably LM Studio or Ollama.
-2. Download GGUF quantizations for:
-   - Qwen2.5-7B-Instruct Q4_K_M;
-   - Qwen3-8B Q4_K_M;
-   - Phi-4-mini-instruct Q5 or Q6;
-   - Gemma-3-4B-it Q4_K_M.
-3. Run a 25-letter smoke test with schema-constrained output.
+1. Keep Ollama as the active local runtime for Phase A.
+2. Use `qwen3.5:4b` as the first tuning target and compare against `qwen3.5:9b` if validity remains poor.
+3. Rerun `h003_single_prompt_llm` on a 25-letter slice after prompt/schema tightening.
 4. Measure:
    - valid JSON rate;
    - exact label accuracy;
@@ -130,7 +128,7 @@ The implementation should produce comparable records for all providers but mark 
    - evidence support;
    - tokens/sec or wall-clock seconds per letter;
    - VRAM use during generation.
-5. Keep the best two local models for full synthetic-subset evaluation.
+5. Keep the best two local models for fuller synthetic evaluation.
 
 ## Current Code Support
 

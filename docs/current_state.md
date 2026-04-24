@@ -8,23 +8,24 @@ This page is the top-level Evidence Notebook snapshot. Each claim should stay sh
 
 ### Claim
 
-The repository is in the baseline harness and visibility-infrastructure phase for a dissertation project on training-free, evidence-grounded seizure-frequency extraction from epilepsy clinic letters.
+The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from provider setup to output reliability.
 
 ### Evidence
 
 - Project question and objectives are defined in [project_specification.md](project_specification.md).
 - The operating research posture is defined in [research_program.md](research_program.md).
 - Deterministic `single` and `multi` harnesses are registered in [project_state/harnesses/README.md](../project_state/harnesses/README.md).
+- A first LLM-backed run record now exists at [20260424T171400Z_h003_single_prompt_llm_n5.json](../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json).
 - The Evidence Notebook direction for project visibility is selected in [agent_visibility_plan.md](agent_visibility_plan.md).
 - Phase 1 project-state pages and the Phase 2 session logging convention now exist under `docs/` and `docs/run_logs/`.
 
 ### Uncertainty
 
-The current harnesses are deterministic baselines that mirror the intended role boundaries. They are not yet the final LLM-backed system.
+The current LLM path is only at smoke-test maturity. The first `h003` run shows valid local inference but a high invalid-output or fallback-to-`unknown` rate, so the dissertation question is not yet answerable from LLM results.
 
 ### Next Action
 
-Keep iteration narrow: improve one harness, provider, verifier, evaluation, or visibility feature per session, then record the outcome.
+Keep iteration narrow: tighten the `h003` prompt/schema path until invalid-output and `unknown` fallbacks drop enough for a 25-row smoke.
 
 ## Visibility Claim
 
@@ -54,7 +55,7 @@ Regenerate the dashboard after substantial updates to project-state docs or sess
 
 ### Claim
 
-The latest paired 100-row synthetic smoke comparison shows a meaningful lift for both harnesses after the seizure-free detection expansion, with `h002_multi_agent_verify` still ahead of `h001_single_pass` and NS-class F1 rising from near-zero to 0.82 on multi.
+The latest completed evaluation work now has two layers: the deterministic paired 100-row smoke still defines the strongest baseline result, and the first local `h003_single_prompt_llm` smoke confirms end-to-end LLM execution but with poor extraction reliability.
 
 ### Evidence
 
@@ -65,13 +66,19 @@ The latest paired 100-row synthetic smoke comparison shows a meaningful lift for
 
 The manifest index is [project_state/experiments/manifest.csv](../project_state/experiments/manifest.csv). Session log: [20260424T144639Z_seizure_free_detection_expansion.md](run_logs/20260424T144639Z_seizure_free_detection_expansion.md).
 
+First LLM smoke:
+
+| Harness | Run | Exact | Monthly 15 pct | Pragmatic micro-F1 | Purist micro-F1 | Invalid-output rate | Mean latency |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `h003_single_prompt_llm` | [20260424T171400Z_h003_single_prompt_llm_n5.json](../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json) | 0.20 | 0.20 | 0.20 | 0.20 | 0.80 | 52.9 s |
+
 ### Uncertainty
 
-The 100-row comparison is still a smoke test. NS precision for multi is 0.73, so six non-NS gold rows are now mispredicted as seizure-free. The qualitative-duration pattern always emits `seizure free for multiple month`, so rare year-scale gold labels still depend on the numeric negation pattern rather than the qualitative fallback.
+The deterministic 100-row comparison is still a smoke test. The new `h003` result is an even earlier smoke: only five rows, high latency, and a strong bias toward `unknown`, so it should be treated as plumbing validation rather than a real baseline comparison.
 
 ### Next Action
 
-Review the six NS false positives and remaining nine `seizure_free_error` cases, then pick the next failure family (most likely `unknown_or_no_reference_error` or `cluster_error`) and rerun the same paired slice.
+Inspect the four `unknown` outputs in `h003`, tighten the prompt and schema handling, and rerun `h003` on 25 rows before starting `h004`.
 
 ## Data And Governance Claim
 
@@ -107,8 +114,8 @@ The local codebase already has the scaffolding needed for deterministic evaluati
 
 ### Uncertainty
 
-No local LLM runtime is currently configured, and external-provider experiments are only appropriate for synthetic data unless governance changes.
+The local runtime now works through Ollama, but the first `h003` smoke suggests the prompt/schema path is fragile and slower than expected on `qwen3.5:4b`.
 
 ### Next Action
 
-Install or configure one local OpenAI-compatible runtime, then run a small schema-constrained synthetic smoke test.
+Tune the local `ollama` plus `qwen3.5:4b` path for `h003`, then compare whether `qwen3.5:9b` improves validity enough to justify the extra latency.

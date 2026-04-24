@@ -15,17 +15,19 @@ How can the deterministic and future LLM-backed harnesses reduce seizure-frequen
 - Latest paired 100-row synthetic smoke runs (after seizure-free detection expansion):
   - `h002_multi_agent_verify`: exact 0.31, monthly 0.48, pragmatic micro-F1 0.55, purist micro-F1 0.53, NS F1 0.82.
   - `h001_single_pass`: exact 0.25, monthly 0.43, pragmatic micro-F1 0.50, purist micro-F1 0.48, NS F1 0.73.
+- First local LLM smoke run:
+  - `h003_single_prompt_llm`: exact 0.20, monthly 0.20, pragmatic micro-F1 0.20, purist micro-F1 0.20, invalid-output rate 0.80, mean latency about 52.9 s on `ollama` with `qwen3.5:4b`.
 - `seizure_free_error` dropped from 18 to 9 on multi and from 19 to 13 on single; `correct` rose from 20 to 31 on multi.
-- Run records: [multi n100](../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json), [single n100](../project_state/runs/20260424T144606Z_h001_single_pass_n100.json).
+- Run records: [multi n100](../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json), [single n100](../project_state/runs/20260424T144606Z_h001_single_pass_n100.json), [h003 n5](../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json).
 - Session log: [20260424T144639Z_seizure_free_detection_expansion.md](run_logs/20260424T144639Z_seizure_free_detection_expansion.md).
 
 ### Blocker Or Risk
 
-NS precision on the multi harness is 0.73, so a small number of gold-frequent/infrequent/UNK rows now fire the seizure-free catch-all. `unknown_or_no_reference_error` (34 on multi) and `cluster_error` (13 on multi) are now the largest remaining failure families.
+The deterministic baseline still has residual seizure-free and cluster-family errors, but the immediate LLM-side blocker is different: `h003` currently falls back to `unknown` on most rows, so the first prompt/schema setup is not yet a credible comparison baseline.
 
 ### Next Action
 
-Audit the six NS false positives and the nine residual `seizure_free_error` cases to judge whether to tighten past-tense guards, then target `unknown_or_no_reference_error` or `cluster_error` next and rerun the paired 100-row slice.
+Review the four `unknown` rows from `h003`, tighten prompt/schema handling for explicit frequency extraction, and rerun `h003` on 25 rows before returning to `h004` or further deterministic cleanup.
 
 ## Provider And Local Model Setup
 
@@ -36,16 +38,18 @@ Which local runtime and first model should be used for schema-constrained extrac
 ### Latest Evidence
 
 - The laptop has an RTX 4070 Laptop GPU with 8 GB VRAM and enough disk for quantized local inference.
-- No Ollama, LM Studio, vLLM, llama.cpp server, or direct inference stack is currently responding in the active environment.
+- Ollama is installed locally and its API is responding at `http://localhost:11434/api`.
+- Local models currently visible through Ollama include `qwen3.5:4b`, `qwen3.5:9b`, `qwen3.5:35b-a3b`, and `llama3.1:latest`.
+- `provider-smoke` succeeded end to end against local `qwen3.5:4b`.
 - Candidate model tiers are documented in [local_model_feasibility.md](local_model_feasibility.md).
 
 ### Blocker Or Risk
 
-Local runtime installation and model download are not complete. Closed-provider experiments remain synthetic-only.
+Local runtime installation is no longer the blocker. The active risk is whether the first chosen model plus prompt/schema setup can produce valid structured outputs at an acceptable latency.
 
 ### Next Action
 
-Configure one OpenAI-compatible local runtime and run a 25-letter schema-constrained smoke test.
+Keep Ollama as the active runtime, improve `h003` validity on `qwen3.5:4b`, and compare against `qwen3.5:9b` if the smaller model stays too abstention-heavy.
 
 ## Evidence Notebook Visibility
 

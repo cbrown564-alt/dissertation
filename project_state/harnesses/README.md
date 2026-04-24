@@ -8,7 +8,7 @@ Current canonical IDs:
 | --- | --- | --- | --- |
 | `h001_single_pass` | `single` | implemented | Deterministic single-pass baseline over the letter text. |
 | `h002_multi_agent_verify` | `multi` | implemented | Deterministic section/timeline, extractor, verifier, and aggregator baseline. |
-| `h003_single_prompt_llm` | pending | planned | Future one-call LLM baseline with schema-constrained output. |
+| `h003_single_prompt_llm` | `single_llm` | in progress | One-call LLM baseline with schema-constrained output, retries, and runtime metadata. |
 | `h004_multi_agent_llm` | pending | planned | Future LLM-backed role-separated extraction pipeline. |
 | `h005_multi_agent_self_consistency_3` | pending | planned | Future LLM-backed multi-agent pipeline with three sampled candidates. |
 
@@ -18,3 +18,4 @@ Add a short note here whenever a harness variant becomes a serious comparison ta
 
 - 2026-04-24: `h002_multi_agent_verify` now includes an adjacent-window candidate retrieval expansion for deterministic synthetic smoke testing. Paired 100-row run `20260424T090105Z_h002_multi_agent_verify_n100` narrowly outperformed the matched `h001_single_pass` run `20260424T090110Z_h001_single_pass_n100`, but remaining error categories show this is still a baseline harness rather than a final extractor.
 - 2026-04-24: Both harnesses now include a broadened deterministic seizure-free detector covering qualitative durations, "since" forms, present-tense statements, remission, and a wider absence-of-events catch-all. Paired 100-row runs after the change: `20260424T144559Z_h002_multi_agent_verify_n100` (exact 0.31, monthly 0.48, pragmatic 0.55, purist 0.53, NS F1 0.82) and `20260424T144606Z_h001_single_pass_n100` (exact 0.25, monthly 0.43, pragmatic 0.50, purist 0.48, NS F1 0.73). `seizure_free_error` halved on multi; other error categories are unchanged or slightly improved.
+- 2026-04-24: `h003_single_prompt_llm` now has a first local Ollama-backed implementation. Smoke run `20260424T171400Z_h003_single_prompt_llm_n5` on `qwen3.5:4b` validated the runtime path and produced token and latency metadata, but exact/monthly/pragmatic/purist metrics were all 0.20 and invalid-output rate was 0.80, so the harness is implemented but not yet a serious comparison target.
