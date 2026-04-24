@@ -1,6 +1,6 @@
-import tempfile
 import unittest
 from pathlib import Path
+import shutil
 
 from epilepsy_agents.visibility import (
     build_dashboard,
@@ -113,12 +113,13 @@ Review.
         self.assertIn("../src/epilepsy_agents/visibility.py", claims[0].evidence)
 
     def test_build_dashboard_from_minimal_docs(self) -> None:
-        with tempfile.TemporaryDirectory(dir=Path.cwd()) as temp:
-            root = Path(temp)
+        root = Path.cwd() / ".test_tmp_visibility"
+        if root.exists():
+            shutil.rmtree(root, ignore_errors=True)
+        try:
             docs = root / "docs"
             run_logs = docs / "run_logs"
-            docs.mkdir()
-            run_logs.mkdir()
+            run_logs.mkdir(parents=True)
             (docs / "current_state.md").write_text(
                 """# Current State
 
@@ -253,6 +254,8 @@ documentation/visibility updated, no metric decision needed.
             )
 
             html = build_dashboard(root)
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
 
         self.assertIn("Evidence Notebook", html)
         self.assertIn("Dashboard claim", html)

@@ -9,6 +9,14 @@ from pathlib import Path
 from .agents import MultiAgentPipeline, SinglePassBaseline
 from .data import iter_records, load_synthetic_subset
 from .metrics import evaluate_prediction, summarize
+from .providers import (
+    ChatMessage,
+    local_lmstudio_provider,
+    local_ollama_provider,
+    local_vllm_provider,
+    probe_ollama,
+    probe_openai_compatible,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -31,6 +39,16 @@ def build_parser() -> argparse.ArgumentParser:
     notebook.add_argument("--out", default="docs/evidence_notebook.html")
     notebook.add_argument("--session-limit", type=int, default=6)
 
+    provider_smoke = subparsers.add_parser(
+        "provider-smoke",
+        help="Probe a local LLM runtime and optionally run one JSON-schema smoke request.",
+    )
+    provider_smoke.add_argument("--provider", choices=["lmstudio", "vllm", "ollama"], required=True)
+    provider_smoke.add_argument("--model", required=True)
+    provider_smoke.add_argument("--base-url", default=None)
+    provider_smoke.add_argument("--timeout-seconds", type=int, default=10)
+    provider_smoke.add_argument("--skip-chat", action="store_true")
+
     return parser
 
 
@@ -42,6 +60,8 @@ def main(argv: list[str] | None = None) -> int:
         return predict(args)
     if args.command == "notebook":
         return notebook(args)
+    if args.command == "provider-smoke":
+        return provider_smoke(args)
     raise ValueError(args.command)
 
 
@@ -108,6 +128,79 @@ def notebook(args: argparse.Namespace) -> int:
     out.write_text(html_text, encoding="utf-8")
     print(f"Wrote {out}")
     return 0
+
+
+def provider_smoke(args: argparse.Namespace) -> int:
+    probe = _probe_provider(args.provider, args.base_url, args.timeout_seconds)
+    payload: dict[str, object] = {
+        "provider": args.provider,
+        "model": args.model,
+        "base_url": args.base_url or _default_base_url(args.provider),
+        "probe": probe,
+    }
+    if not probe.get("ok"):
+        print(json.dumps(payload, indent=2))
+        return 1
+    if args.skip_chat:
+        print(json.dumps(payload, indent=2))
+        return 0
+
+    schema = {
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "status": {"type": "string"},
+            "label": {"type": "string"},
+        },
+        "required": ["status", "label"],
+    }
+    messages = [
+        ChatMessage(
+            role="system",
+            content=(
+                "Return only JSON matching the supplied schema. "
+                "Use label 'smoke_ok' for this connectivity test."
+            ),
+        ),
+        ChatMessage(role="user", content="Confirm the local extraction runtime is reachable."),
+    ]
+    result = _provider_instance(
+        args.provider,
+        args.model,
+        args.base_url,
+        args.timeout_seconds,
+    ).chat_json(messages, schema)
+    payload["chat_result"] = {
+        "provider": result.provider,
+        "model": result.model,
+        "content": result.content,
+    }
+    print(json.dumps(payload, indent=2))
+    return 0
+
+
+def _default_base_url(provider: str) -> str:
+    if provider == "lmstudio":
+        return "http://localhost:1234/v1"
+    if provider == "vllm":
+        return "http://localhost:8000/v1"
+    return "http://localhost:11434/api"
+
+
+def _probe_provider(provider: str, base_url: str | None, timeout_seconds: int) -> dict[str, object]:
+    resolved_base_url = base_url or _default_base_url(provider)
+    if provider == "ollama":
+        return probe_ollama(resolved_base_url, timeout_seconds=timeout_seconds)
+    return probe_openai_compatible(resolved_base_url, timeout_seconds=timeout_seconds)
+
+
+def _provider_instance(provider: str, model: str, base_url: str | None, timeout_seconds: int):
+    resolved_base_url = base_url or _default_base_url(provider)
+    if provider == "lmstudio":
+        return local_lmstudio_provider(model=model, base_url=resolved_base_url, timeout_seconds=timeout_seconds)
+    if provider == "vllm":
+        return local_vllm_provider(model=model, base_url=resolved_base_url, timeout_seconds=timeout_seconds)
+    return local_ollama_provider(model=model, base_url=resolved_base_url, timeout_seconds=timeout_seconds)
 
 
 if __name__ == "__main__":

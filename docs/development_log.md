@@ -55,3 +55,12 @@ Candidate retrieval smoke iteration:
 - Ran paired 100-row synthetic smoke records after the final retrieval update: `20260424T090105Z_h002_multi_agent_verify_n100` and `20260424T090110Z_h001_single_pass_n100`.
 - Result: multi improved over the intermediate run and narrowly led the paired single baseline on exact accuracy, monthly-rate match, pragmatic micro-F1, and purist micro-F1, but absolute performance remains too low for anything beyond harness iteration.
 - Decision: keep the retrieval expansion as a candidate baseline improvement; next action is to classify remaining `unknown_or_no_reference_error`, `seizure_free_error`, and `cluster_error` cases before broadening beyond deterministic patterns.
+
+Seizure-free detection expansion:
+
+- Broadened deterministic seizure-free detection in `FieldExtractorAgent._extract_from_text` with a structured sequence covering numeric durations, numeric negation windows ("no seizures for over N units"), qualitative durations ("for a long duration"/"prolonged period"), unit-only durations ("for years"), "since"/"off ASMs since"/"interval since" forms, present-tense statements ("by patient report", "currently seizure-free"), sustained seizure freedom, long-term remission, verb-phrase negation ("seizure occurrences have not been happening"), and an expanded absence-of-events catch-all guarded against "otherwise"/"between"/"prior to"/"previously"/"for context".
+- Added `remission`, `recurrence`, and `seizure freedom` to `FREQUENCY_TERMS` so the section/timeline retriever picks these candidate sentences.
+- Added eleven focused tests covering the new branches plus a past-tense negative case.
+- Ran paired 100-row synthetic smoke after the change: `20260424T144559Z_h002_multi_agent_verify_n100` and `20260424T144606Z_h001_single_pass_n100`.
+- Result: multi exact 0.20->0.31, monthly 0.35->0.48, pragmatic micro-F1 0.42->0.55, purist micro-F1 0.40->0.53, NS F1 0.26->0.82; single exact 0.18->0.25, monthly 0.33->0.43, pragmatic micro-F1 0.40->0.50, purist micro-F1 0.38->0.48, NS F1 0.00->0.73; `seizure_free_error` dropped from 18 to 9 on multi and from 19 to 13 on single; no regressions in other error categories.
+- Decision: keep this harness variant; next action is to audit residual NS false positives and move on to `unknown_or_no_reference_error` or `cluster_error`.

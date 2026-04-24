@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Protocol
 
+
 @dataclass(frozen=True)
 class ChatMessage:
     role: str
@@ -128,12 +129,38 @@ class OllamaProvider:
         return LLMResult(content=str(content), model=self.model, provider=self.provider_name, raw=response)
 
 
-def local_lmstudio_provider(model: str, base_url: str = "http://localhost:1234/v1") -> OpenAICompatibleProvider:
-    return OpenAICompatibleProvider(base_url=base_url, model=model, provider_name="lmstudio")
+def local_lmstudio_provider(
+    model: str,
+    base_url: str = "http://localhost:1234/v1",
+    timeout_seconds: int = 120,
+) -> OpenAICompatibleProvider:
+    return OpenAICompatibleProvider(
+        base_url=base_url,
+        model=model,
+        provider_name="lmstudio",
+        timeout_seconds=timeout_seconds,
+    )
 
 
-def local_vllm_provider(model: str, base_url: str = "http://localhost:8000/v1") -> OpenAICompatibleProvider:
-    return OpenAICompatibleProvider(base_url=base_url, model=model, provider_name="vllm")
+def local_vllm_provider(
+    model: str,
+    base_url: str = "http://localhost:8000/v1",
+    timeout_seconds: int = 120,
+) -> OpenAICompatibleProvider:
+    return OpenAICompatibleProvider(
+        base_url=base_url,
+        model=model,
+        provider_name="vllm",
+        timeout_seconds=timeout_seconds,
+    )
+
+
+def local_ollama_provider(
+    model: str,
+    base_url: str = "http://localhost:11434/api",
+    timeout_seconds: int = 120,
+) -> OllamaProvider:
+    return OllamaProvider(model=model, base_url=base_url, timeout_seconds=timeout_seconds)
 
 
 def openai_provider(model: str) -> OpenAICompatibleProvider:
@@ -152,6 +179,14 @@ def openai_provider(model: str) -> OpenAICompatibleProvider:
 def probe_openai_compatible(base_url: str, timeout_seconds: int = 2) -> dict[str, object]:
     try:
         response = _get_json(f"{base_url.rstrip('/')}/models", timeout_seconds=timeout_seconds)
+        return {"ok": True, "response": response}
+    except Exception as exc:
+        return {"ok": False, "error": type(exc).__name__}
+
+
+def probe_ollama(base_url: str = "http://localhost:11434/api", timeout_seconds: int = 2) -> dict[str, object]:
+    try:
+        response = _get_json(f"{base_url.rstrip('/')}/tags", timeout_seconds=timeout_seconds)
         return {"ok": True, "response": response}
     except Exception as exc:
         return {"ok": False, "error": type(exc).__name__}

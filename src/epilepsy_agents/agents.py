@@ -9,7 +9,7 @@ from .schema import EvidenceSpan, Prediction
 FREQUENCY_TERMS = re.compile(
     r"\b(seizure|seizures|event|events|episode|episodes|absence|absences|cluster|clusters|fit|fits|"
     r"spell|spells|jerk|jerks|spasm|spasms|attack|attacks|tonic-clonic|convulsion|convulsions|frequency|"
-    r"seizure-free|seizure free)\b",
+    r"seizure-free|seizure free|remission|recurrence|recurrences|seizure freedom)\b",
     re.IGNORECASE,
 )
 
@@ -211,16 +211,6 @@ class FieldExtractorAgent:
         if any(phrase in lower for phrase in no_ref):
             return "unknown", "The candidate explicitly states that frequency cannot be quantified."
 
-        if (
-            re.search(r"\b(no|denies|without)\s+(further\s+)?(seizures|events|fits)\b", lower)
-            and "at the wheel" not in lower
-            and "before" not in lower
-            and "after" not in lower
-            and "between" not in lower
-            and "otherwise" not in lower
-        ):
-            return "seizure free for multiple month", "The candidate states there have been no further seizures."
-
         seizure_free = re.search(
             rf"seizure[- ]free\s+for\s+(?P<value>{count}(?:\s+(?:to|-)\s+{count})?)\s+(?P<unit>{unit})",
             lower,
@@ -230,6 +220,133 @@ class FieldExtractorAgent:
             return (
                 f"seizure free for {value} {_singular_unit(seizure_free.group('unit'))}",
                 "The candidate contains an explicit seizure-free duration.",
+            )
+
+        no_seizures_for = re.search(
+            rf"(?:no|not\s+(?:had|experienced|having|reporting|reported|witnessed))\s+"
+            rf"(?:any\s+)?"
+            rf"(?:further\s+|reported\s+|witnessed\s+|recorded\s+|new\s+|recent\s+|"
+            rf"additional\s+|definite\s+|documented\s+|clear\s+|identifiable\s+){{0,2}}"
+            rf"(?:seizures?|events?|episodes?|fits?|spells?|convulsions?|recurrences?)\s+"
+            rf"(?:reported\s+|recorded\s+|noted\s+|documented\s+|observed\s+)?"
+            rf"(?:for|in|over|across)\s+(?:over\s+|at\s+least\s+|the\s+past\s+|the\s+last\s+)?"
+            rf"(?P<value>{ranged_count})\s+(?P<unit>{unit})",
+            lower,
+        )
+        if no_seizures_for and "otherwise" not in lower and "between" not in lower:
+            value = _count_text(no_seizures_for.group("value"))
+            return (
+                f"seizure free for {value} {_singular_unit(no_seizures_for.group('unit'))}",
+                "The candidate reports an absence of seizures over a stated interval.",
+            )
+
+        if re.search(
+            r"seizure[- ]free\s+for\s+(?:a\s+|an\s+)?"
+            r"(?:long|prolonged|sustained|extended|significant|considerable|substantial|"
+            r"ongoing|extensive)"
+            r"(?:[- ]term)?\s+"
+            r"(?:duration|period|time|while|stretch|spell|interval|run)\b",
+            lower,
+        ):
+            return (
+                "seizure free for multiple month",
+                "The candidate reports a qualitatively long seizure-free period.",
+            )
+
+        seizure_free_units = re.search(
+            r"seizure[- ]free\s+for\s+"
+            r"(?:a\s+|an\s+|several\s+|many\s+|multiple\s+|some\s+|numerous\s+|"
+            r"countless\s+|ongoing\s+|sustained\s+|over\s+|more\s+than\s+)*"
+            r"(?P<unit>months?|years?|weeks?)\b",
+            lower,
+        )
+        if seizure_free_units:
+            return (
+                f"seizure free for multiple {_singular_unit(seizure_free_units.group('unit'))}",
+                "The candidate reports a seizure-free interval of multiple units.",
+            )
+
+        if re.search(
+            r"seizure[- ]free\s+"
+            r"(?:off\s+asms?\s+|interval\s+|status\s+|episodes?\s+)?"
+            r"since\b",
+            lower,
+        ):
+            return (
+                "seizure free for multiple month",
+                "The candidate reports seizure freedom since a specified point in time.",
+            )
+
+        if re.search(
+            r"seizure[- ]free\s+"
+            r"(?:by\s+(?:patient|self|clinician|carer|caregiver)\s+report|"
+            r"on\s+review|at\s+(?:today(?:'s|s)?|this)\s+(?:visit|review|appointment)|"
+            r"at\s+present|at\s+this\s+time|currently|today)\b",
+            lower,
+        ) or re.search(
+            r"\b(?:currently|remains?|is|continues\s+to\s+be)\s+seizure[- ]free\b",
+            lower,
+        ):
+            return (
+                "seizure free for multiple month",
+                "The candidate reports present-tense seizure freedom.",
+            )
+
+        if re.search(
+            r"(?:sustained|ongoing|maintained|achieved|durable|stable|long[- ]term)\s+"
+            r"seizures?\s+freedom\b|"
+            r"seizures?\s+freedom\s+(?:achieved|sustained|maintained|noted|is\s+sustained)",
+            lower,
+        ):
+            return (
+                "seizure free for multiple month",
+                "The candidate reports sustained seizure freedom.",
+            )
+
+        if re.search(
+            r"\b(?:in|currently\s+in|achieved|achieving|maintaining|enjoys?|sustained|ongoing)\s+"
+            r"(?:a\s+)?(?:long[- ]term\s+|sustained\s+|ongoing\s+|durable\s+|stable\s+|complete\s+)?"
+            r"remission\b",
+            lower,
+        ):
+            return (
+                "seizure free for multiple month",
+                "The candidate reports ongoing remission.",
+            )
+
+        if re.search(
+            r"(?:seizures?|events?|episodes?|attacks?|seizure\s+occurrences?)\s+"
+            r"have\s+not\s+(?:been\s+)?(?:happening|occurring|occurred|recurred|recurring)",
+            lower,
+        ):
+            return (
+                "seizure free for multiple month",
+                "The candidate states that seizure activity has ceased.",
+            )
+
+        absence = re.search(
+            r"\b(?:no|denies|denying|without(?:\s+any)?|absence\s+of|"
+            r"there\s+(?:have|has)\s+been\s+no|with\s+no|"
+            r"have\s+had\s+no|has\s+had\s+no|reports?\s+no|reporting\s+no|"
+            r"have\s+not\s+(?:had|been\s+having)|has\s+not\s+(?:had|been\s+having))"
+            r"\s+(?:(?:further|witnessed|reported|definite|new|additional|recurrent|clear|"
+            r"significant|identifiable|breakthrough|recent|documented|observed)\s+){0,3}"
+            r"(?:seizures?|events?|episodes?|fits?|spells?|convulsions?|recurrences?|"
+            r"breakthroughs?|attacks?|seizure\s+occurrences?)\b",
+            lower,
+        )
+        if (
+            absence
+            and "otherwise" not in lower
+            and "between" not in lower
+            and "at the wheel" not in lower
+            and "prior to" not in lower
+            and "previously" not in lower
+            and "for context" not in lower
+        ):
+            return (
+                "seizure free for multiple month",
+                "The candidate describes an absence of recent seizure activity.",
             )
 
         cluster = re.search(

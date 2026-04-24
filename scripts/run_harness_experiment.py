@@ -19,12 +19,14 @@ if str(SRC) not in sys.path:
 
 from epilepsy_agents.agents import MultiAgentPipeline, SinglePassBaseline
 from epilepsy_agents.data import iter_records, load_synthetic_subset
+from epilepsy_agents.llm_pipeline import SinglePromptLLMPipeline, create_provider
 from epilepsy_agents.metrics import EvaluationRow, evaluate_prediction, summarize
 from epilepsy_agents.schema import Prediction
 
 HARNESS_IDS = {
     "single": "h001_single_pass",
     "multi": "h002_multi_agent_verify",
+    "single_llm": "h003_single_prompt_llm",
 }
 
 MANIFEST_FIELDS = [
@@ -57,6 +59,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--notes", default="")
     parser.add_argument("--output-dir", default="project_state/runs")
     parser.add_argument("--manifest", default="project_state/experiments/manifest.csv")
+    parser.add_argument("--provider", choices=["ollama", "lmstudio", "vllm", "openai"], default="ollama")
+    parser.add_argument("--model", default="qwen3.5:4b")
+    parser.add_argument("--base-url", default=None)
+    parser.add_argument("--timeout-seconds", type=int, default=120)
+    parser.add_argument("--max-retries", type=int, default=1)
     return parser
 
 
@@ -70,10 +77,11 @@ def main(argv: list[str] | None = None) -> int:
     manifest_path = (ROOT / args.manifest).resolve()
 
     records = load_synthetic_subset(data_path)
-    pipeline = build_pipeline(args.harness)
+    pipeline = build_pipeline(args)
     rows: list[EvaluationRow] = []
     error_categories: Counter[str] = Counter()
     prediction_counts: Counter[str] = Counter()
+    runtime_rows: list[dict[str, Any]] = []
 
     for record in iter_records(records, args.limit, row_ok_only=not args.include_failed_rows):
         prediction = pipeline.predict(record.letter)
@@ -81,6 +89,7 @@ def main(argv: list[str] | None = None) -> int:
         rows.append(row)
         prediction_counts[prediction.label] += 1
         error_categories[categorize_error(row, prediction)] += 1
+        runtime_rows.append(runtime_row(prediction))
 
     summary = summarize(rows)
     run_record_path = output_dir / f"{experiment_id}.json"
@@ -99,6 +108,7 @@ def main(argv: list[str] | None = None) -> int:
         },
         "code": git_state(),
         "summary": summary,
+        "runtime_summary": summarize_runtime(runtime_rows),
         "error_categories": dict(sorted(error_categories.items())),
         "prediction_label_counts": dict(prediction_counts.most_common(25)),
         "rows": [safe_row(row) for row in rows],
@@ -113,8 +123,18 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-def build_pipeline(name: str):
-    return MultiAgentPipeline() if name == "multi" else SinglePassBaseline()
+def build_pipeline(args: argparse.Namespace):
+    if args.harness == "multi":
+        return MultiAgentPipeline()
+    if args.harness == "single":
+        return SinglePassBaseline()
+    provider = create_provider(
+        args.provider,
+        args.model,
+        base_url=args.base_url,
+        timeout_seconds=args.timeout_seconds,
+    )
+    return SinglePromptLLMPipeline(provider=provider, max_retries=args.max_retries)
 
 
 def make_experiment_id(timestamp: datetime, harness: str, limit: int | None) -> str:
@@ -193,6 +213,40 @@ def safe_row(row: EvaluationRow) -> dict[str, Any]:
         "gold_purist_class": payload["gold_purist_class"],
         "predicted_purist_class": payload["predicted_purist_class"],
         "confidence": payload["confidence"],
+    }
+
+
+def runtime_row(prediction: Prediction) -> dict[str, Any]:
+    metadata = prediction.metadata or {}
+    return {
+        "provider": metadata.get("provider"),
+        "model": metadata.get("model"),
+        "latency_ms": metadata.get("latency_ms"),
+        "invalid_output": bool(metadata.get("invalid_output")),
+        "attempt": metadata.get("attempt"),
+        "prompt_tokens": metadata.get("prompt_tokens"),
+        "completion_tokens": metadata.get("completion_tokens"),
+        "total_tokens": metadata.get("total_tokens"),
+    }
+
+
+def summarize_runtime(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    if not rows:
+        return {}
+    latency_values = [row["latency_ms"] for row in rows if isinstance(row.get("latency_ms"), (int, float))]
+    prompt_tokens = [row["prompt_tokens"] for row in rows if isinstance(row.get("prompt_tokens"), (int, float))]
+    completion_tokens = [row["completion_tokens"] for row in rows if isinstance(row.get("completion_tokens"), (int, float))]
+    total_tokens = [row["total_tokens"] for row in rows if isinstance(row.get("total_tokens"), (int, float))]
+    invalid_count = sum(1 for row in rows if row.get("invalid_output"))
+    return {
+        "provider": rows[0].get("provider"),
+        "model": rows[0].get("model"),
+        "invalid_output_rate": invalid_count / len(rows),
+        "mean_latency_ms": sum(latency_values) / len(latency_values) if latency_values else None,
+        "max_latency_ms": max(latency_values) if latency_values else None,
+        "mean_prompt_tokens": sum(prompt_tokens) / len(prompt_tokens) if prompt_tokens else None,
+        "mean_completion_tokens": sum(completion_tokens) / len(completion_tokens) if completion_tokens else None,
+        "mean_total_tokens": sum(total_tokens) / len(total_tokens) if total_tokens else None,
     }
 
 

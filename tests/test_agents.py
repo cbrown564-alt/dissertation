@@ -53,6 +53,82 @@ class FieldExtractorAgentTests(unittest.TestCase):
         )
         self.assertIsNone(extracted)
 
+    def test_numeric_seizure_free_duration_still_extracted(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "She has now been seizure free for 3 years."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for 3 year")
+
+    def test_qualitative_seizure_free_duration_maps_to_multiple_month(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "He has remained seizure-free for a prolonged period."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple month")
+
+    def test_seizure_free_unit_only_maps_to_multiple_unit(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "He has been seizure free for years."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple year")
+
+    def test_seizure_free_since_date_maps_to_multiple_month(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "Seizure-free off ASMs since 25 Jun 2015."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple month")
+
+    def test_seizure_free_by_patient_report_maps_to_multiple_month(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "At today's visit, he is Seizure-free by patient report."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple month")
+
+    def test_no_seizures_for_numeric_window_extracts_duration(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "He has not reported seizures for over several years."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple year")
+
+    def test_long_term_remission_maps_to_multiple_month(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "He is currently in long-term remission."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple month")
+
+    def test_no_witnessed_episodes_catch_all(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "There have been no witnessed episodes of impaired awareness."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple month")
+
+    def test_without_any_recurrence_catch_all(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "She reports a sustained period without any recurrence of her typical events."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple month")
+
+    def test_seizure_occurrences_have_not_been_happening(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "Seizure occurrences have not been happening."
+        )
+        self.assertIsNotNone(extracted)
+        self.assertEqual(extracted[0], "seizure free for multiple month")
+
+    def test_prior_to_history_not_interpreted_as_seizure_free(self) -> None:
+        extracted = self.extractor._extract_from_text(
+            "Prior to retirement he had no breakthrough events on his current regimen."
+        )
+        self.assertIsNone(extracted)
+
 
 if __name__ == "__main__":
     unittest.main()

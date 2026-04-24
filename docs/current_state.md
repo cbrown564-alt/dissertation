@@ -30,7 +30,7 @@ Keep iteration narrow: improve one harness, provider, verifier, evaluation, or v
 
 ### Claim
 
-The Evidence Notebook layer now has canonical state pages, a repeatable session logging convention, and a generated local dashboard.
+The Evidence Notebook layer now has canonical state pages, a repeatable session logging convention, a generated local dashboard, and backfilled session coverage for the pre-visibility foundation work.
 
 ### Evidence
 
@@ -38,12 +38,13 @@ The Evidence Notebook layer now has canonical state pages, a repeatable session 
 - Session logging convention: [run_logs/README.md](run_logs/README.md).
 - Session log template: [run_logs/session_log_template.md](run_logs/session_log_template.md).
 - Optional companion schema and template: [session_log_companion_schema.json](run_logs/session_log_companion_schema.json), [session_log_companion_template.json](run_logs/session_log_companion_template.json).
+- Backfilled historical logs: [20260424T075111Z_initial_scaffold.md](run_logs/20260424T075111Z_initial_scaffold.md), [20260424T084000Z_harness_protocol_and_smoke_runs.md](run_logs/20260424T084000Z_harness_protocol_and_smoke_runs.md), [20260424T085900Z_candidate_retrieval_iteration.md](run_logs/20260424T085900Z_candidate_retrieval_iteration.md).
 - Local dashboard: [evidence_notebook.html](evidence_notebook.html).
 - Dashboard generator: [src/epilepsy_agents/visibility.py](../src/epilepsy_agents/visibility.py).
 
 ### Uncertainty
 
-The dashboard is a static generated artifact. It will drift if source docs change without rerunning the generator.
+The dashboard is a static generated artifact. The new historical logs are reconstructed from repo evidence rather than written contemporaneously, so they are faithful summaries but not verbatim session notes.
 
 ### Next Action
 
@@ -53,24 +54,24 @@ Regenerate the dashboard after substantial updates to project-state docs or sess
 
 ### Claim
 
-The latest paired 100-row synthetic smoke comparison slightly favors `h002_multi_agent_verify` over `h001_single_pass`, but both remain weak baselines and need targeted error work before broader conclusions.
+The latest paired 100-row synthetic smoke comparison shows a meaningful lift for both harnesses after the seizure-free detection expansion, with `h002_multi_agent_verify` still ahead of `h001_single_pass` and NS-class F1 rising from near-zero to 0.82 on multi.
 
 ### Evidence
 
 | Harness | Run | Exact | Monthly 15 pct | Pragmatic micro-F1 | Purist micro-F1 |
 | --- | --- | ---: | ---: | ---: | ---: |
-| `h002_multi_agent_verify` | [20260424T090105Z_h002_multi_agent_verify_n100.json](../project_state/runs/20260424T090105Z_h002_multi_agent_verify_n100.json) | 0.20 | 0.35 | 0.42 | 0.40 |
-| `h001_single_pass` | [20260424T090110Z_h001_single_pass_n100.json](../project_state/runs/20260424T090110Z_h001_single_pass_n100.json) | 0.18 | 0.33 | 0.40 | 0.38 |
+| `h002_multi_agent_verify` | [20260424T144559Z_h002_multi_agent_verify_n100.json](../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json) | 0.31 | 0.48 | 0.55 | 0.53 |
+| `h001_single_pass` | [20260424T144606Z_h001_single_pass_n100.json](../project_state/runs/20260424T144606Z_h001_single_pass_n100.json) | 0.25 | 0.43 | 0.50 | 0.48 |
 
-The manifest index is [project_state/experiments/manifest.csv](../project_state/experiments/manifest.csv).
+The manifest index is [project_state/experiments/manifest.csv](../project_state/experiments/manifest.csv). Session log: [20260424T144639Z_seizure_free_detection_expansion.md](run_logs/20260424T144639Z_seizure_free_detection_expansion.md).
 
 ### Uncertainty
 
-The 100-row comparison is still a smoke test. It uses the synthetic subset and should not be read as clinical performance.
+The 100-row comparison is still a smoke test. NS precision for multi is 0.73, so six non-NS gold rows are now mispredicted as seizure-free. The qualitative-duration pattern always emits `seizure free for multiple month`, so rare year-scale gold labels still depend on the numeric negation pattern rather than the qualitative fallback.
 
 ### Next Action
 
-Review safe error categories and improve candidate retrieval or verifier behavior against the most common failures before rerunning the same paired slice.
+Review the six NS false positives and remaining nine `seizure_free_error` cases, then pick the next failure family (most likely `unknown_or_no_reference_error` or `cluster_error`) and rerun the same paired slice.
 
 ## Data And Governance Claim
 
