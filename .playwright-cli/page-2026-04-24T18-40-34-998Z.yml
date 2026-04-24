@@ -1,0 +1,283 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "EN" [ref=e4] [cursor=pointer]:
+      - /url: "#overview"
+    - navigation [ref=e5]:
+      - button "Overview" [ref=e6] [cursor=pointer]
+      - button "Claims" [ref=e7] [cursor=pointer]
+      - button "Timeline" [ref=e8] [cursor=pointer]
+      - button "Sessions" [ref=e9] [cursor=pointer]
+      - button "Workstreams" [ref=e10] [cursor=pointer]
+      - button "Artifacts" [ref=e11] [cursor=pointer]
+      - button "Decisions" [ref=e12] [cursor=pointer]
+    - paragraph [ref=e13]:
+      - text: Local archive
+      - text: 2026-04-24 18:27 UTC
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: Clinical evidence register
+        - heading "Evidence Notebook" [level=1] [ref=e18]
+        - paragraph [ref=e19]: "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
+        - generic [ref=e20]:
+          - generic [ref=e21]: Generated 2026-04-24 18:27 UTC
+          - generic [ref=e22]: Project Snapshot
+      - generic [ref=e23]:
+        - generic [ref=e24]: Search
+        - searchbox "Search" [ref=e25]
+    - generic [ref=e26]:
+      - link "Source current_state.md Updated 2026-04-24" [ref=e27] [cursor=pointer]:
+        - /url: current_state.md
+        - generic [ref=e28]: Source
+        - strong [ref=e29]: current_state.md
+        - generic [ref=e30]: Updated 2026-04-24
+      - link "Source milestones.md Updated 2026-04-24" [ref=e31] [cursor=pointer]:
+        - /url: milestones.md
+        - generic [ref=e32]: Source
+        - strong [ref=e33]: milestones.md
+        - generic [ref=e34]: Updated 2026-04-24
+      - link "Source active_threads.md Updated 2026-04-24" [ref=e35] [cursor=pointer]:
+        - /url: active_threads.md
+        - generic [ref=e36]: Source
+        - strong [ref=e37]: active_threads.md
+        - generic [ref=e38]: Updated 2026-04-24
+      - link "Source artifact_registry.md Updated 2026-04-24" [ref=e39] [cursor=pointer]:
+        - /url: artifact_registry.md
+        - generic [ref=e40]: Source
+        - strong [ref=e41]: artifact_registry.md
+        - generic [ref=e42]: Updated 2026-04-24
+      - link "Source decisions.md Updated 2026-04-24" [ref=e43] [cursor=pointer]:
+        - /url: decisions.md
+        - generic [ref=e44]: Source
+        - strong [ref=e45]: decisions.md
+        - generic [ref=e46]: Updated 2026-04-24
+    - generic [ref=e47]:
+      - button "5 Claims" [ref=e48] [cursor=pointer]:
+        - strong [ref=e49]: "5"
+        - generic [ref=e50]: Claims
+      - button "25 Milestones" [ref=e51] [cursor=pointer]:
+        - strong [ref=e52]: "25"
+        - generic [ref=e53]: Milestones
+      - button "6 Sessions" [ref=e54] [cursor=pointer]:
+        - strong [ref=e55]: "6"
+        - generic [ref=e56]: Sessions
+      - button "5 Threads" [ref=e57] [cursor=pointer]:
+        - strong [ref=e58]: "5"
+        - generic [ref=e59]: Threads
+      - button "31 Artifacts" [ref=e60] [cursor=pointer]:
+        - strong [ref=e61]: "31"
+        - generic [ref=e62]: Artifacts
+      - button "7 Decisions" [ref=e63] [cursor=pointer]:
+        - strong [ref=e64]: "7"
+        - generic [ref=e65]: Decisions
+    - generic [ref=e67]:
+      - article [ref=e68]:
+        - generic [ref=e69]:
+          - paragraph [ref=e70]: Thread
+          - heading "Harness Reliability" [level=2] [ref=e71]
+        - paragraph [ref=e72]: How can the deterministic and future LLM-backed harnesses reduce seizure-frequency extraction errors while preserving evidence support and auditability?
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e75]: Latest evidence
+            - list [ref=e76]:
+              - listitem [ref=e77]: "Latest paired 100-row synthetic smoke runs (after seizure-free detection expansion):"
+              - listitem [ref=e78]:
+                - code [ref=e79]: h002_multi_agent_verify
+                - text: ": exact 0.31, monthly 0.48, pragmatic micro-F1 0.55, purist micro-F1 0.53, NS F1 0.82."
+              - listitem [ref=e80]:
+                - code [ref=e81]: h001_single_pass
+                - text: ": exact 0.25, monthly 0.43, pragmatic micro-F1 0.50, purist micro-F1 0.48, NS F1 0.73."
+              - listitem [ref=e82]: "First local LLM smoke run:"
+              - listitem [ref=e83]:
+                - code [ref=e84]: h003_single_prompt_llm
+                - text: ": exact 0.20, monthly 0.20, pragmatic micro-F1 0.20, purist micro-F1 0.20, invalid-output rate 0.80, mean latency about 52.9 s on"
+                - code [ref=e85]: ollama
+                - text: with
+                - code [ref=e86]: qwen3.5:4b
+                - text: .
+              - listitem [ref=e87]: "Updated local LLM smoke after disabling Ollama thinking and tolerating schema-near JSON:"
+              - listitem [ref=e88]:
+                - code [ref=e89]: h003_single_prompt_llm
+                - text: "n5: exact 0.40, monthly 0.40, pragmatic micro-F1 0.40, purist micro-F1 0.40, invalid-output rate 0.40, mean latency about 0.95 s."
+              - listitem [ref=e90]:
+                - code [ref=e91]: h003_single_prompt_llm
+                - text: "n25: exact 0.20, monthly 0.28, pragmatic micro-F1 0.36, purist micro-F1 0.32, invalid-output rate 0.28, mean latency about 1.29 s."
+              - listitem [ref=e92]:
+                - code [ref=e93]: seizure_free_error
+                - text: dropped from 18 to 9 on multi and from 19 to 13 on single;
+                - code [ref=e94]: correct
+                - text: rose from 20 to 31 on multi.
+              - listitem [ref=e95]:
+                - text: "Run records:"
+                - link "multi n100" [ref=e96] [cursor=pointer]:
+                  - /url: ../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json
+                - text: ","
+                - link "single n100" [ref=e97] [cursor=pointer]:
+                  - /url: ../project_state/runs/20260424T144606Z_h001_single_pass_n100.json
+                - text: ","
+                - link "h003 original n5" [ref=e98] [cursor=pointer]:
+                  - /url: ../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json
+                - text: ","
+                - link "h003 updated n25" [ref=e99] [cursor=pointer]:
+                  - /url: ../project_state/runs/20260424T180629Z_h003_single_prompt_llm_n25.json
+                - text: .
+              - listitem [ref=e100]:
+                - text: "Session log:"
+                - link "20260424T144639Z_seizure_free_detection_expansion.md" [ref=e101] [cursor=pointer]:
+                  - /url: run_logs/20260424T144639Z_seizure_free_detection_expansion.md
+                - text: .
+          - generic [ref=e102]:
+            - generic [ref=e103]: Risk
+            - paragraph [ref=e104]:
+              - text: The deterministic baseline still has residual seizure-free and cluster-family errors. The immediate LLM-side blocker is no longer provider timeout;
+              - code [ref=e105]: h003
+              - text: now runs quickly, but it over-abstains and still has invalid/schema-near outputs on a minority of rows.
+          - generic [ref=e106]:
+            - generic [ref=e107]: Next action
+            - paragraph [ref=e108]:
+              - text: Classify the 25-row
+              - code [ref=e109]: h003
+              - text: abstentions, then add one narrow intervention for cluster/window/seizure-free extraction before returning to
+              - code [ref=e110]: h004
+              - text: or further deterministic cleanup.
+      - article [ref=e111]:
+        - generic [ref=e112]:
+          - paragraph [ref=e113]: Thread
+          - heading "Provider And Local Model Setup" [level=2] [ref=e114]
+        - paragraph [ref=e115]: Which local runtime and first model should be used for schema-constrained extraction smoke tests?
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - generic [ref=e118]: Latest evidence
+            - list [ref=e119]:
+              - listitem [ref=e120]: The laptop has an RTX 4070 Laptop GPU with 8 GB VRAM and enough disk for quantized local inference.
+              - listitem [ref=e121]:
+                - text: Ollama is installed locally and its API is responding at
+                - code [ref=e122]: http://localhost:11434/api
+                - text: .
+              - listitem [ref=e123]:
+                - text: Local models currently visible through Ollama include
+                - code [ref=e124]: qwen3.5:4b
+                - text: ","
+                - code [ref=e125]: qwen3.5:9b
+                - text: ","
+                - code [ref=e126]: qwen3.5:35b-a3b
+                - text: ", and"
+                - code [ref=e127]: llama3.1:latest
+                - text: .
+              - listitem [ref=e128]:
+                - code [ref=e129]: provider-smoke
+                - text: succeeded end to end against local
+                - code [ref=e130]: qwen3.5:4b
+                - text: .
+              - listitem [ref=e131]:
+                - code [ref=e132]: h003
+                - text: now sends
+                - code [ref=e133]: "think: false"
+                - text: with a capped Ollama completion budget, avoiding the earlier timeout caused by model reasoning traces.
+              - listitem [ref=e134]:
+                - text: Candidate model tiers are documented in
+                - link "local_model_feasibility.md" [ref=e135] [cursor=pointer]:
+                  - /url: local_model_feasibility.md
+                - text: .
+          - generic [ref=e136]:
+            - generic [ref=e137]: Risk
+            - paragraph [ref=e138]: Local runtime installation is no longer the blocker. The active risk is whether the first chosen model plus prompt/schema setup can avoid excessive abstention while preserving evidence support.
+          - generic [ref=e139]:
+            - generic [ref=e140]: Next action
+            - paragraph [ref=e141]:
+              - text: Keep Ollama as the active runtime, improve
+              - code [ref=e142]: h003
+              - text: extraction validity on
+              - code [ref=e143]: qwen3.5:4b
+              - text: ", and compare against"
+              - code [ref=e144]: qwen3.5:9b
+              - text: if the smaller model stays too abstention-heavy.
+      - article [ref=e145]:
+        - generic [ref=e146]:
+          - paragraph [ref=e147]: Thread
+          - heading "Evidence Notebook Visibility" [level=2] [ref=e148]
+        - paragraph [ref=e149]: How should project state stay legible across long agent-assisted development sessions?
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - generic [ref=e152]: Latest evidence
+            - list [ref=e153]:
+              - listitem [ref=e154]: The chosen visibility direction is Evidence Notebook.
+              - listitem [ref=e155]:
+                - text: "Phase 1 markdown pages now exist:"
+                - link "current_state.md" [ref=e156] [cursor=pointer]:
+                  - /url: current_state.md
+                - text: ","
+                - link "milestones.md" [ref=e157] [cursor=pointer]:
+                  - /url: milestones.md
+                - text: ","
+                - link "active_threads.md" [ref=e158] [cursor=pointer]:
+                  - /url: active_threads.md
+                - text: ","
+                - link "decisions.md" [ref=e159] [cursor=pointer]:
+                  - /url: decisions.md
+                - text: ", and"
+                - link "artifact_registry.md" [ref=e160] [cursor=pointer]:
+                  - /url: artifact_registry.md
+                - text: .
+              - listitem [ref=e161]:
+                - text: Phase 2 session logging convention exists at
+                - link "run_logs/README.md" [ref=e162] [cursor=pointer]:
+                  - /url: run_logs/README.md
+                - text: ", with a template and optional JSON companion files."
+              - listitem [ref=e163]: The notebook archive now includes backfilled pre-visibility session logs for the initial scaffold, harness protocol, and retrieval iteration.
+              - listitem [ref=e164]:
+                - text: Phase 3 dashboard exists at
+                - link "evidence_notebook.html" [ref=e165] [cursor=pointer]:
+                  - /url: evidence_notebook.html
+                - text: ", generated by"
+                - link "src/epilepsy_agents/visibility.py" [ref=e166] [cursor=pointer]:
+                  - /url: ../src/epilepsy_agents/visibility.py
+                - text: .
+          - generic [ref=e167]:
+            - generic [ref=e168]: Risk
+            - paragraph [ref=e169]: The source markdown layer is still hand-maintained, the dashboard can drift unless future sessions regenerate it after state updates, and the historical backfill is only as good as the surviving repo evidence behind it.
+          - generic [ref=e170]:
+            - generic [ref=e171]: Next action
+            - paragraph [ref=e172]: Use the dashboard for quick review, keep new session logs contemporaneous, regenerate after substantial closeouts, and proceed to the first curated Phase 4 visual artifact.
+      - article [ref=e173]:
+        - generic [ref=e174]:
+          - paragraph [ref=e175]: Thread
+          - heading "Visual And Dissertation Artifacts" [level=2] [ref=e176]
+        - paragraph [ref=e177]: Which explanatory visuals should be produced first for README, dissertation, and supervisor review?
+        - generic [ref=e178]:
+          - generic [ref=e179]:
+            - generic [ref=e180]: Latest evidence
+            - list [ref=e181]:
+              - listitem [ref=e182]:
+                - text: The shared Clinical Blueprint + Evidence Highlighter visual language is defined in
+                - link "visual_artifacts_direction.md" [ref=e183] [cursor=pointer]:
+                  - /url: visual_artifacts_direction.md
+                - text: .
+              - listitem [ref=e184]: The first target set includes architecture, deployment, dataset/evaluation, agent roles, milestones, local model feasibility, evidence grounding, and final packaging.
+          - generic [ref=e185]:
+            - generic [ref=e186]: Risk
+            - paragraph [ref=e187]: Generated visuals can become decorative if not tied to evidence and current project state.
+          - generic [ref=e188]:
+            - generic [ref=e189]: Next action
+            - paragraph [ref=e190]: Create the Project Architecture Poster first, using only synthetic/anonymised-looking text and sparse labels.
+      - article [ref=e191]:
+        - generic [ref=e192]:
+          - paragraph [ref=e193]: Thread
+          - heading "Real-Data Governance" [level=2] [ref=e194]
+        - paragraph [ref=e195]: How should the project prepare for possible real King's College Hospital evaluation without leaking raw clinical content?
+        - generic [ref=e196]:
+          - generic [ref=e197]:
+            - generic [ref=e198]: Latest evidence
+            - list [ref=e199]:
+              - listitem [ref=e200]:
+                - text: Governance rules are documented in
+                - link "real_data_governance.md" [ref=e201] [cursor=pointer]:
+                  - /url: real_data_governance.md
+                - text: .
+              - listitem [ref=e202]: The research program explicitly prohibits autonomous loops on real clinical text and raw-text exports.
+          - generic [ref=e203]:
+            - generic [ref=e204]: Risk
+            - paragraph [ref=e205]: Any future real-data stage must happen inside the approved environment and may restrict providers, telemetry, examples, traces, screenshots, and artifacts.
+          - generic [ref=e206]:
+            - generic [ref=e207]: Next action
+            - paragraph [ref=e208]: Keep real-data support as an architecture constraint, not an active local-data workflow.

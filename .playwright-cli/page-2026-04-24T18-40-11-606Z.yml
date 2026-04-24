@@ -1,0 +1,112 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "EN" [ref=e4] [cursor=pointer]:
+      - /url: "#overview"
+    - navigation [ref=e5]:
+      - button "Overview" [ref=e6] [cursor=pointer]
+      - button "Claims" [ref=e7] [cursor=pointer]
+      - button "Timeline" [ref=e8] [cursor=pointer]
+      - button "Sessions" [ref=e9] [cursor=pointer]
+      - button "Workstreams" [ref=e10] [cursor=pointer]
+      - button "Artifacts" [ref=e11] [cursor=pointer]
+      - button "Decisions" [ref=e12] [cursor=pointer]
+    - paragraph [ref=e13]:
+      - text: Local archive
+      - text: 2026-04-24 18:27 UTC
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: Clinical evidence register
+        - heading "Evidence Notebook" [level=1] [ref=e18]
+        - paragraph [ref=e19]: "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
+        - generic [ref=e20]:
+          - generic [ref=e21]: Generated 2026-04-24 18:27 UTC
+          - generic [ref=e22]: Project Snapshot
+      - generic [ref=e23]:
+        - generic [ref=e24]: Search
+        - searchbox "Search" [ref=e25]
+    - generic [ref=e26]:
+      - link "Source current_state.md Updated 2026-04-24" [ref=e27] [cursor=pointer]:
+        - /url: current_state.md
+        - generic [ref=e28]: Source
+        - strong [ref=e29]: current_state.md
+        - generic [ref=e30]: Updated 2026-04-24
+      - link "Source milestones.md Updated 2026-04-24" [ref=e31] [cursor=pointer]:
+        - /url: milestones.md
+        - generic [ref=e32]: Source
+        - strong [ref=e33]: milestones.md
+        - generic [ref=e34]: Updated 2026-04-24
+      - link "Source active_threads.md Updated 2026-04-24" [ref=e35] [cursor=pointer]:
+        - /url: active_threads.md
+        - generic [ref=e36]: Source
+        - strong [ref=e37]: active_threads.md
+        - generic [ref=e38]: Updated 2026-04-24
+      - link "Source artifact_registry.md Updated 2026-04-24" [ref=e39] [cursor=pointer]:
+        - /url: artifact_registry.md
+        - generic [ref=e40]: Source
+        - strong [ref=e41]: artifact_registry.md
+        - generic [ref=e42]: Updated 2026-04-24
+      - link "Source decisions.md Updated 2026-04-24" [ref=e43] [cursor=pointer]:
+        - /url: decisions.md
+        - generic [ref=e44]: Source
+        - strong [ref=e45]: decisions.md
+        - generic [ref=e46]: Updated 2026-04-24
+    - generic [ref=e47]:
+      - button "5 Claims" [ref=e48] [cursor=pointer]:
+        - strong [ref=e49]: "5"
+        - generic [ref=e50]: Claims
+      - button "25 Milestones" [ref=e51] [cursor=pointer]:
+        - strong [ref=e52]: "25"
+        - generic [ref=e53]: Milestones
+      - button "6 Sessions" [ref=e54] [cursor=pointer]:
+        - strong [ref=e55]: "6"
+        - generic [ref=e56]: Sessions
+      - button "5 Threads" [ref=e57] [cursor=pointer]:
+        - strong [ref=e58]: "5"
+        - generic [ref=e59]: Threads
+      - button "31 Artifacts" [ref=e60] [cursor=pointer]:
+        - strong [ref=e61]: "31"
+        - generic [ref=e62]: Artifacts
+      - button "7 Decisions" [ref=e63] [cursor=pointer]:
+        - strong [ref=e64]: "7"
+        - generic [ref=e65]: Decisions
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - paragraph [ref=e69]: Run ledger
+        - heading "Recent Session Feed" [level=2] [ref=e70]
+      - group [ref=e71]:
+        - generic "2026-04-24 h003 Ollama Think-Disabled Smoke source log" [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]: 2026-04-24
+          - strong [ref=e74]: h003 Ollama Think-Disabled Smoke
+          - link "source log" [ref=e75]:
+            - /url: run_logs/20260424T180900Z_h003_ollama_think_disabled_smoke.md
+      - group [ref=e76]:
+        - generic "2026-04-24 h003 Local Ollama Smoke source log" [ref=e77] [cursor=pointer]:
+          - generic [ref=e78]: 2026-04-24
+          - strong [ref=e79]: h003 Local Ollama Smoke
+          - link "source log" [ref=e80]:
+            - /url: run_logs/20260424T171400Z_h003_local_ollama_smoke.md
+      - group [ref=e81]:
+        - generic "2026-04-24 Local Provider Smoke Path source log" [ref=e82] [cursor=pointer]:
+          - generic [ref=e83]: 2026-04-24
+          - strong [ref=e84]: Local Provider Smoke Path
+          - link "source log" [ref=e85]:
+            - /url: run_logs/20260424T160537Z_local_provider_smoke_path.md
+      - group [ref=e86]:
+        - generic "2026-04-24 Seizure-Free Detection Expansion source log" [ref=e87] [cursor=pointer]:
+          - generic [ref=e88]: 2026-04-24
+          - strong [ref=e89]: Seizure-Free Detection Expansion
+          - link "source log" [ref=e90]:
+            - /url: run_logs/20260424T144639Z_seizure_free_detection_expansion.md
+      - group [ref=e91]:
+        - generic "2026-04-24 Visibility Phase 3 Session source log" [ref=e92] [cursor=pointer]:
+          - generic [ref=e93]: 2026-04-24
+          - strong [ref=e94]: Visibility Phase 3 Session
+          - link "source log" [ref=e95]:
+            - /url: run_logs/20260424T093100Z_visibility_phase3.md
+      - group [ref=e96]:
+        - generic "2026-04-24 Visibility Phase 2 Session source log" [ref=e97] [cursor=pointer]:
+          - generic [ref=e98]: 2026-04-24
+          - strong [ref=e99]: Visibility Phase 2 Session
+          - link "source log" [ref=e100]:
+            - /url: run_logs/20260424T092054Z_visibility_phase2.md

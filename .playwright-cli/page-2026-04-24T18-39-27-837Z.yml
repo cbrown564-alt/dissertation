@@ -1,0 +1,147 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "EN" [ref=e4] [cursor=pointer]:
+      - /url: "#overview"
+    - navigation [ref=e5]:
+      - button "Overview" [ref=e6] [cursor=pointer]
+      - button "Claims" [ref=e7] [cursor=pointer]
+      - button "Timeline" [ref=e8] [cursor=pointer]
+      - button "Sessions" [ref=e9] [cursor=pointer]
+      - button "Workstreams" [ref=e10] [cursor=pointer]
+      - button "Artifacts" [ref=e11] [cursor=pointer]
+      - button "Decisions" [ref=e12] [cursor=pointer]
+    - paragraph [ref=e13]:
+      - text: Local archive
+      - text: 2026-04-24 18:27 UTC
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: Clinical evidence register
+        - heading "Evidence Notebook" [level=1] [ref=e18]
+        - paragraph [ref=e19]: "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
+        - generic [ref=e20]:
+          - generic [ref=e21]: Generated 2026-04-24 18:27 UTC
+          - generic [ref=e22]: Project Snapshot
+      - generic [ref=e23]:
+        - generic [ref=e24]: Search
+        - searchbox "Search" [ref=e25]
+    - generic [ref=e26]:
+      - link "Source current_state.md Updated 2026-04-24" [ref=e27] [cursor=pointer]:
+        - /url: current_state.md
+        - generic [ref=e28]: Source
+        - strong [ref=e29]: current_state.md
+        - generic [ref=e30]: Updated 2026-04-24
+      - link "Source milestones.md Updated 2026-04-24" [ref=e31] [cursor=pointer]:
+        - /url: milestones.md
+        - generic [ref=e32]: Source
+        - strong [ref=e33]: milestones.md
+        - generic [ref=e34]: Updated 2026-04-24
+      - link "Source active_threads.md Updated 2026-04-24" [ref=e35] [cursor=pointer]:
+        - /url: active_threads.md
+        - generic [ref=e36]: Source
+        - strong [ref=e37]: active_threads.md
+        - generic [ref=e38]: Updated 2026-04-24
+      - link "Source artifact_registry.md Updated 2026-04-24" [ref=e39] [cursor=pointer]:
+        - /url: artifact_registry.md
+        - generic [ref=e40]: Source
+        - strong [ref=e41]: artifact_registry.md
+        - generic [ref=e42]: Updated 2026-04-24
+      - link "Source decisions.md Updated 2026-04-24" [ref=e43] [cursor=pointer]:
+        - /url: decisions.md
+        - generic [ref=e44]: Source
+        - strong [ref=e45]: decisions.md
+        - generic [ref=e46]: Updated 2026-04-24
+    - generic [ref=e47]:
+      - button "5 Claims" [ref=e48] [cursor=pointer]:
+        - strong [ref=e49]: "5"
+        - generic [ref=e50]: Claims
+      - button "25 Milestones" [ref=e51] [cursor=pointer]:
+        - strong [ref=e52]: "25"
+        - generic [ref=e53]: Milestones
+      - button "6 Sessions" [ref=e54] [cursor=pointer]:
+        - strong [ref=e55]: "6"
+        - generic [ref=e56]: Sessions
+      - button "5 Threads" [ref=e57] [cursor=pointer]:
+        - strong [ref=e58]: "5"
+        - generic [ref=e59]: Threads
+      - button "31 Artifacts" [ref=e60] [cursor=pointer]:
+        - strong [ref=e61]: "31"
+        - generic [ref=e62]: Artifacts
+      - button "7 Decisions" [ref=e63] [cursor=pointer]:
+        - strong [ref=e64]: "7"
+        - generic [ref=e65]: Decisions
+    - generic [ref=e67]:
+      - complementary [ref=e68]:
+        - button "01 Project Snapshot" [ref=e69] [cursor=pointer]:
+          - generic [ref=e70]: "01"
+          - text: Project Snapshot
+        - button "02 Visibility Claim" [ref=e71] [cursor=pointer]:
+          - generic [ref=e72]: "02"
+          - text: Visibility Claim
+        - button "03 Latest Evaluation Claim" [ref=e73] [cursor=pointer]:
+          - generic [ref=e74]: "03"
+          - text: Latest Evaluation Claim
+        - button "04 Data And Governance Claim" [ref=e75] [cursor=pointer]:
+          - generic [ref=e76]: "04"
+          - text: Data And Governance Claim
+        - button "05 Implementation Claim" [ref=e77] [cursor=pointer]:
+          - generic [ref=e78]: "05"
+          - text: Implementation Claim
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - paragraph [ref=e81]: Claim record
+          - heading "Project Snapshot" [level=2] [ref=e82]
+        - paragraph [ref=e83]: "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - generic [ref=e86]: Evidence
+            - list [ref=e87]:
+              - listitem [ref=e88]:
+                - text: Project question and objectives are defined in
+                - link "project_specification.md" [ref=e89] [cursor=pointer]:
+                  - /url: project_specification.md
+                - text: .
+              - listitem [ref=e90]:
+                - text: The operating research posture is defined in
+                - link "research_program.md" [ref=e91] [cursor=pointer]:
+                  - /url: research_program.md
+                - text: .
+              - listitem [ref=e92]:
+                - text: Deterministic
+                - code [ref=e93]: single
+                - text: and
+                - code [ref=e94]: multi
+                - text: harnesses are registered in
+                - link "project_state/harnesses/README.md" [ref=e95] [cursor=pointer]:
+                  - /url: ../project_state/harnesses/README.md
+                - text: .
+              - listitem [ref=e96]:
+                - text: A first 25-row LLM-backed smoke run now exists at
+                - link "20260424T180629Z_h003_single_prompt_llm_n25.json" [ref=e97] [cursor=pointer]:
+                  - /url: ../project_state/runs/20260424T180629Z_h003_single_prompt_llm_n25.json
+                - text: .
+              - listitem [ref=e98]:
+                - text: The Evidence Notebook direction for project visibility is selected in
+                - link "agent_visibility_plan.md" [ref=e99] [cursor=pointer]:
+                  - /url: agent_visibility_plan.md
+                - text: .
+              - listitem [ref=e100]:
+                - text: Phase 1 project-state pages and the Phase 2 session logging convention now exist under
+                - code [ref=e101]: docs/
+                - text: and
+                - code [ref=e102]: docs/run_logs/
+                - text: .
+          - generic [ref=e103]:
+            - generic [ref=e104]: Uncertainty
+            - paragraph [ref=e105]:
+              - text: The current LLM path is only at smoke-test maturity. Ollama/Qwen now returns fast structured or schema-near outputs, but
+              - code [ref=e106]: h003
+              - text: still over-abstains on many rows and remains below the deterministic baselines.
+          - generic [ref=e107]:
+            - generic [ref=e108]: Next action
+            - paragraph [ref=e109]:
+              - text: "Keep iteration narrow: reduce"
+              - code [ref=e110]: h003
+              - text: over-abstention on cluster, seizure-free, and windowed frequency cases before starting
+              - code [ref=e111]: h004
+              - text: .

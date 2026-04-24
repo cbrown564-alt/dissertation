@@ -1,0 +1,255 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "EN" [ref=e4] [cursor=pointer]:
+      - /url: "#overview"
+    - navigation [ref=e5]:
+      - button "Overview" [ref=e6] [cursor=pointer]
+      - button "Claims" [ref=e7] [cursor=pointer]
+      - button "Timeline" [ref=e8] [cursor=pointer]
+      - button "Sessions" [ref=e9] [cursor=pointer]
+      - button "Workstreams" [ref=e10] [cursor=pointer]
+      - button "Artifacts" [ref=e11] [cursor=pointer]
+      - button "Decisions" [ref=e12] [cursor=pointer]
+    - paragraph [ref=e13]:
+      - text: Local archive
+      - text: 2026-04-24 18:27 UTC
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: Clinical evidence register
+        - heading "Evidence Notebook" [level=1] [ref=e18]
+        - paragraph [ref=e19]: "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
+        - generic [ref=e20]:
+          - generic [ref=e21]: Generated 2026-04-24 18:27 UTC
+          - generic [ref=e22]: Project Snapshot
+      - generic [ref=e23]:
+        - generic [ref=e24]: Search
+        - searchbox "Search" [ref=e25]
+    - generic [ref=e26]:
+      - link "Source current_state.md Updated 2026-04-24" [ref=e27] [cursor=pointer]:
+        - /url: current_state.md
+        - generic [ref=e28]: Source
+        - strong [ref=e29]: current_state.md
+        - generic [ref=e30]: Updated 2026-04-24
+      - link "Source milestones.md Updated 2026-04-24" [ref=e31] [cursor=pointer]:
+        - /url: milestones.md
+        - generic [ref=e32]: Source
+        - strong [ref=e33]: milestones.md
+        - generic [ref=e34]: Updated 2026-04-24
+      - link "Source active_threads.md Updated 2026-04-24" [ref=e35] [cursor=pointer]:
+        - /url: active_threads.md
+        - generic [ref=e36]: Source
+        - strong [ref=e37]: active_threads.md
+        - generic [ref=e38]: Updated 2026-04-24
+      - link "Source artifact_registry.md Updated 2026-04-24" [ref=e39] [cursor=pointer]:
+        - /url: artifact_registry.md
+        - generic [ref=e40]: Source
+        - strong [ref=e41]: artifact_registry.md
+        - generic [ref=e42]: Updated 2026-04-24
+      - link "Source decisions.md Updated 2026-04-24" [ref=e43] [cursor=pointer]:
+        - /url: decisions.md
+        - generic [ref=e44]: Source
+        - strong [ref=e45]: decisions.md
+        - generic [ref=e46]: Updated 2026-04-24
+    - generic [ref=e47]:
+      - button "5 Claims" [ref=e48] [cursor=pointer]:
+        - strong [ref=e49]: "5"
+        - generic [ref=e50]: Claims
+      - button "25 Milestones" [ref=e51] [cursor=pointer]:
+        - strong [ref=e52]: "25"
+        - generic [ref=e53]: Milestones
+      - button "6 Sessions" [ref=e54] [cursor=pointer]:
+        - strong [ref=e55]: "6"
+        - generic [ref=e56]: Sessions
+      - button "5 Threads" [ref=e57] [cursor=pointer]:
+        - strong [ref=e58]: "5"
+        - generic [ref=e59]: Threads
+      - button "31 Artifacts" [ref=e60] [cursor=pointer]:
+        - strong [ref=e61]: "31"
+        - generic [ref=e62]: Artifacts
+      - button "7 Decisions" [ref=e63] [cursor=pointer]:
+        - strong [ref=e64]: "7"
+        - generic [ref=e65]: Decisions
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - paragraph [ref=e69]: Artifact shelf
+        - heading "Outputs And Planned Visuals" [level=2] [ref=e70]
+      - generic [ref=e71]:
+        - generic [ref=e72]:
+          - heading "Active evidence" [level=3] [ref=e73]
+          - generic [ref=e74]:
+            - article [ref=e75]:
+              - generic [ref=e76]: Active
+              - strong [ref=e77]: Run manifest
+              - link "manifest.csv" [ref=e79] [cursor=pointer]:
+                - /url: ../project_state/experiments/manifest.csv
+            - article [ref=e80]:
+              - generic [ref=e81]: Active
+              - strong [ref=e82]: Run records
+              - link "project_state/runs" [ref=e84] [cursor=pointer]:
+                - /url: ../project_state/runs
+            - article [ref=e85]:
+              - generic [ref=e86]: Active
+              - strong [ref=e87]: Harness registry
+              - link "project_state/harnesses/README.md" [ref=e89] [cursor=pointer]:
+                - /url: ../project_state/harnesses/README.md
+            - article [ref=e90]:
+              - generic [ref=e91]: Active
+              - strong [ref=e92]: Evidence Notebook project-state pages
+              - generic [ref=e93]:
+                - link "current_state.md" [ref=e94] [cursor=pointer]:
+                  - /url: current_state.md
+                - text: ","
+                - link "milestones.md" [ref=e95] [cursor=pointer]:
+                  - /url: milestones.md
+                - text: ","
+                - link "active_threads.md" [ref=e96] [cursor=pointer]:
+                  - /url: active_threads.md
+                - text: ","
+                - link "decisions.md" [ref=e97] [cursor=pointer]:
+                  - /url: decisions.md
+                - text: ","
+                - link "artifact_registry.md" [ref=e98] [cursor=pointer]:
+                  - /url: artifact_registry.md
+            - article [ref=e99]:
+              - generic [ref=e100]: Active
+              - strong [ref=e101]: Evidence Notebook dashboard
+              - link "evidence_notebook.html" [ref=e103] [cursor=pointer]:
+                - /url: evidence_notebook.html
+            - article [ref=e104]:
+              - generic [ref=e105]: Active
+              - strong [ref=e106]: Evidence Notebook generator
+              - link "src/epilepsy_agents/visibility.py" [ref=e108] [cursor=pointer]:
+                - /url: ../src/epilepsy_agents/visibility.py
+        - generic [ref=e109]:
+          - heading "Source documents" [level=3] [ref=e110]
+          - generic [ref=e111]:
+            - article [ref=e112]:
+              - generic [ref=e113]: Current
+              - strong [ref=e114]: Project specification
+              - link "project_specification.md" [ref=e116] [cursor=pointer]:
+                - /url: project_specification.md
+            - article [ref=e117]:
+              - generic [ref=e118]: Current
+              - strong [ref=e119]: Research program
+              - link "research_program.md" [ref=e121] [cursor=pointer]:
+                - /url: research_program.md
+            - article [ref=e122]:
+              - generic [ref=e123]: Current
+              - strong [ref=e124]: Evaluation protocol
+              - link "evaluation_protocol.md" [ref=e126] [cursor=pointer]:
+                - /url: evaluation_protocol.md
+            - article [ref=e127]:
+              - generic [ref=e128]: Current
+              - strong [ref=e129]: Harness experiment protocol
+              - link "harness_experiment_protocol.md" [ref=e131] [cursor=pointer]:
+                - /url: harness_experiment_protocol.md
+            - article [ref=e132]:
+              - generic [ref=e133]: Current
+              - strong [ref=e134]: Local model feasibility report
+              - link "local_model_feasibility.md" [ref=e136] [cursor=pointer]:
+                - /url: local_model_feasibility.md
+            - article [ref=e137]:
+              - generic [ref=e138]: Current
+              - strong [ref=e139]: Real-data governance note
+              - link "real_data_governance.md" [ref=e141] [cursor=pointer]:
+                - /url: real_data_governance.md
+            - article [ref=e142]:
+              - generic [ref=e143]: Current
+              - strong [ref=e144]: Visual artifacts direction
+              - link "visual_artifacts_direction.md" [ref=e146] [cursor=pointer]:
+                - /url: visual_artifacts_direction.md
+            - article [ref=e147]:
+              - generic [ref=e148]: Current
+              - strong [ref=e149]: Agent visibility plan
+              - link "agent_visibility_plan.md" [ref=e151] [cursor=pointer]:
+                - /url: agent_visibility_plan.md
+        - generic [ref=e152]:
+          - heading "Session logs" [level=3] [ref=e153]
+          - generic [ref=e154]:
+            - article [ref=e155]:
+              - generic [ref=e156]: Active
+              - strong [ref=e157]: Session logging convention
+              - link "run_logs/README.md" [ref=e159] [cursor=pointer]:
+                - /url: run_logs/README.md
+            - article [ref=e160]:
+              - generic [ref=e161]: Active
+              - strong [ref=e162]: Session-log template
+              - link "run_logs/session_log_template.md" [ref=e164] [cursor=pointer]:
+                - /url: run_logs/session_log_template.md
+            - article [ref=e165]:
+              - generic [ref=e166]: Active
+              - strong [ref=e167]: Session-log companion schema
+              - link "session_log_companion_schema.json" [ref=e169] [cursor=pointer]:
+                - /url: run_logs/session_log_companion_schema.json
+            - article [ref=e170]:
+              - generic [ref=e171]: Active
+              - strong [ref=e172]: Session-log companion template
+              - link "session_log_companion_template.json" [ref=e174] [cursor=pointer]:
+                - /url: run_logs/session_log_companion_template.json
+            - article [ref=e175]:
+              - generic [ref=e176]: Current
+              - strong [ref=e177]: Initial scaffold session log
+              - link "20260424T075111Z_initial_scaffold.md" [ref=e179] [cursor=pointer]:
+                - /url: run_logs/20260424T075111Z_initial_scaffold.md
+            - article [ref=e180]:
+              - generic [ref=e181]: Current
+              - strong [ref=e182]: Harness protocol and smoke runs session log
+              - link "20260424T084000Z_harness_protocol_and_smoke_runs.md" [ref=e184] [cursor=pointer]:
+                - /url: run_logs/20260424T084000Z_harness_protocol_and_smoke_runs.md
+            - article [ref=e185]:
+              - generic [ref=e186]: Current
+              - strong [ref=e187]: Candidate retrieval iteration session log
+              - link "20260424T085900Z_candidate_retrieval_iteration.md" [ref=e189] [cursor=pointer]:
+                - /url: run_logs/20260424T085900Z_candidate_retrieval_iteration.md
+            - article [ref=e190]:
+              - generic [ref=e191]: Current
+              - strong [ref=e192]: Visibility Phase 1 session log
+              - link "20260424T090341Z_visibility_phase1.md" [ref=e194] [cursor=pointer]:
+                - /url: run_logs/20260424T090341Z_visibility_phase1.md
+            - article [ref=e195]:
+              - generic [ref=e196]: Current
+              - strong [ref=e197]: Visibility Phase 2 session log
+              - link "20260424T092054Z_visibility_phase2.md" [ref=e199] [cursor=pointer]:
+                - /url: run_logs/20260424T092054Z_visibility_phase2.md
+            - article [ref=e200]:
+              - generic [ref=e201]: Current
+              - strong [ref=e202]: Visibility Phase 3 session log
+              - link "20260424T093100Z_visibility_phase3.md" [ref=e204] [cursor=pointer]:
+                - /url: run_logs/20260424T093100Z_visibility_phase3.md
+            - article [ref=e205]:
+              - generic [ref=e206]: Current
+              - strong [ref=e207]: Seizure-free detection expansion session log
+              - link "20260424T144639Z_seizure_free_detection_expansion.md" [ref=e209] [cursor=pointer]:
+                - /url: run_logs/20260424T144639Z_seizure_free_detection_expansion.md
+            - article [ref=e210]:
+              - generic [ref=e211]: Current
+              - strong [ref=e212]: h003 Ollama think-disabled smoke session log
+              - link "20260424T180900Z_h003_ollama_think_disabled_smoke.md" [ref=e214] [cursor=pointer]:
+                - /url: run_logs/20260424T180900Z_h003_ollama_think_disabled_smoke.md
+        - generic [ref=e215]:
+          - heading "Planned visuals" [level=3] [ref=e216]
+          - generic [ref=e217]:
+            - article [ref=e218]:
+              - generic [ref=e219]: Planned
+              - strong [ref=e220]: Project Architecture Poster
+              - generic [ref=e221]: To be generated.
+            - article [ref=e222]:
+              - generic [ref=e223]: Planned
+              - strong [ref=e224]: Milestone Timeline
+              - generic [ref=e225]: To be generated.
+            - article [ref=e226]:
+              - generic [ref=e227]: Planned
+              - strong [ref=e228]: Local-First Hospital Deployment Diagram
+              - generic [ref=e229]: To be generated.
+            - article [ref=e230]:
+              - generic [ref=e231]: Planned
+              - strong [ref=e232]: Dataset and Evaluation Overview
+              - generic [ref=e233]: To be generated.
+        - generic [ref=e234]:
+          - heading "Reference" [level=3] [ref=e235]
+          - article [ref=e237]:
+            - generic [ref=e238]: Reference
+            - strong [ref=e239]: Agent visibility UI mockups
+            - link "agent_visibility_ui_mockups.html" [ref=e241] [cursor=pointer]:
+              - /url: agent_visibility_ui_mockups.html

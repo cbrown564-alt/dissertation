@@ -1,0 +1,496 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "EN" [ref=e4] [cursor=pointer]:
+      - /url: "#overview"
+    - navigation [ref=e5]:
+      - button "Overview" [ref=e6] [cursor=pointer]
+      - button "Claims" [ref=e7] [cursor=pointer]
+      - button "Timeline" [ref=e8] [cursor=pointer]
+      - button "Sessions" [ref=e9] [cursor=pointer]
+      - button "Workstreams" [ref=e10] [cursor=pointer]
+      - button "Artifacts" [ref=e11] [cursor=pointer]
+      - button "Decisions" [ref=e12] [cursor=pointer]
+    - paragraph [ref=e13]:
+      - text: Local archive
+      - text: 2026-04-24 18:27 UTC
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: Clinical evidence register
+        - heading "Evidence Notebook" [level=1] [ref=e18]
+        - paragraph [ref=e19]: "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
+        - generic [ref=e20]:
+          - generic [ref=e21]: Generated 2026-04-24 18:27 UTC
+          - generic [ref=e22]: Project Snapshot
+      - generic [ref=e23]:
+        - generic [ref=e24]: Search
+        - searchbox "Search" [ref=e25]
+    - generic [ref=e26]:
+      - link "Source current_state.md Updated 2026-04-24" [ref=e27] [cursor=pointer]:
+        - /url: current_state.md
+        - generic [ref=e28]: Source
+        - strong [ref=e29]: current_state.md
+        - generic [ref=e30]: Updated 2026-04-24
+      - link "Source milestones.md Updated 2026-04-24" [ref=e31] [cursor=pointer]:
+        - /url: milestones.md
+        - generic [ref=e32]: Source
+        - strong [ref=e33]: milestones.md
+        - generic [ref=e34]: Updated 2026-04-24
+      - link "Source active_threads.md Updated 2026-04-24" [ref=e35] [cursor=pointer]:
+        - /url: active_threads.md
+        - generic [ref=e36]: Source
+        - strong [ref=e37]: active_threads.md
+        - generic [ref=e38]: Updated 2026-04-24
+      - link "Source artifact_registry.md Updated 2026-04-24" [ref=e39] [cursor=pointer]:
+        - /url: artifact_registry.md
+        - generic [ref=e40]: Source
+        - strong [ref=e41]: artifact_registry.md
+        - generic [ref=e42]: Updated 2026-04-24
+      - link "Source decisions.md Updated 2026-04-24" [ref=e43] [cursor=pointer]:
+        - /url: decisions.md
+        - generic [ref=e44]: Source
+        - strong [ref=e45]: decisions.md
+        - generic [ref=e46]: Updated 2026-04-24
+    - generic [ref=e47]:
+      - button "5 Claims" [ref=e48] [cursor=pointer]:
+        - strong [ref=e49]: "5"
+        - generic [ref=e50]: Claims
+      - button "25 Milestones" [ref=e51] [cursor=pointer]:
+        - strong [ref=e52]: "25"
+        - generic [ref=e53]: Milestones
+      - button "6 Sessions" [ref=e54] [cursor=pointer]:
+        - strong [ref=e55]: "6"
+        - generic [ref=e56]: Sessions
+      - button "5 Threads" [ref=e57] [cursor=pointer]:
+        - strong [ref=e58]: "5"
+        - generic [ref=e59]: Threads
+      - button "31 Artifacts" [ref=e60] [cursor=pointer]:
+        - strong [ref=e61]: "31"
+        - generic [ref=e62]: Artifacts
+      - button "7 Decisions" [ref=e63] [cursor=pointer]:
+        - strong [ref=e64]: "7"
+        - generic [ref=e65]: Decisions
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - paragraph [ref=e69]: Milestone spine
+        - heading "Timeline" [level=2] [ref=e70]
+      - generic [ref=e71]:
+        - generic [ref=e72]:
+          - generic [ref=e73]:
+            - paragraph [ref=e74]: Progress map
+            - strong [ref=e75]: 13/25
+            - generic [ref=e76]: milestones complete
+          - paragraph [ref=e79]:
+            - generic [ref=e80]: Next visible move
+            - text: M-A2 h003 single-prompt LLM smoke
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - paragraph [ref=e83]: Key sequence
+            - heading "Major events" [level=3] [ref=e84]
+          - list [ref=e85]:
+            - listitem [ref=e86]:
+              - generic [ref=e87]: "01"
+              - strong [ref=e88]: Source materials and project frame
+              - generic [ref=e89]: Complete
+            - listitem [ref=e90]:
+              - generic [ref=e91]: "02"
+              - strong [ref=e92]: Synthetic subset loaded
+              - generic [ref=e93]: Complete
+            - listitem [ref=e94]:
+              - generic [ref=e95]: "03"
+              - strong [ref=e96]: Evaluation harness
+              - generic [ref=e97]: Complete
+            - listitem [ref=e98]:
+              - generic [ref=e99]: "04"
+              - strong [ref=e100]: Initial paired smoke evaluations
+              - generic [ref=e101]: Complete
+            - listitem [ref=e102]:
+              - generic [ref=e103]: "05"
+              - strong [ref=e104]: Local model feasibility
+              - generic [ref=e105]: Complete
+            - listitem [ref=e106]:
+              - generic [ref=e107]: "06"
+              - strong [ref=e108]: "Visibility Phase 3: local dashboard"
+              - generic [ref=e109]: Complete
+            - listitem [ref=e110]:
+              - generic [ref=e111]: "07"
+              - strong [ref=e112]: M-E2 Curated visual artifacts
+              - generic [ref=e113]: Planned
+      - list [ref=e114]:
+        - listitem [ref=e115]:
+          - generic [ref=e116]: Complete
+          - generic [ref=e117]:
+            - heading "Source materials and project frame" [level=3] [ref=e118]
+            - paragraph [ref=e119]: Dissertation question, objectives, data plan, methods, metrics, and risks are defined.
+            - generic [ref=e120]:
+              - link "project_specification.md" [ref=e121] [cursor=pointer]:
+                - /url: project_specification.md
+              - text: ","
+              - link "literature_review_map.md" [ref=e122] [cursor=pointer]:
+                - /url: literature_review_map.md
+              - text: ","
+              - link "dissertation_scaffold.md" [ref=e123] [cursor=pointer]:
+                - /url: dissertation_scaffold.md
+            - emphasis [ref=e124]: Keep the research question stable while harnesses mature.
+        - listitem [ref=e125]:
+          - generic [ref=e126]: Complete
+          - generic [ref=e127]:
+            - heading "Repository scaffold" [level=3] [ref=e128]
+            - paragraph [ref=e129]: Python package, deterministic agents, CLI, metrics, label parser, tests, and initial docs exist.
+            - generic [ref=e130]:
+              - link "development_log.md" [ref=e131] [cursor=pointer]:
+                - /url: development_log.md
+              - text: ","
+              - link "pyproject.toml" [ref=e132] [cursor=pointer]:
+                - /url: ../pyproject.toml
+              - text: ","
+              - link "tests" [ref=e133] [cursor=pointer]:
+                - /url: ../tests
+            - emphasis [ref=e134]: Preserve deterministic comparability while adding providers.
+        - listitem [ref=e135]:
+          - generic [ref=e136]: Complete
+          - generic [ref=e137]:
+            - heading "Synthetic subset loaded" [level=3] [ref=e138]
+            - paragraph [ref=e139]:
+              - text: The 1,500-row synthetic subset is available for local evaluation, with
+              - code [ref=e140]: row_ok
+              - text: filtering used by default.
+            - generic [ref=e141]:
+              - link "project_specification.md" [ref=e142] [cursor=pointer]:
+                - /url: project_specification.md
+              - text: ","
+              - link "synthetic_data_subset_1500.json" [ref=e143] [cursor=pointer]:
+                - /url: ../synthetic_data_subset_1500.json
+            - emphasis [ref=e144]: Keep data ingestion compatible with a future full-dataset drop-in.
+        - listitem [ref=e145]:
+          - generic [ref=e146]: Complete
+          - generic [ref=e147]:
+            - heading "Evaluation harness" [level=3] [ref=e148]
+            - paragraph [ref=e149]: Metrics cover exact labels, monthly-rate tolerance, pragmatic classes, and purist classes.
+            - generic [ref=e150]:
+              - link "evaluation_protocol.md" [ref=e151] [cursor=pointer]:
+                - /url: evaluation_protocol.md
+              - text: ","
+              - link "src/epilepsy_agents/metrics.py" [ref=e152] [cursor=pointer]:
+                - /url: ../src/epilepsy_agents/metrics.py
+            - emphasis [ref=e153]: Add provider-backed output validation and evidence-support checks (see M-A2, M-B1).
+        - listitem [ref=e154]:
+          - generic [ref=e155]: Complete
+          - generic [ref=e156]:
+            - heading "Harness experiment protocol" [level=3] [ref=e157]
+            - paragraph [ref=e158]:
+              - text: Runs are recorded under
+              - code [ref=e159]: project_state/runs/
+              - text: and indexed in a manifest.
+            - generic [ref=e160]:
+              - link "harness_experiment_protocol.md" [ref=e161] [cursor=pointer]:
+                - /url: harness_experiment_protocol.md
+              - text: ","
+              - link "project_state/experiments/manifest.csv" [ref=e162] [cursor=pointer]:
+                - /url: ../project_state/experiments/manifest.csv
+            - emphasis [ref=e163]: Continue fixed-budget paired comparisons.
+        - listitem [ref=e164]:
+          - generic [ref=e165]: Complete
+          - generic [ref=e166]:
+            - heading "Initial paired smoke evaluations" [level=3] [ref=e167]
+            - paragraph [ref=e168]:
+              - code [ref=e169]: single
+              - text: and
+              - code [ref=e170]: multi
+              - text: deterministic baselines have 20-row and 100-row paired synthetic records.
+            - generic [ref=e171]:
+              - link "20260424T144559Z_h002_multi_agent_verify_n100.json" [ref=e172] [cursor=pointer]:
+                - /url: ../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json
+              - text: ","
+              - link "20260424T144606Z_h001_single_pass_n100.json" [ref=e173] [cursor=pointer]:
+                - /url: ../project_state/runs/20260424T144606Z_h001_single_pass_n100.json
+            - emphasis [ref=e174]:
+              - text: Freeze deterministic tuning (see
+              - link "D007" [ref=e175] [cursor=pointer]:
+                - /url: decisions.md
+              - text: ) and move to Phase A.
+        - listitem [ref=e176]:
+          - generic [ref=e177]: Complete
+          - generic [ref=e178]:
+            - heading "Seizure-free detection expansion" [level=3] [ref=e179]
+            - paragraph [ref=e180]: Deterministic extractor now covers numeric, qualitative, unit-only, and "since"/present-tense seizure-free phrasings; multi exact 0.20->0.31 and NS F1 0.26->0.82 on the paired 100-row smoke.
+            - generic [ref=e181]:
+              - link "src/epilepsy_agents/agents.py" [ref=e182] [cursor=pointer]:
+                - /url: ../src/epilepsy_agents/agents.py
+              - text: ","
+              - link "tests/test_agents.py" [ref=e183] [cursor=pointer]:
+                - /url: ../tests/test_agents.py
+              - text: ","
+              - link "20260424T144559Z_h002_multi_agent_verify_n100.json" [ref=e184] [cursor=pointer]:
+                - /url: ../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json
+              - text: ","
+              - link "20260424T144606Z_h001_single_pass_n100.json" [ref=e185] [cursor=pointer]:
+                - /url: ../project_state/runs/20260424T144606Z_h001_single_pass_n100.json
+              - text: ","
+              - link "20260424T144639Z_seizure_free_detection_expansion.md" [ref=e186] [cursor=pointer]:
+                - /url: run_logs/20260424T144639Z_seizure_free_detection_expansion.md
+            - emphasis [ref=e187]:
+              - text: Do not pursue further deterministic regex expansion (see
+              - link "D007" [ref=e188] [cursor=pointer]:
+                - /url: decisions.md
+              - text: ).
+        - listitem [ref=e189]:
+          - generic [ref=e190]: Complete
+          - generic [ref=e191]:
+            - heading "Local model feasibility" [level=3] [ref=e192]
+            - paragraph [ref=e193]: Hardware, runtime options, candidate model tiers, and provider requirements are documented.
+            - link "local_model_feasibility.md" [ref=e195] [cursor=pointer]:
+              - /url: local_model_feasibility.md
+            - emphasis [ref=e196]: Use the live Ollama path to mature M-A2.
+        - listitem [ref=e197]:
+          - generic [ref=e198]: Complete
+          - generic [ref=e199]:
+            - 'heading "Visibility Phase 1: project-state layer" [level=3] [ref=e200]'
+            - paragraph [ref=e201]: Canonical Evidence Notebook pages exist for current state, milestones, active threads, decisions, and artifacts.
+            - generic [ref=e202]:
+              - link "agent_visibility_plan.md" [ref=e203] [cursor=pointer]:
+                - /url: agent_visibility_plan.md
+              - text: ","
+              - link "current_state.md" [ref=e204] [cursor=pointer]:
+                - /url: current_state.md
+              - text: ","
+              - link "active_threads.md" [ref=e205] [cursor=pointer]:
+                - /url: active_threads.md
+              - text: ","
+              - link "decisions.md" [ref=e206] [cursor=pointer]:
+                - /url: decisions.md
+              - text: ","
+              - link "artifact_registry.md" [ref=e207] [cursor=pointer]:
+                - /url: artifact_registry.md
+            - emphasis [ref=e208]: Update at the end of substantial sessions.
+        - listitem [ref=e209]:
+          - generic [ref=e210]: Complete
+          - generic [ref=e211]:
+            - 'heading "Visibility Phase 2: session logging" [level=3] [ref=e212]'
+            - paragraph [ref=e213]: Session logging has naming rules, required sections, status labels, evidence rules, privacy rules, a template, optional JSON companion files, and a first historical backfill.
+            - generic [ref=e214]:
+              - link "run_logs/README.md" [ref=e215] [cursor=pointer]:
+                - /url: run_logs/README.md
+              - text: ","
+              - link "session_log_template.md" [ref=e216] [cursor=pointer]:
+                - /url: run_logs/session_log_template.md
+              - text: ","
+              - link "session_log_companion_schema.json" [ref=e217] [cursor=pointer]:
+                - /url: run_logs/session_log_companion_schema.json
+            - emphasis [ref=e218]: Use the convention prospectively.
+        - listitem [ref=e219]:
+          - generic [ref=e220]: Complete
+          - generic [ref=e221]:
+            - 'heading "Visibility Phase 3: local dashboard" [level=3] [ref=e222]'
+            - paragraph [ref=e223]: A generated static Evidence Notebook dashboard renders current claims, milestones, recent sessions, active threads, artifacts, and decisions.
+            - generic [ref=e224]:
+              - link "evidence_notebook.html" [ref=e225] [cursor=pointer]:
+                - /url: evidence_notebook.html
+              - text: ","
+              - link "src/epilepsy_agents/visibility.py" [ref=e226] [cursor=pointer]:
+                - /url: ../src/epilepsy_agents/visibility.py
+              - text: ","
+              - link "tests/test_visibility.py" [ref=e227] [cursor=pointer]:
+                - /url: ../tests/test_visibility.py
+            - emphasis [ref=e228]:
+              - text: Regenerate with
+              - code [ref=e229]: epilepsy-agents notebook
+              - text: after substantial state updates.
+        - listitem [ref=e230]:
+          - generic [ref=e231]: Complete
+          - generic [ref=e232]:
+            - heading "Historical notebook backfill" [level=3] [ref=e233]
+            - paragraph [ref=e234]: Reconstructed records exist for the initial scaffold, harness protocol and first paired smoke runs, and the candidate retrieval iteration.
+            - generic [ref=e235]:
+              - link "20260424T075111Z_initial_scaffold.md" [ref=e236] [cursor=pointer]:
+                - /url: run_logs/20260424T075111Z_initial_scaffold.md
+              - text: ","
+              - link "20260424T084000Z_harness_protocol_and_smoke_runs.md" [ref=e237] [cursor=pointer]:
+                - /url: run_logs/20260424T084000Z_harness_protocol_and_smoke_runs.md
+              - text: ","
+              - link "20260424T085900Z_candidate_retrieval_iteration.md" [ref=e238] [cursor=pointer]:
+                - /url: run_logs/20260424T085900Z_candidate_retrieval_iteration.md
+            - emphasis [ref=e239]: Keep future session logs contemporaneous.
+        - listitem [ref=e240]:
+          - generic [ref=e241]: Complete
+          - generic [ref=e242]:
+            - heading "M-A1 Local runtime live" [level=3] [ref=e243]
+            - paragraph [ref=e244]:
+              - text: A local Ollama server is running and responds through
+              - code [ref=e245]: src/epilepsy_agents/providers.py
+              - text: ;
+              - code [ref=e246]: provider-smoke
+              - text: succeeds end to end against
+              - code [ref=e247]: qwen3.5:4b
+              - text: .
+            - generic [ref=e248]:
+              - link "local_model_feasibility.md" [ref=e249] [cursor=pointer]:
+                - /url: local_model_feasibility.md
+              - text: ","
+              - link "src/epilepsy_agents/providers.py" [ref=e250] [cursor=pointer]:
+                - /url: ../src/epilepsy_agents/providers.py
+              - text: ","
+              - link "src/epilepsy_agents/cli.py" [ref=e251] [cursor=pointer]:
+                - /url: ../src/epilepsy_agents/cli.py
+              - text: ","
+              - link "20260424T160537Z_local_provider_smoke_path.md" [ref=e252] [cursor=pointer]:
+                - /url: run_logs/20260424T160537Z_local_provider_smoke_path.md
+            - emphasis [ref=e253]: Use the live Ollama path as the default Phase A runtime and focus on h003 output quality.
+        - listitem [ref=e254]:
+          - generic [ref=e255]: In progress
+          - generic [ref=e256]:
+            - heading "M-A2 h003 single-prompt LLM smoke" [level=3] [ref=e257]
+            - paragraph [ref=e258]:
+              - code [ref=e259]: h003_single_prompt_llm
+              - text: now exists and has produced a first local run record with JSON-schema validation, retries, latency, and token metadata.
+            - generic [ref=e260]:
+              - link "scripts/run_harness_experiment.py" [ref=e261] [cursor=pointer]:
+                - /url: ../scripts/run_harness_experiment.py
+              - text: ","
+              - link "src/epilepsy_agents/llm_pipeline.py" [ref=e262] [cursor=pointer]:
+                - /url: ../src/epilepsy_agents/llm_pipeline.py
+              - text: ","
+              - link "project_state/harnesses/README.md" [ref=e263] [cursor=pointer]:
+                - /url: ../project_state/harnesses/README.md
+              - text: ","
+              - link "20260424T171400Z_h003_single_prompt_llm_n5.json" [ref=e264] [cursor=pointer]:
+                - /url: ../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json
+            - emphasis [ref=e265]:
+              - text: Inspect the four
+              - code [ref=e266]: unknown
+              - text: outputs, tune prompt/schema behavior, and rerun h003 on a 25-row slice.
+        - listitem [ref=e267]:
+          - generic [ref=e268]: Planned
+          - generic [ref=e269]:
+            - heading "M-A3 h004 multi-agent LLM pipeline" [level=3] [ref=e270]
+            - paragraph [ref=e271]:
+              - text: Role-separated LLM pipeline mirroring deterministic
+              - code [ref=e272]: multi
+              - text: ": section/timeline, extractor, verifier, aggregator, each with its own prompt and schema. Produce first paired"
+              - code [ref=e273]: h003
+              - text: vs
+              - code [ref=e274]: h004
+              - text: n=100 synthetic record at matched budgets.
+            - generic [ref=e275]:
+              - link "prompts/agent_roles.md" [ref=e276] [cursor=pointer]:
+                - /url: ../prompts/agent_roles.md
+              - text: ","
+              - link "project_state/harnesses/README.md" [ref=e277] [cursor=pointer]:
+                - /url: ../project_state/harnesses/README.md
+            - emphasis [ref=e278]: Build h004 on top of h003 provider plumbing and run first paired n=100 smoke.
+        - listitem [ref=e279]:
+          - generic [ref=e280]: Planned
+          - generic [ref=e281]:
+            - heading "M-B1 Verification with evidence requirement" [level=3] [ref=e282]
+            - paragraph [ref=e283]: Verifier rejects extractor outputs lacking evidence-span support. Measure change in pragmatic micro-F1, purist micro-F1, evidence support rate, and invalid-output rate vs. h004 without verification.
+            - generic [ref=e284]:
+              - link "project_specification.md" [ref=e285] [cursor=pointer]:
+                - /url: project_specification.md
+              - text: ","
+              - link "evaluation_protocol.md" [ref=e286] [cursor=pointer]:
+                - /url: evaluation_protocol.md
+            - emphasis [ref=e287]: Add verifier prompt once h004 is stable.
+        - listitem [ref=e288]:
+          - generic [ref=e289]: Planned
+          - generic [ref=e290]:
+            - heading "M-B2 h005 self-consistency" [level=3] [ref=e291]
+            - paragraph [ref=e292]: Sample k=3 then k=5, aggregate by agreement. Compare at matched call budget and matched token budget against h003 and against h004 without self-consistency.
+            - generic [ref=e293]:
+              - link "harness_experiment_protocol.md" [ref=e294] [cursor=pointer]:
+                - /url: harness_experiment_protocol.md
+              - text: ","
+              - link "research_program.md" [ref=e295] [cursor=pointer]:
+                - /url: research_program.md
+            - emphasis [ref=e296]: Add sampling controller to the provider adapter after M-B1.
+        - listitem [ref=e297]:
+          - generic [ref=e298]: Planned
+          - generic [ref=e299]:
+            - heading "M-B3 Evidence-required vs answer-only ablation" [level=3] [ref=e300]
+            - paragraph [ref=e301]: Fixed paired comparison of h004 with evidence-required schema versus answer-only schema. Report evidence support, invalid-output rate, and class F1.
+            - link "evaluation_protocol.md" [ref=e303] [cursor=pointer]:
+              - /url: evaluation_protocol.md
+            - emphasis [ref=e304]: Run after M-B2 on the same synthetic slice.
+        - listitem [ref=e305]:
+          - generic [ref=e306]: Planned
+          - generic [ref=e307]:
+            - heading "M-C1 Full synthetic corpus run" [level=3] [ref=e308]
+            - paragraph [ref=e309]: Rerun the Pareto comparison on the full synthetic dataset once released, with confidence intervals.
+            - link "project_specification.md" [ref=e311] [cursor=pointer]:
+              - /url: project_specification.md
+            - emphasis [ref=e312]: Keep the loader drop-in compatible; ingest when Gan et al. publish the full set.
+        - listitem [ref=e313]:
+          - generic [ref=e314]: Planned
+          - generic [ref=e315]:
+            - heading "M-C2 Gan et al. fine-tuned baseline comparison" [level=3] [ref=e316]
+            - paragraph [ref=e317]: On the same synthetic slice, compare our best Pareto candidate against the published fine-tuned baseline (reported numbers or released model outputs).
+            - generic [ref=e318]:
+              - link "project_specification.md" [ref=e319] [cursor=pointer]:
+                - /url: project_specification.md
+              - text: ","
+              - link "literature_review_map.md" [ref=e320] [cursor=pointer]:
+                - /url: literature_review_map.md
+            - emphasis [ref=e321]: Request or reproduce baseline numbers after Phase B.
+        - listitem [ref=e322]:
+          - generic [ref=e323]: Planned
+          - generic [ref=e324]:
+            - heading "M-C3 Budget-matched closed-provider comparison" [level=3] [ref=e325]
+            - paragraph [ref=e326]:
+              - text: Matched call/token budgets across one local model and one closed provider, synthetic-only per
+              - link "D004" [ref=e327] [cursor=pointer]:
+                - /url: decisions.md
+              - text: .
+            - generic [ref=e328]:
+              - link "real_data_governance.md" [ref=e329] [cursor=pointer]:
+                - /url: real_data_governance.md
+              - text: ","
+              - link "decisions.md" [ref=e330] [cursor=pointer]:
+                - /url: decisions.md
+            - emphasis [ref=e331]: After Phase B, decide if an external reference point materially strengthens the dissertation.
+        - listitem [ref=e332]:
+          - generic [ref=e333]: Blocked by governance
+          - generic [ref=e334]:
+            - heading "M-D1 Real KCH evaluation inside approved environment" [level=3] [ref=e335]
+            - paragraph [ref=e336]: Evaluate best Pareto candidate on real KCH letters inside the approved environment; export only aggregate metrics and de-identified error-category counts.
+            - generic [ref=e337]:
+              - link "real_data_governance.md" [ref=e338] [cursor=pointer]:
+                - /url: real_data_governance.md
+              - text: ","
+              - link "decisions.md" [ref=e339] [cursor=pointer]:
+                - /url: decisions.md
+            - emphasis [ref=e340]: Revisit only when Phase B/C synthetic results and governance both support it.
+        - listitem [ref=e341]:
+          - generic [ref=e342]: Planned
+          - generic [ref=e343]:
+            - heading "M-E1 First dissertation draft" [level=3] [ref=e344]
+            - paragraph [ref=e345]: Methods, synthetic results, error taxonomy, and discussion fitted to the 8-page conference template (~5,000 words).
+            - generic [ref=e346]:
+              - link "dissertation_scaffold.md" [ref=e347] [cursor=pointer]:
+                - /url: dissertation_scaffold.md
+              - text: ","
+              - link "README.md" [ref=e348] [cursor=pointer]:
+                - /url: ../README.md
+            - emphasis [ref=e349]: Begin outlining methods and results as Phase B produces numbers.
+        - listitem [ref=e350]:
+          - generic [ref=e351]: Planned
+          - generic [ref=e352]:
+            - heading "M-E2 Curated visual artifacts" [level=3] [ref=e353]
+            - paragraph [ref=e354]: Architecture poster, dataset/evaluation diagram, agent-role diagram, milestone timeline, local-first hospital deployment diagram, evidence-grounding figure.
+            - generic [ref=e355]:
+              - link "visual_artifacts_direction.md" [ref=e356] [cursor=pointer]:
+                - /url: visual_artifacts_direction.md
+              - text: ","
+              - link "artifact_registry.md" [ref=e357] [cursor=pointer]:
+                - /url: artifact_registry.md
+            - emphasis [ref=e358]: Generate the first architecture poster and a phase-aware milestone timeline.
+        - listitem [ref=e359]:
+          - generic [ref=e360]: Planned
+          - generic [ref=e361]:
+            - heading "M-E3 Final paper and reproducibility guide" [level=3] [ref=e362]
+            - paragraph [ref=e363]: Submit-ready dissertation, commands-to-reproduce section, and a reproducible run export.
+            - generic [ref=e364]:
+              - link "README.md" [ref=e365] [cursor=pointer]:
+                - /url: ../README.md
+              - text: ","
+              - link "evaluation_protocol.md" [ref=e366] [cursor=pointer]:
+                - /url: evaluation_protocol.md
+            - emphasis [ref=e367]: Enter after M-E1 draft cycle.

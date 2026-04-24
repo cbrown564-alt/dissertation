@@ -1,0 +1,326 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "EN" [ref=e4] [cursor=pointer]:
+      - /url: "#overview"
+    - navigation [ref=e5]:
+      - button "Overview" [ref=e6] [cursor=pointer]
+      - button "Claims" [ref=e7] [cursor=pointer]
+      - button "Timeline" [ref=e8] [cursor=pointer]
+      - button "Sessions" [ref=e9] [cursor=pointer]
+      - button "Workstreams" [ref=e10] [cursor=pointer]
+      - button "Artifacts" [ref=e11] [cursor=pointer]
+      - button "Decisions" [ref=e12] [cursor=pointer]
+    - paragraph [ref=e13]:
+      - text: Local archive
+      - text: 2026-04-24 18:27 UTC
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: Clinical evidence register
+        - heading "Evidence Notebook" [level=1] [ref=e18]
+        - paragraph [ref=e19]: "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
+        - generic [ref=e20]:
+          - generic [ref=e21]: Generated 2026-04-24 18:27 UTC
+          - generic [ref=e22]: Project Snapshot
+      - generic [ref=e23]:
+        - generic [ref=e24]: Search
+        - searchbox "Search" [ref=e25]
+    - generic [ref=e26]:
+      - link "Source current_state.md Updated 2026-04-24" [ref=e27] [cursor=pointer]:
+        - /url: current_state.md
+        - generic [ref=e28]: Source
+        - strong [ref=e29]: current_state.md
+        - generic [ref=e30]: Updated 2026-04-24
+      - link "Source milestones.md Updated 2026-04-24" [ref=e31] [cursor=pointer]:
+        - /url: milestones.md
+        - generic [ref=e32]: Source
+        - strong [ref=e33]: milestones.md
+        - generic [ref=e34]: Updated 2026-04-24
+      - link "Source active_threads.md Updated 2026-04-24" [ref=e35] [cursor=pointer]:
+        - /url: active_threads.md
+        - generic [ref=e36]: Source
+        - strong [ref=e37]: active_threads.md
+        - generic [ref=e38]: Updated 2026-04-24
+      - link "Source artifact_registry.md Updated 2026-04-24" [ref=e39] [cursor=pointer]:
+        - /url: artifact_registry.md
+        - generic [ref=e40]: Source
+        - strong [ref=e41]: artifact_registry.md
+        - generic [ref=e42]: Updated 2026-04-24
+      - link "Source decisions.md Updated 2026-04-24" [ref=e43] [cursor=pointer]:
+        - /url: decisions.md
+        - generic [ref=e44]: Source
+        - strong [ref=e45]: decisions.md
+        - generic [ref=e46]: Updated 2026-04-24
+    - generic [ref=e47]:
+      - button "5 Claims" [ref=e48] [cursor=pointer]:
+        - strong [ref=e49]: "5"
+        - generic [ref=e50]: Claims
+      - button "25 Milestones" [ref=e51] [cursor=pointer]:
+        - strong [ref=e52]: "25"
+        - generic [ref=e53]: Milestones
+      - button "6 Sessions" [ref=e54] [cursor=pointer]:
+        - strong [ref=e55]: "6"
+        - generic [ref=e56]: Sessions
+      - button "5 Threads" [ref=e57] [cursor=pointer]:
+        - strong [ref=e58]: "5"
+        - generic [ref=e59]: Threads
+      - button "31 Artifacts" [ref=e60] [cursor=pointer]:
+        - strong [ref=e61]: "31"
+        - generic [ref=e62]: Artifacts
+      - button "7 Decisions" [ref=e63] [cursor=pointer]:
+        - strong [ref=e64]: "7"
+        - generic [ref=e65]: Decisions
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - paragraph [ref=e70]: Current claim
+          - heading "Project Snapshot" [level=2] [ref=e71]
+        - paragraph [ref=e72]: "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e75]: Evidence
+            - list [ref=e76]:
+              - listitem [ref=e77]:
+                - text: Project question and objectives are defined in
+                - link "project_specification.md" [ref=e78] [cursor=pointer]:
+                  - /url: project_specification.md
+                - text: .
+              - listitem [ref=e79]:
+                - text: The operating research posture is defined in
+                - link "research_program.md" [ref=e80] [cursor=pointer]:
+                  - /url: research_program.md
+                - text: .
+              - listitem [ref=e81]:
+                - text: Deterministic
+                - code [ref=e82]: single
+                - text: and
+                - code [ref=e83]: multi
+                - text: harnesses are registered in
+                - link "project_state/harnesses/README.md" [ref=e84] [cursor=pointer]:
+                  - /url: ../project_state/harnesses/README.md
+                - text: .
+              - listitem [ref=e85]:
+                - text: A first 25-row LLM-backed smoke run now exists at
+                - link "20260424T180629Z_h003_single_prompt_llm_n25.json" [ref=e86] [cursor=pointer]:
+                  - /url: ../project_state/runs/20260424T180629Z_h003_single_prompt_llm_n25.json
+                - text: .
+              - listitem [ref=e87]:
+                - text: The Evidence Notebook direction for project visibility is selected in
+                - link "agent_visibility_plan.md" [ref=e88] [cursor=pointer]:
+                  - /url: agent_visibility_plan.md
+                - text: .
+              - listitem [ref=e89]:
+                - text: Phase 1 project-state pages and the Phase 2 session logging convention now exist under
+                - code [ref=e90]: docs/
+                - text: and
+                - code [ref=e91]: docs/run_logs/
+                - text: .
+          - generic [ref=e92]:
+            - generic [ref=e93]: Uncertainty
+            - paragraph [ref=e94]:
+              - text: The current LLM path is only at smoke-test maturity. Ollama/Qwen now returns fast structured or schema-near outputs, but
+              - code [ref=e95]: h003
+              - text: still over-abstains on many rows and remains below the deterministic baselines.
+          - generic [ref=e96]:
+            - generic [ref=e97]: Next action
+            - paragraph [ref=e98]:
+              - text: "Keep iteration narrow: reduce"
+              - code [ref=e99]: h003
+              - text: over-abstention on cluster, seizure-free, and windowed frequency cases before starting
+              - code [ref=e100]: h004
+              - text: .
+      - complementary [ref=e101]:
+        - paragraph [ref=e102]: Active research path
+        - generic [ref=e103]: In progress
+        - heading "M-A2 h003 single-prompt LLM smoke" [level=3] [ref=e104]
+        - paragraph [ref=e105]:
+          - text: Inspect the four
+          - code [ref=e106]: unknown
+          - text: outputs, tune prompt/schema behavior, and rerun h003 on a 25-row slice.
+        - button "Open timeline" [ref=e107] [cursor=pointer]
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - paragraph [ref=e111]: Evaluation signal
+            - heading "Latest Evaluation Claim" [level=2] [ref=e112]
+          - button "Open claim" [ref=e113] [cursor=pointer]
+        - paragraph [ref=e114]:
+          - text: "The latest completed evaluation work now has two layers: the deterministic paired 100-row smoke still defines the strongest baseline result, and the local"
+          - code [ref=e115]: h003_single_prompt_llm
+          - text: path now runs quickly enough for 25-row smoke testing but remains extraction-fragile.
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - generic [ref=e118]: Evidence
+            - table [ref=e119]:
+              - rowgroup [ref=e120]:
+                - row "Harness Run Exact Monthly 15 pct Pragmatic micro-F1 Purist micro-F1" [ref=e121]:
+                  - columnheader "Harness" [ref=e122]
+                  - columnheader "Run" [ref=e123]
+                  - columnheader "Exact" [ref=e124]
+                  - columnheader "Monthly 15 pct" [ref=e125]
+                  - columnheader "Pragmatic micro-F1" [ref=e126]
+                  - columnheader "Purist micro-F1" [ref=e127]
+              - rowgroup [ref=e128]:
+                - row "h002_multi_agent_verify 20260424T144559Z_h002_multi_agent_verify_n100.json 0.31 0.48 0.55 0.53" [ref=e129]:
+                  - cell "h002_multi_agent_verify" [ref=e130]:
+                    - code [ref=e131]: h002_multi_agent_verify
+                  - cell "20260424T144559Z_h002_multi_agent_verify_n100.json" [ref=e132]:
+                    - link "20260424T144559Z_h002_multi_agent_verify_n100.json" [ref=e133] [cursor=pointer]:
+                      - /url: ../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json
+                  - cell "0.31" [ref=e134]
+                  - cell "0.48" [ref=e135]
+                  - cell "0.55" [ref=e136]
+                  - cell "0.53" [ref=e137]
+                - row "h001_single_pass 20260424T144606Z_h001_single_pass_n100.json 0.25 0.43 0.50 0.48" [ref=e138]:
+                  - cell "h001_single_pass" [ref=e139]:
+                    - code [ref=e140]: h001_single_pass
+                  - cell "20260424T144606Z_h001_single_pass_n100.json" [ref=e141]:
+                    - link "20260424T144606Z_h001_single_pass_n100.json" [ref=e142] [cursor=pointer]:
+                      - /url: ../project_state/runs/20260424T144606Z_h001_single_pass_n100.json
+                  - cell "0.25" [ref=e143]
+                  - cell "0.43" [ref=e144]
+                  - cell "0.50" [ref=e145]
+                  - cell "0.48" [ref=e146]
+            - paragraph [ref=e147]:
+              - text: The manifest index is
+              - link "project_state/experiments/manifest.csv" [ref=e148] [cursor=pointer]:
+                - /url: ../project_state/experiments/manifest.csv
+              - text: ". Session log:"
+              - link "20260424T144639Z_seizure_free_detection_expansion.md" [ref=e149] [cursor=pointer]:
+                - /url: run_logs/20260424T144639Z_seizure_free_detection_expansion.md
+              - text: .
+            - paragraph [ref=e150]: "Current LLM smoke:"
+            - table [ref=e151]:
+              - rowgroup [ref=e152]:
+                - row "Harness Run Exact Monthly 15 pct Pragmatic micro-F1 Purist micro-F1 Invalid-output rate Mean latency" [ref=e153]:
+                  - columnheader "Harness" [ref=e154]
+                  - columnheader "Run" [ref=e155]
+                  - columnheader "Exact" [ref=e156]
+                  - columnheader "Monthly 15 pct" [ref=e157]
+                  - columnheader "Pragmatic micro-F1" [ref=e158]
+                  - columnheader "Purist micro-F1" [ref=e159]
+                  - columnheader "Invalid-output rate" [ref=e160]
+                  - columnheader "Mean latency" [ref=e161]
+              - rowgroup [ref=e162]:
+                - row "h003_single_prompt_llm 20260424T171400Z_h003_single_prompt_llm_n5.json 0.20 0.20 0.20 0.20 0.80 52.9 s" [ref=e163]:
+                  - cell "h003_single_prompt_llm" [ref=e164]:
+                    - code [ref=e165]: h003_single_prompt_llm
+                  - cell "20260424T171400Z_h003_single_prompt_llm_n5.json" [ref=e166]:
+                    - link "20260424T171400Z_h003_single_prompt_llm_n5.json" [ref=e167] [cursor=pointer]:
+                      - /url: ../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json
+                  - cell "0.20" [ref=e168]
+                  - cell "0.20" [ref=e169]
+                  - cell "0.20" [ref=e170]
+                  - cell "0.20" [ref=e171]
+                  - cell "0.80" [ref=e172]
+                  - cell "52.9 s" [ref=e173]
+                - row "h003_single_prompt_llm 20260424T180607Z_h003_single_prompt_llm_n5.json 0.40 0.40 0.40 0.40 0.40 0.95 s" [ref=e174]:
+                  - cell "h003_single_prompt_llm" [ref=e175]:
+                    - code [ref=e176]: h003_single_prompt_llm
+                  - cell "20260424T180607Z_h003_single_prompt_llm_n5.json" [ref=e177]:
+                    - link "20260424T180607Z_h003_single_prompt_llm_n5.json" [ref=e178] [cursor=pointer]:
+                      - /url: ../project_state/runs/20260424T180607Z_h003_single_prompt_llm_n5.json
+                  - cell "0.40" [ref=e179]
+                  - cell "0.40" [ref=e180]
+                  - cell "0.40" [ref=e181]
+                  - cell "0.40" [ref=e182]
+                  - cell "0.40" [ref=e183]
+                  - cell "0.95 s" [ref=e184]
+                - row "h003_single_prompt_llm 20260424T180629Z_h003_single_prompt_llm_n25.json 0.20 0.28 0.36 0.32 0.28 1.29 s" [ref=e185]:
+                  - cell "h003_single_prompt_llm" [ref=e186]:
+                    - code [ref=e187]: h003_single_prompt_llm
+                  - cell "20260424T180629Z_h003_single_prompt_llm_n25.json" [ref=e188]:
+                    - link "20260424T180629Z_h003_single_prompt_llm_n25.json" [ref=e189] [cursor=pointer]:
+                      - /url: ../project_state/runs/20260424T180629Z_h003_single_prompt_llm_n25.json
+                  - cell "0.20" [ref=e190]
+                  - cell "0.28" [ref=e191]
+                  - cell "0.36" [ref=e192]
+                  - cell "0.32" [ref=e193]
+                  - cell "0.28" [ref=e194]
+                  - cell "1.29 s" [ref=e195]
+          - generic [ref=e196]:
+            - generic [ref=e197]: Uncertainty
+            - paragraph [ref=e198]:
+              - text: The deterministic 100-row comparison is still a smoke test. The new
+              - code [ref=e199]: h003
+              - text: 25-row result is a usable local-model smoke, but it is not yet a credible comparison baseline because
+              - code [ref=e200]: unknown
+              - text: and
+              - code [ref=e201]: no seizure frequency reference
+              - text: predictions dominate.
+          - generic [ref=e202]:
+            - generic [ref=e203]: Next experiment
+            - paragraph [ref=e204]:
+              - text: Classify the 25-row
+              - code [ref=e205]: h003
+              - text: abstentions and add a narrow prompt or candidate-span aid for cluster/window/seizure-free cases, then rerun
+              - code [ref=e206]: h003
+              - text: on the same 25-row slice.
+      - generic [ref=e207]:
+        - generic [ref=e208]:
+          - generic [ref=e209]:
+            - paragraph [ref=e210]: Run ledger
+            - heading "Recent Sessions" [level=2] [ref=e211]
+          - button "View all" [ref=e212] [cursor=pointer]
+        - article [ref=e213]:
+          - generic [ref=e214]: 2026-04-24
+          - strong [ref=e215]: h003 Ollama Think-Disabled Smoke
+          - generic [ref=e216]:
+            - text: Make the local
+            - code [ref=e217]: h003_single_prompt_llm
+            - text: path usable enough for a 25-row smoke evaluation.
+        - article [ref=e218]:
+          - generic [ref=e219]: 2026-04-24
+          - strong [ref=e220]: h003 Local Ollama Smoke
+          - generic [ref=e221]:
+            - text: Verify a live local runtime and record the first
+            - code [ref=e222]: h003_single_prompt_llm
+            - text: smoke run.
+        - article [ref=e223]:
+          - generic [ref=e224]: 2026-04-24
+          - strong [ref=e225]: Local Provider Smoke Path
+          - generic [ref=e226]: Add a minimal local-runtime verification path for M-A1 and check whether a local provider is currently reachable.
+      - generic [ref=e227]:
+        - generic [ref=e228]:
+          - generic [ref=e229]:
+            - paragraph [ref=e230]: Output register
+            - heading "Artifact Shelf" [level=2] [ref=e231]
+          - button "View all" [ref=e232] [cursor=pointer]
+        - article [ref=e233]:
+          - generic [ref=e234]: Current
+          - strong [ref=e235]: Project specification
+          - link "project_specification.md" [ref=e237] [cursor=pointer]:
+            - /url: project_specification.md
+        - article [ref=e238]:
+          - generic [ref=e239]: Current
+          - strong [ref=e240]: Research program
+          - link "research_program.md" [ref=e242] [cursor=pointer]:
+            - /url: research_program.md
+        - article [ref=e243]:
+          - generic [ref=e244]: Current
+          - strong [ref=e245]: Evaluation protocol
+          - link "evaluation_protocol.md" [ref=e247] [cursor=pointer]:
+            - /url: evaluation_protocol.md
+        - article [ref=e248]:
+          - generic [ref=e249]: Current
+          - strong [ref=e250]: Harness experiment protocol
+          - link "harness_experiment_protocol.md" [ref=e252] [cursor=pointer]:
+            - /url: harness_experiment_protocol.md
+        - article [ref=e253]:
+          - generic [ref=e254]: Active
+          - strong [ref=e255]: Run manifest
+          - link "manifest.csv" [ref=e257] [cursor=pointer]:
+            - /url: ../project_state/experiments/manifest.csv
+      - generic [ref=e258]:
+        - generic [ref=e259]:
+          - paragraph [ref=e260]: Decision anchor
+          - heading "D001" [level=2] [ref=e261]
+        - heading "Treat The Project As A Harness-Reliability Study" [level=3] [ref=e262]
+        - paragraph [ref=e263]: The central research posture is harness reliability, not a simple model leaderboard.
+        - generic [ref=e264]:
+          - link "research_program.md" [ref=e265] [cursor=pointer]:
+            - /url: research_program.md
+          - text: ","
+          - link "harness_experiment_protocol.md" [ref=e266] [cursor=pointer]:
+            - /url: harness_experiment_protocol.md
+          - text: .
