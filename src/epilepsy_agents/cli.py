@@ -35,8 +35,8 @@ def build_parser() -> argparse.ArgumentParser:
     predict.add_argument("path")
     predict.add_argument("--pipeline", choices=["multi", "single"], default="multi")
 
-    notebook = subparsers.add_parser("notebook", help="Build the local Evidence Notebook dashboard.")
-    notebook.add_argument("--out", default="docs/evidence_notebook.html")
+    notebook = subparsers.add_parser("notebook", help="Regenerate the Evidence Notebook site payload.")
+    notebook.add_argument("--site-dir", default="site", help="Deployable site root; data.js is written to its assets/ subdirectory.")
     notebook.add_argument("--session-limit", type=int, default=6)
 
     provider_smoke = subparsers.add_parser(
@@ -120,13 +120,11 @@ def predict(args: argparse.Namespace) -> int:
 
 
 def notebook(args: argparse.Namespace) -> int:
-    from .visibility import build_dashboard
+    from .visibility import write_site
 
-    out = Path(args.out)
-    html_text = build_dashboard(Path("."), session_limit=args.session_limit)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(html_text, encoding="utf-8")
-    print(f"Wrote {out}")
+    site_dir = Path(args.site_dir)
+    data_js = write_site(Path("."), site_dir=site_dir, session_limit=args.session_limit)
+    print(f"Wrote {data_js}")
     return 0
 
 

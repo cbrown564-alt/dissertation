@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 
 from epilepsy_agents.visibility import (
-    build_dashboard,
+    build_data,
     parse_active_threads,
     parse_current_state,
     parse_table,
@@ -135,7 +135,7 @@ Review.
 
         self.assertIn("../src/epilepsy_agents/visibility.py", claims[0].evidence)
 
-    def test_build_dashboard_from_minimal_docs(self) -> None:
+    def test_build_data_from_minimal_docs(self) -> None:
         root = Path.cwd() / ".test_tmp_visibility"
         if root.exists():
             shutil.rmtree(root, ignore_errors=True)
@@ -276,16 +276,17 @@ documentation/visibility updated, no metric decision needed.
                 encoding="utf-8",
             )
 
-            html = build_dashboard(root)
+            data = build_data(root)
         finally:
             shutil.rmtree(root, ignore_errors=True)
 
-        self.assertIn("Evidence Notebook", html)
-        self.assertIn("Dashboard claim", html)
-        self.assertIn("Visibility Session", html)
-        self.assertIn("../src/epilepsy_agents/visibility.py", html)
-        self.assertIn("<table>", html)
-        self.assertIn("<th>Metric<\\/th>", html)
+        self.assertEqual(data["latestClaim"]["title"], "Project Snapshot")
+        self.assertIn("Dashboard claim", data["latestClaim"]["claim"])
+        self.assertEqual(data["sessions"][0]["title"], "Visibility Session")
+        evidence_html = data["claims"][0]["evidence"]
+        self.assertIn("../src/epilepsy_agents/visibility", evidence_html)
+        self.assertIn("<table>", evidence_html)
+        self.assertIn("<th>Metric</th>", evidence_html)
 
 
 if __name__ == "__main__":
