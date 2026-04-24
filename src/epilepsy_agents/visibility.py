@@ -671,6 +671,44 @@ const statTargets = {
   decisions: "decisions",
 };
 
+const viewMeta = {
+  overview: {
+    kicker: "Clinical evidence register",
+    title: "Evidence Notebook",
+    purpose: () => data.latestClaim.claim,
+  },
+  claims: {
+    kicker: "Canonical dossier reader",
+    title: "Claims",
+    purpose: () => "Select a research claim and review its claim, evidence, uncertainty, and next action in one fixed reading frame.",
+  },
+  timeline: {
+    kicker: "Milestone spine",
+    title: "Timeline",
+    purpose: () => "Track completed, active, planned, blocked, and review-needed work by phase, with the next visible move pinned beside the ledger.",
+  },
+  sessions: {
+    kicker: "Run ledger",
+    title: "Sessions",
+    purpose: () => "Scan recent work by date, outcome, source log, uncertainty, and handoff.",
+  },
+  workstreams: {
+    kicker: "Research lanes",
+    title: "Workstreams",
+    purpose: () => "Review each active lane by question, latest evidence, risk, and next move.",
+  },
+  artifacts: {
+    kicker: "Artifact shelf",
+    title: "Artifacts",
+    purpose: () => "Group source documents, active evidence, generated outputs, planned visuals, and dissertation support by purpose and intended use.",
+  },
+  decisions: {
+    kicker: "ADR-style register",
+    title: "Decisions",
+    purpose: () => "Read durable project decisions through rationale, consequence, and evidence links.",
+  },
+};
+
 let state = {
   view: location.hash.replace("#", "") || "overview",
   query: "",
@@ -701,6 +739,7 @@ function setView(view) {
 
 function render() {
   const activeView = views.some(([id]) => id === state.view) ? state.view : "overview";
+  const meta = viewMeta[activeView] || viewMeta.overview;
   state.view = activeView;
   app.dataset.view = activeView;
   app.innerHTML = `
@@ -712,12 +751,12 @@ function render() {
     <main class="app-main">
       <header class="app-header">
         <div>
-          <p class="app-kicker">Clinical evidence register</p>
-          <h1>Evidence Notebook</h1>
-          <p>${data.latestClaim.claim}</p>
+          <p class="app-kicker">${meta.kicker}</p>
+          <h1>${meta.title}</h1>
+          <p>${meta.purpose()}</p>
           <div class="header-meta">
             <span>Generated ${data.generatedAt}</span>
-            <span>${data.latestClaim.title}</span>
+            <span>${activeView === "overview" ? data.latestClaim.title : `${activeViewLabel(activeView)} view`}</span>
           </div>
         </div>
         <label class="app-search">
@@ -823,7 +862,7 @@ function renderClaims() {
   return `
     <div class="claim-app">
       <aside class="record-list">
-        ${claims.map((claim, index) => `<button type="button" class="${claim === selected ? "is-active" : ""}" data-select-claim="${index}"><span>${pad(index + 1)}</span>${claim.title}</button>`).join("")}
+        ${claims.map((claim, index) => `<button type="button" class="${claim === selected ? "is-active" : ""}" data-select-claim="${index}"><span>${pad(index + 1)}</span>${claim.title}<small>${claimRiskLabel(claim)}</small></button>`).join("")}
       </aside>
       ${claimDossier(selected, "Claim record")}
     </div>
@@ -832,7 +871,8 @@ function renderClaims() {
 
 function renderTimeline() {
   const milestones = filtered(data.milestones);
-  return `<section class="archive-panel timeline-panel"><div class="panel-heading"><p class="app-kicker">Milestone spine</p><h2>Timeline</h2></div>${renderTimelineSummary(milestones)}<ol class="app-timeline">${rowsOrEmpty(milestones.map((item) => `
+  const next = nextMilestone(milestones);
+  return `<section class="archive-panel timeline-panel"><div class="panel-heading"><p class="app-kicker">Milestone spine</p><h2>Timeline</h2></div>${renderTimelineSummary(milestones)}${renderPhaseStrip(milestones)}<aside class="timeline-next"><p class="app-kicker">Next visible move</p><h3>${next ? next.title : "No next milestone"}</h3><p>${next ? next.next : "All filtered milestones are complete."}</p></aside><ol class="app-timeline">${rowsOrEmpty(milestones.map((item) => `
     <li class="${statusClass(item.status)}">
       <span>${item.status}</span>
       <div><h3>${item.title}</h3><p>${item.outcome}</p><small>${item.evidence}</small><em>${item.next}</em></div>
@@ -843,7 +883,7 @@ function renderTimelineSummary(milestones) {
   if (!milestones.length) return emptyState("No matching milestones.");
   const keyEvents = timelineKeyEvents(milestones);
   const completed = milestones.filter((item) => normalizedStatus(item.status) === "complete").length;
-  const next = milestones.find((item) => normalizedStatus(item.status) !== "complete") || milestones[milestones.length - 1];
+  const next = nextMilestone(milestones) || milestones[milestones.length - 1];
   const progress = Math.round((completed / milestones.length) * 100);
   return `<div class="timeline-summary">
     <section class="timeline-progress">
@@ -867,6 +907,28 @@ function renderTimelineSummary(milestones) {
       </li>`).join("")}</ol>
     </section>
   </div>`;
+}
+
+function renderPhaseStrip(milestones) {
+  if (!milestones.length) return "";
+  const phases = [
+    ["Foundation", /source|repository|synthetic|evaluation|protocol|initial|seizure-free/i],
+    ["Phase A", /local|provider|h003|ollama|single-prompt/i],
+    ["Phase B", /role|multi-agent|verify|h004|evidence support/i],
+    ["Dissertation", /visual|dissertation|packaging|write|poster|governance/i],
+  ];
+  const next = nextMilestone(milestones);
+  return `<section class="phase-strip">${phases.map(([label, pattern], index) => {
+    const items = milestones.filter((item) => pattern.test(`${item.title} ${item.outcome} ${item.next}`));
+    const complete = items.filter((item) => normalizedStatus(item.status) === "complete").length;
+    const current = next && items.includes(next);
+    const sample = items.find((item) => normalizedStatus(item.status) !== "complete") || items[items.length - 1];
+    return `<article class="${current ? "is-current" : ""}"><span>${pad(index + 1)} ${label}</span><strong>${items.length ? `${complete}/${items.length} complete` : "No matched entries"}</strong><small>${sample ? sample.title : "Awaiting source milestone"}</small></article>`;
+  }).join("")}</section>`;
+}
+
+function nextMilestone(milestones) {
+  return milestones.find((item) => normalizedStatus(item.status) !== "complete");
 }
 
 function timelineKeyEvents(milestones) {
@@ -923,8 +985,8 @@ function renderArtifacts() {
   const groups = groupedArtifacts(artifacts);
   return `<section class="archive-panel"><div class="panel-heading"><p class="app-kicker">Artifact shelf</p><h2>Outputs And Planned Visuals</h2></div><div class="artifact-groups">${rowsOrEmpty(groups.map(([label, rows]) => `
     <section class="artifact-group">
-      <h3>${label}</h3>
-      <div class="shelf">${rowsOrEmpty(rows.map(artifactRow), "No artifacts in this group.")}</div>
+      <h3>${label}<small>${artifactGroupPurpose(label)}</small></h3>
+      <div class="shelf">${rowsOrEmpty(rows.map(artifactShelfItem), "No artifacts in this group.")}</div>
     </section>`), "No matching artifacts.")}</div></section>`;
 }
 
@@ -949,6 +1011,12 @@ function claimDossier(claim, label) {
       <section><b>Evidence</b>${claim.evidence}</section>
       <section><b>Uncertainty</b>${claim.uncertainty}</section>
       <section><b>Next action</b>${claim.next}</section>
+    </div>
+    <div class="dossier-grid">
+      <section class="dossier-block"><b>Claim</b><h3>${claim.title}</h3><p>${claim.claim}</p></section>
+      <section class="dossier-block is-evidence"><b>Evidence</b>${claim.evidence}</section>
+      <section class="dossier-block is-uncertainty"><b>Uncertainty</b>${claim.uncertainty}</section>
+      <section class="dossier-block is-next"><b>Next action</b>${claim.next}</section>
     </div>
   </section>`;
 }
@@ -975,6 +1043,14 @@ function artifactRow(item) {
   return `<article class="index-row artifact-row ${statusClass(item.status)}"><span>${item.status}</span><strong>${item.name}</strong><small>${item.path}</small></article>`;
 }
 
+function artifactShelfItem(item) {
+  return `<article class="artifact-shelf-item ${statusClass(item.status)}">
+    <header><span class="status-chip ${statusClass(item.status)}">${item.status}</span><h4>${item.name}</h4></header>
+    <section><b>Purpose</b><p>${item.purpose || "Purpose not recorded."}</p></section>
+    <section><b>Path and use</b><p class="artifact-path">${item.path}</p><small>${item.use || "Intended use not recorded."}</small></section>
+  </article>`;
+}
+
 function rowsOrEmpty(rows, message) {
   return rows.length ? rows.join("") : emptyState(message);
 }
@@ -982,22 +1058,49 @@ function rowsOrEmpty(rows, message) {
 function groupedArtifacts(artifacts) {
   const buckets = [
     ["Active evidence", []],
-    ["Source documents", []],
+    ["Generated visuals", []],
     ["Session logs", []],
     ["Planned visuals", []],
-    ["Reference", []],
+    ["Dissertation support", []],
+    ["Source documents", []],
   ];
   const byLabel = Object.fromEntries(buckets);
   artifacts.forEach((item) => {
-    const name = `${item.name} ${item.path}`.toLowerCase();
+    const name = `${item.name} ${item.path} ${item.purpose} ${item.use}`.toLowerCase();
     const status = String(item.status || "").toLowerCase();
     if (status.includes("planned") || name.includes("to be generated")) byLabel["Planned visuals"].push(item);
+    else if (name.includes(".png") || name.includes("poster") || name.includes("diagram") || name.includes("visual")) byLabel["Generated visuals"].push(item);
     else if (name.includes("session log") || name.includes("run_logs/")) byLabel["Session logs"].push(item);
     else if (status.includes("active") || name.includes("manifest") || name.includes("run record") || name.includes("dashboard")) byLabel["Active evidence"].push(item);
-    else if (status.includes("reference")) byLabel["Reference"].push(item);
+    else if (name.includes("dissertation") || name.includes("governance") || name.includes("protocol") || name.includes("feasibility") || status.includes("reference")) byLabel["Dissertation support"].push(item);
     else byLabel["Source documents"].push(item);
   });
   return buckets.filter(([, rows]) => rows.length);
+}
+
+function artifactGroupPurpose(label) {
+  const purposes = {
+    "Active evidence": "Live records used to justify current claims.",
+    "Generated visuals": "Rendered images and explanatory outputs already produced.",
+    "Session logs": "Audit trail for work completed across agent sessions.",
+    "Planned visuals": "Figures still to create for review, README, or dissertation use.",
+    "Dissertation support": "Protocols, governance, and narrative scaffolding.",
+    "Source documents": "Primary project-state inputs and reference notes.",
+  };
+  return purposes[label] || "Grouped by project use.";
+}
+
+function claimRiskLabel(claim) {
+  const text = textFromHtml(`${claim.uncertainty || ""} ${claim.next || ""}`).toLowerCase();
+  if (text.includes("governance") || text.includes("raw clinical")) return "governance";
+  if (text.includes("smoke") || text.includes("not yet") || text.includes("over-abstain")) return "review";
+  if (text.includes("regenerate") || text.includes("future")) return "watch";
+  return "stable";
+}
+
+function activeViewLabel(view) {
+  const entry = views.find(([id]) => id === view);
+  return entry ? entry[1] : "Overview";
 }
 
 function emptyState(message) {
@@ -4178,6 +4281,456 @@ dt {
   .artifact-group h3 {
     border-right: 0;
     border-bottom: 1px solid var(--line);
+  }
+}
+
+/* Design-evolution sprint: compact inner views, dossier reader, phase timeline, artifact shelf. */
+:root {
+  --design-primary: #1c211d;
+  --design-paper: #f4f0e7;
+  --design-paper-raised: #fbf8f1;
+  --design-paper-muted: #e9e3d6;
+  --design-grid: #dcd3c1;
+  --design-border: #cfc5b4;
+  --design-border-strong: #827867;
+  --design-text: #1c1b18;
+  --design-muted: #5e5a51;
+  --design-faint: #81796b;
+  --design-evidence: #0a7d82;
+  --design-warning: #b47a16;
+  --design-success: #247a57;
+  --design-danger: #a6423a;
+  --design-info: #2f6f9f;
+}
+
+.app-body {
+  background:
+    linear-gradient(90deg, rgba(28, 33, 29, 0.045) 1px, transparent 1px),
+    linear-gradient(rgba(130, 120, 103, 0.12) 1px, transparent 1px),
+    var(--design-paper);
+  background-size: 64px 100%, 100% 32px;
+  color: var(--design-text);
+}
+
+.app-shell {
+  grid-template-columns: 104px minmax(0, 1fr);
+}
+
+.app-rail {
+  background: var(--design-primary);
+  color: var(--design-paper);
+}
+
+.app-rail button:focus-visible,
+.app-mark:focus-visible,
+.app-search input:focus-visible,
+.record-list button:focus-visible,
+.panel-heading button:focus-visible,
+.action-panel button:focus-visible,
+.app-stats button:focus-visible,
+.source-card:focus-visible {
+  outline: 2px solid var(--design-warning);
+  outline-offset: 2px;
+}
+
+.app-rail button:hover,
+.app-rail button.is-active {
+  border-left-color: var(--design-warning);
+  background: rgba(244, 240, 231, 0.13);
+}
+
+.app-main {
+  width: min(1280px, calc(100vw - 104px));
+}
+
+.app-header {
+  border-bottom-color: rgba(28, 33, 29, 0.62);
+}
+
+.app-shell:not([data-view="overview"]) .app-main {
+  padding-top: 18px;
+}
+
+.app-shell:not([data-view="overview"]) .app-header {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  gap: 22px;
+  padding: 0 0 14px;
+  border-bottom-width: 1px;
+}
+
+.app-shell:not([data-view="overview"]) .app-header h1 {
+  max-width: 980px;
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 1.02;
+}
+
+.app-shell:not([data-view="overview"]) .app-header p {
+  max-width: 78ch;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.app-shell:not([data-view="overview"]) .header-meta {
+  margin-top: 10px;
+}
+
+.app-shell:not([data-view="overview"]) .app-search {
+  align-self: end;
+  padding: 10px;
+  background: rgba(251, 248, 241, 0.72);
+}
+
+.app-shell:not([data-view="overview"]) .source-ledger {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: 10px;
+}
+
+.app-shell:not([data-view="overview"]) .source-card {
+  min-height: 46px;
+  gap: 3px;
+  padding: 8px 10px;
+}
+
+.app-shell:not([data-view="overview"]) .source-card span {
+  display: none;
+}
+
+.app-shell:not([data-view="overview"]) .source-card strong {
+  font-size: 11px;
+}
+
+.app-shell:not([data-view="overview"]) .source-card small {
+  font-size: 9px;
+}
+
+.app-shell:not([data-view="overview"]) .app-stats {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin: 8px 0 14px;
+}
+
+.app-shell:not([data-view="overview"]) .app-stats button {
+  min-height: 38px;
+  grid-template-columns: auto auto;
+  gap: 8px;
+}
+
+.app-shell:not([data-view="overview"]) .app-stats strong {
+  font-size: 17px;
+}
+
+.app-shell:not([data-view="overview"]) .app-stats span {
+  font-size: 9px;
+}
+
+.archive-panel,
+.source-card,
+.app-search,
+.app-stats {
+  border-color: var(--design-border);
+  background-color: rgba(251, 248, 241, 0.78);
+  box-shadow: none;
+}
+
+.app-kicker {
+  color: var(--design-evidence);
+}
+
+.claim-app {
+  grid-template-columns: minmax(230px, 300px) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.record-list {
+  background: rgba(251, 248, 241, 0.56);
+}
+
+.record-list button {
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.record-list button small {
+  align-self: start;
+  padding: 4px 6px;
+  border: 1px solid rgba(10, 125, 130, 0.22);
+  color: var(--design-evidence);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.record-list button.is-active {
+  background: var(--design-paper-raised);
+  box-shadow: inset 3px 0 0 var(--design-evidence);
+}
+
+.dossier-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.82fr) minmax(360px, 1.18fr);
+  gap: 1px;
+  background: var(--design-border);
+}
+
+.dossier-block {
+  min-width: 0;
+  padding: 18px 20px 20px;
+  background: rgba(251, 248, 241, 0.88);
+}
+
+.dossier-block:first-child {
+  background: rgba(244, 240, 231, 0.94);
+}
+
+.dossier-block h3 {
+  margin: 0 0 12px;
+  color: var(--design-text);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 23px;
+  line-height: 1.1;
+}
+
+.dossier-block p,
+.dossier-block li,
+.dossier-block small {
+  color: #3f3b33;
+  font-size: 13px;
+  line-height: 1.52;
+}
+
+.dossier-block.is-evidence {
+  border-top: 3px solid rgba(10, 125, 130, 0.38);
+}
+
+.dossier-block.is-uncertainty {
+  border-top: 3px solid rgba(180, 122, 22, 0.42);
+}
+
+.dossier-block.is-next {
+  border-top: 3px solid rgba(36, 122, 87, 0.38);
+}
+
+.claim-dossier .claim-line,
+.claim-dossier .triad {
+  display: none;
+}
+
+.timeline-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: start;
+}
+
+.timeline-panel > .panel-heading,
+.timeline-summary,
+.phase-strip,
+.app-timeline {
+  grid-column: 1;
+}
+
+.timeline-next {
+  position: sticky;
+  top: 18px;
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  margin-left: 1px;
+  padding: 18px;
+  border-left: 1px solid var(--design-border);
+  background: rgba(251, 248, 241, 0.92);
+}
+
+.timeline-next h3 {
+  margin: 0 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  line-height: 1.05;
+}
+
+.timeline-next p {
+  margin: 0;
+}
+
+.phase-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid var(--design-border);
+  border-bottom: 1px solid var(--design-border);
+  background: var(--design-border);
+}
+
+.phase-strip article {
+  display: grid;
+  gap: 7px;
+  min-height: 82px;
+  padding: 14px 16px;
+  background: rgba(251, 248, 241, 0.78);
+}
+
+.phase-strip article.is-current {
+  background: rgba(199, 154, 56, 0.14);
+}
+
+.phase-strip span {
+  color: var(--design-faint);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.phase-strip strong {
+  font-size: 13px;
+  line-height: 1.24;
+}
+
+.phase-strip small {
+  color: var(--design-muted);
+}
+
+.app-timeline li.is-in-progress > span,
+.timeline-keyline li.is-in-progress span {
+  border-color: rgba(199, 154, 56, 0.5);
+  background: rgba(199, 154, 56, 0.14);
+  color: var(--design-warning);
+}
+
+.app-timeline li.is-review-needed > span {
+  border-color: rgba(47, 111, 159, 0.42);
+  background: rgba(47, 111, 159, 0.1);
+  color: var(--design-info);
+}
+
+.app-timeline li.is-blocked > span {
+  border-color: rgba(166, 66, 58, 0.42);
+  background: rgba(166, 66, 58, 0.1);
+  color: var(--design-danger);
+}
+
+.artifact-groups {
+  background: var(--design-border);
+}
+
+.artifact-group {
+  grid-template-columns: 220px minmax(0, 1fr);
+  background: rgba(251, 248, 241, 0.88);
+}
+
+.artifact-group h3 {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  background: rgba(244, 240, 231, 0.75);
+}
+
+.artifact-group h3 small {
+  color: var(--design-muted);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.artifact-shelf-item {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.6fr) minmax(260px, 1fr) minmax(210px, 0.74fr);
+  gap: 18px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--design-border);
+  background: rgba(251, 248, 241, 0.72);
+}
+
+.artifact-shelf-item:last-child {
+  border-bottom: 0;
+}
+
+.artifact-shelf-item:hover {
+  background: var(--design-paper-raised);
+}
+
+.artifact-shelf-item header {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+}
+
+.artifact-shelf-item h4 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.artifact-shelf-item p {
+  margin: 0;
+}
+
+.artifact-shelf-item code,
+.artifact-path {
+  overflow-wrap: anywhere;
+  font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+.artifact-shelf-item .status-chip {
+  border-color: rgba(10, 125, 130, 0.25);
+  color: var(--design-evidence);
+}
+
+.artifact-shelf-item.is-planned .status-chip {
+  border-color: rgba(180, 122, 22, 0.34);
+  color: var(--design-warning);
+}
+
+.artifact-shelf-item.is-reference .status-chip {
+  border-color: rgba(47, 111, 159, 0.3);
+  color: var(--design-info);
+}
+
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .app-main {
+    width: min(100vw, 1280px);
+  }
+
+  .app-shell:not([data-view="overview"]) .source-ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell:not([data-view="overview"]) .app-stats,
+  .dossier-grid,
+  .timeline-panel,
+  .phase-strip,
+  .artifact-group,
+  .artifact-shelf-item {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-next {
+    position: static;
+    grid-column: 1;
+    grid-row: auto;
+    margin-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--design-border);
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell:not([data-view="overview"]) .app-header,
+  .app-shell:not([data-view="overview"]) .source-ledger,
+  .app-shell:not([data-view="overview"]) .app-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .record-list button {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+
+  .record-list button small {
+    grid-column: 2;
+    width: fit-content;
   }
 }
 """
