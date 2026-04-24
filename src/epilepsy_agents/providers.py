@@ -117,7 +117,8 @@ class OllamaProvider:
             "messages": [message.__dict__ for message in messages],
             "stream": False,
             "format": schema,
-            "options": {"temperature": 0},
+            "think": False,
+            "options": {"temperature": 0, "num_predict": 512},
         }
         response = _post_json(
             f"{self.base_url}/chat",

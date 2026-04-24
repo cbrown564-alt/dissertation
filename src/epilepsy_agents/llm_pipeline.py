@@ -84,16 +84,23 @@ class SinglePromptLLMPipeline:
                 role="user",
                 content=(
                     "Extract the current seizure-frequency label from this synthetic epilepsy clinic letter. "
-                    "Return only JSON matching the provided schema.\n\n"
+                    "Prefer an explicit frequency label when the letter gives a count and time window; "
+                    "use unknown only when the current seizure frequency is genuinely absent, ambiguous, "
+                    "or impossible to normalize. Return only JSON matching the provided schema.\n\n"
                     f"Letter:\n{letter}"
                 ),
             ),
         ]
 
     def _prediction_from_result(self, content: str) -> Prediction:
-        payload = json.loads(content)
+        payload = json.loads(_extract_json_object(content))
         label = str(payload["label"]).strip()
         parsed = parse_label(label)
+        evidence_payload = payload.get("evidence", [])
+        if isinstance(evidence_payload, str):
+            evidence_payload = [{"text": evidence_payload, "start": None, "end": None, "source": "letter"}]
+        elif isinstance(evidence_payload, dict):
+            evidence_payload = [evidence_payload]
         evidence = [
             EvidenceSpan(
                 text=str(item["text"]),
@@ -101,8 +108,8 @@ class SinglePromptLLMPipeline:
                 end=item.get("end"),
                 source=str(item.get("source", "letter")),
             )
-            for item in payload.get("evidence", [])
-            if str(item.get("text", "")).strip()
+            for item in evidence_payload
+            if isinstance(item, dict) and str(item.get("text", "")).strip()
         ]
         warnings = [str(item) for item in payload.get("warnings", [])]
         return Prediction(
@@ -115,6 +122,48 @@ class SinglePromptLLMPipeline:
             purist_class=parsed.purist_class,
             warnings=warnings,
         )
+
+
+def _extract_json_object(content: str) -> str:
+    """Recover a JSON object from common local-model wrappers without storing raw output."""
+    stripped = content.strip()
+    if stripped.startswith("```"):
+        lines = stripped.splitlines()
+        if lines and lines[0].strip().startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].strip().startswith("```"):
+            lines = lines[:-1]
+        stripped = "\n".join(lines).strip()
+    if stripped.startswith("{") and stripped.endswith("}"):
+        return stripped
+
+    start = stripped.find("{")
+    if start == -1:
+        return stripped
+
+    depth = 0
+    in_string = False
+    escape = False
+    for index in range(start, len(stripped)):
+        char = stripped[index]
+        if escape:
+            escape = False
+            continue
+        if char == "\\" and in_string:
+            escape = True
+            continue
+        if char == '"':
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return stripped[start : index + 1]
+    return stripped
 
 
 def create_provider(name: str, model: str, base_url: str | None = None, timeout_seconds: int = 120) -> LLMProvider:

@@ -94,7 +94,7 @@ def load_project_state(root: Path, session_limit: int = 6) -> dict[str, object]:
     docs = {name: _read(root / path) for name, path in PROJECT_DOCS.items()}
     return {
         "claims": parse_current_state(docs["current_state"]),
-        "milestones": parse_table(docs["milestones"]),
+        "milestones": parse_tables(docs["milestones"]),
         "workstreams": parse_active_threads(docs["active_threads"]),
         "decisions": parse_decisions(docs["decisions"]),
         "artifacts": parse_table(docs["artifact_registry"]),
@@ -192,6 +192,29 @@ def parse_session_logs(directory: Path, limit: int = 6) -> list[SessionLog]:
 
 
 def parse_table(markdown: str) -> list[dict[str, str]]:
+    return _first_table(markdown)
+
+
+def parse_tables(markdown: str) -> list[dict[str, str]]:
+    lines = [line.strip() for line in markdown.splitlines()]
+    rows: list[dict[str, str]] = []
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        if not line.startswith("|") or index + 1 >= len(lines) or not _is_table_separator(lines[index + 1]):
+            index += 1
+            continue
+        headers = _split_table_row(line)
+        index += 2
+        while index < len(lines) and lines[index].startswith("|"):
+            cells = _split_table_row(lines[index])
+            rows.append({header: _clean(cells[pos]) if pos < len(cells) else "" for pos, header in enumerate(headers)})
+            index += 1
+        continue
+    return rows
+
+
+def _first_table(markdown: str) -> list[dict[str, str]]:
     lines = [line.strip() for line in markdown.splitlines()]
     for index, line in enumerate(lines):
         if not line.startswith("|"):
@@ -223,8 +246,9 @@ def render_dashboard(source: dict[str, object], generated_at: str) -> str:
     sessions = source["sessions"]
     last_updated = source["last_updated"]
 
-    active_milestone = _first_matching(milestones, "Status", {"Active", "Planned"}) or {}
+    active_milestone = _first_incomplete_milestone(milestones) or {}
     latest_claim = claims[0] if claims else None
+    evaluation_claim = _claim_by_title(claims, "Latest Evaluation Claim")
     open_decisions = list(decisions)
     app_data = {
         "generatedAt": generated_at,
@@ -235,6 +259,23 @@ def render_dashboard(source: dict[str, object], generated_at: str) -> str:
         "activeMilestone": {
             "name": _inline(active_milestone.get("Milestone", "Visibility dashboard")),
             "next": _inline(active_milestone.get("Next Action", "Review the current state and decide the next action.")),
+            "status": _inline(active_milestone.get("Status", "Review")),
+            "outcome": _inline(
+                active_milestone.get("Outcome", "")
+                or active_milestone.get("Intended Outcome", "")
+            ),
+            "risk": _inline(active_milestone.get("Remaining Risk", "")),
+            "evidence": _inline(
+                active_milestone.get("Evidence", "")
+                or active_milestone.get("Evidence Source", "")
+            ),
+        },
+        "evaluationClaim": {
+            "title": evaluation_claim.title if evaluation_claim else "Latest evaluation",
+            "claim": _inline(evaluation_claim.claim) if evaluation_claim else "No evaluation claim found.",
+            "evidence": _block(evaluation_claim.evidence) if evaluation_claim else "",
+            "uncertainty": _block(evaluation_claim.uncertainty) if evaluation_claim else "",
+            "next": _block(evaluation_claim.next_action) if evaluation_claim else "",
         },
         "stats": [
             {"label": "Claims", "value": len(claims)},
@@ -272,8 +313,8 @@ def render_dashboard(source: dict[str, object], generated_at: str) -> str:
             {
                 "title": _inline(row.get("Milestone", "")),
                 "status": row.get("Status", ""),
-                "outcome": _inline(row.get("Outcome", "")),
-                "evidence": _inline(row.get("Evidence", "")),
+                "outcome": _inline(row.get("Outcome", "") or row.get("Intended Outcome", "")),
+                "evidence": _inline(row.get("Evidence", "") or row.get("Evidence Source", "")),
                 "risk": _inline(row.get("Remaining Risk", "")),
                 "next": _inline(row.get("Next Action", "")),
             }
@@ -591,6 +632,21 @@ def _relative_doc_path(path: Path) -> str:
     return path.name
 
 
+def _claim_by_title(claims: list[Claim], title: str) -> Claim | None:
+    for claim in claims:
+        if claim.title == title:
+            return claim
+    return None
+
+
+def _first_incomplete_milestone(milestones: list[dict[str, str]]) -> dict[str, str] | None:
+    for milestone in milestones:
+        status = milestone.get("Status", "").strip().lower()
+        if status and status != "complete":
+            return milestone
+    return milestones[-1] if milestones else None
+
+
 def _js() -> str:
     return r"""
 const data = JSON.parse(document.getElementById("notebook-data").textContent);
@@ -717,11 +773,24 @@ function renderOverview() {
     <div class="overview-grid">
       ${claimDossier(claim, "Current claim")}
       <aside class="archive-panel action-panel">
-        <p class="app-kicker">Active path</p>
+        <p class="app-kicker">Active research path</p>
+        <span class="status-chip ${statusClass(data.activeMilestone.status)}">${data.activeMilestone.status}</span>
         <h3>${data.activeMilestone.name}</h3>
         <p>${data.activeMilestone.next}</p>
         <button type="button" data-view-link="timeline">Open timeline</button>
       </aside>
+      <section class="archive-panel evaluation-panel">
+        <div class="panel-heading row">
+          <div><p class="app-kicker">Evaluation signal</p><h2>${data.evaluationClaim.title}</h2></div>
+          <button type="button" data-view-link="claims">Open claim</button>
+        </div>
+        <p class="body-lead">${data.evaluationClaim.claim}</p>
+        <div class="compact-fields">
+          <section><b>Evidence</b>${data.evaluationClaim.evidence}</section>
+          <section><b>Uncertainty</b>${data.evaluationClaim.uncertainty}</section>
+          <section><b>Next experiment</b>${data.evaluationClaim.next}</section>
+        </div>
+      </section>
       <section class="archive-panel index-panel session-panel">
         <div class="panel-heading row">
           <div><p class="app-kicker">Run ledger</p><h2>Recent Sessions</h2></div>
@@ -822,7 +891,7 @@ function normalizedStatus(status) {
 function renderSessions() {
   const sessions = filtered(data.sessions);
   return `<section class="archive-panel"><div class="panel-heading"><p class="app-kicker">Run ledger</p><h2>Recent Session Feed</h2></div>${rowsOrEmpty(sessions.map((session) => `
-    <details class="session-record" open>
+    <details class="session-record">
       <summary><span>${session.date}</span><strong>${session.title}</strong><a href="${session.href}">source log</a></summary>
       <p>${session.objective}</p>
       <div class="quad">
@@ -851,7 +920,12 @@ function renderWorkstreams() {
 
 function renderArtifacts() {
   const artifacts = filtered(data.artifacts);
-  return `<section class="archive-panel"><div class="panel-heading"><p class="app-kicker">Artifact shelf</p><h2>Outputs And Planned Visuals</h2></div><div class="shelf">${rowsOrEmpty(artifacts.map(artifactRow), "No matching artifacts.")}</div></section>`;
+  const groups = groupedArtifacts(artifacts);
+  return `<section class="archive-panel"><div class="panel-heading"><p class="app-kicker">Artifact shelf</p><h2>Outputs And Planned Visuals</h2></div><div class="artifact-groups">${rowsOrEmpty(groups.map(([label, rows]) => `
+    <section class="artifact-group">
+      <h3>${label}</h3>
+      <div class="shelf">${rowsOrEmpty(rows.map(artifactRow), "No artifacts in this group.")}</div>
+    </section>`), "No matching artifacts.")}</div></section>`;
 }
 
 function renderDecisions() {
@@ -894,7 +968,7 @@ function statButton(item) {
 }
 
 function sessionRow(session) {
-  return `<article class="index-row"><span>${session.date}</span><strong>${session.title}</strong><small>${session.decision}</small></article>`;
+  return `<article class="index-row"><span>${session.date}</span><strong>${session.title}</strong><small>${session.objective || session.decision}</small></article>`;
 }
 
 function artifactRow(item) {
@@ -903,6 +977,27 @@ function artifactRow(item) {
 
 function rowsOrEmpty(rows, message) {
   return rows.length ? rows.join("") : emptyState(message);
+}
+
+function groupedArtifacts(artifacts) {
+  const buckets = [
+    ["Active evidence", []],
+    ["Source documents", []],
+    ["Session logs", []],
+    ["Planned visuals", []],
+    ["Reference", []],
+  ];
+  const byLabel = Object.fromEntries(buckets);
+  artifacts.forEach((item) => {
+    const name = `${item.name} ${item.path}`.toLowerCase();
+    const status = String(item.status || "").toLowerCase();
+    if (status.includes("planned") || name.includes("to be generated")) byLabel["Planned visuals"].push(item);
+    else if (name.includes("session log") || name.includes("run_logs/")) byLabel["Session logs"].push(item);
+    else if (status.includes("active") || name.includes("manifest") || name.includes("run record") || name.includes("dashboard")) byLabel["Active evidence"].push(item);
+    else if (status.includes("reference")) byLabel["Reference"].push(item);
+    else byLabel["Source documents"].push(item);
+  });
+  return buckets.filter(([, rows]) => rows.length);
 }
 
 function emptyState(message) {
@@ -3958,8 +4053,131 @@ dt {
     text-align: left;
   }
 
-  .timeline-keyline li small {
+.timeline-keyline li small {
     grid-column: 2;
+  }
+}
+
+/* Research-workspace pass: make the first screen decision-shaped. */
+.evaluation-panel {
+  border-top: 2px solid rgba(22, 141, 145, 0.44);
+}
+
+.evaluation-panel .body-lead {
+  max-width: 82ch;
+}
+
+.compact-fields {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(220px, 0.62fr) minmax(220px, 0.62fr);
+  border-top: 1px solid var(--line);
+}
+
+.compact-fields section {
+  min-width: 0;
+  padding: 15px 17px 17px;
+  border-right: 1px solid var(--line);
+}
+
+.compact-fields section:last-child {
+  border-right: 0;
+}
+
+.compact-fields table {
+  font-size: 12px;
+}
+
+.compact-fields th,
+.compact-fields td {
+  padding: 6px 7px;
+}
+
+.status-chip {
+  width: fit-content;
+  padding: 7px 9px;
+  border: 1px solid rgba(183, 121, 31, 0.32);
+  background: rgba(183, 121, 31, 0.1);
+  color: var(--review-amber);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.status-chip.is-complete {
+  border-color: rgba(47, 125, 87, 0.28);
+  background: rgba(47, 125, 87, 0.1);
+  color: var(--clinical-green);
+}
+
+.action-panel .status-chip {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.action-panel h3 {
+  grid-column: 1;
+}
+
+.action-panel p {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+}
+
+.action-panel button {
+  grid-column: 3;
+  grid-row: 2 / span 2;
+}
+
+.artifact-groups {
+  display: grid;
+  gap: 1px;
+  padding: 0;
+  background: var(--line);
+}
+
+.artifact-group {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  background: rgba(255, 253, 247, 0.84);
+}
+
+.artifact-group h3 {
+  margin: 0;
+  padding: 16px 17px;
+  border-right: 1px solid var(--line);
+  color: #2d2a24;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.artifact-group .shelf {
+  min-width: 0;
+}
+
+.artifact-group .index-row {
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .compact-fields,
+  .artifact-group {
+    grid-template-columns: 1fr;
+  }
+
+  .action-panel .status-chip,
+  .action-panel h3,
+  .action-panel p,
+  .action-panel button {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .compact-fields section,
+  .artifact-group h3 {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
   }
 }
 """

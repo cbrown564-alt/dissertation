@@ -7,6 +7,7 @@ from epilepsy_agents.visibility import (
     parse_active_threads,
     parse_current_state,
     parse_table,
+    parse_tables,
 )
 
 
@@ -58,6 +59,28 @@ Regenerate the page after changing source docs.
 
         self.assertEqual(rows[1]["Milestone"], "Phase 3")
         self.assertEqual(rows[1]["Status"], "Planned")
+
+    def test_parse_all_milestone_tables(self) -> None:
+        rows = parse_tables(
+            """# Milestones
+
+## Delivered
+
+| Milestone | Status | Outcome |
+| --- | --- | --- |
+| Phase 1 | Complete | State docs exist. |
+
+## Phase A
+
+| Milestone | Status | Intended Outcome |
+| --- | --- | --- |
+| M-A2 h003 | In progress | Local LLM smoke. |
+"""
+        )
+
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[1]["Milestone"], "M-A2 h003")
+        self.assertEqual(rows[1]["Status"], "In progress")
 
     def test_parse_active_threads(self) -> None:
         threads = parse_active_threads(

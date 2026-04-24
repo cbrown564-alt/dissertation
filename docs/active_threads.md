@@ -17,17 +17,20 @@ How can the deterministic and future LLM-backed harnesses reduce seizure-frequen
   - `h001_single_pass`: exact 0.25, monthly 0.43, pragmatic micro-F1 0.50, purist micro-F1 0.48, NS F1 0.73.
 - First local LLM smoke run:
   - `h003_single_prompt_llm`: exact 0.20, monthly 0.20, pragmatic micro-F1 0.20, purist micro-F1 0.20, invalid-output rate 0.80, mean latency about 52.9 s on `ollama` with `qwen3.5:4b`.
+- Updated local LLM smoke after disabling Ollama thinking and tolerating schema-near JSON:
+  - `h003_single_prompt_llm` n5: exact 0.40, monthly 0.40, pragmatic micro-F1 0.40, purist micro-F1 0.40, invalid-output rate 0.40, mean latency about 0.95 s.
+  - `h003_single_prompt_llm` n25: exact 0.20, monthly 0.28, pragmatic micro-F1 0.36, purist micro-F1 0.32, invalid-output rate 0.28, mean latency about 1.29 s.
 - `seizure_free_error` dropped from 18 to 9 on multi and from 19 to 13 on single; `correct` rose from 20 to 31 on multi.
-- Run records: [multi n100](../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json), [single n100](../project_state/runs/20260424T144606Z_h001_single_pass_n100.json), [h003 n5](../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json).
+- Run records: [multi n100](../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json), [single n100](../project_state/runs/20260424T144606Z_h001_single_pass_n100.json), [h003 original n5](../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json), [h003 updated n25](../project_state/runs/20260424T180629Z_h003_single_prompt_llm_n25.json).
 - Session log: [20260424T144639Z_seizure_free_detection_expansion.md](run_logs/20260424T144639Z_seizure_free_detection_expansion.md).
 
 ### Blocker Or Risk
 
-The deterministic baseline still has residual seizure-free and cluster-family errors, but the immediate LLM-side blocker is different: `h003` currently falls back to `unknown` on most rows, so the first prompt/schema setup is not yet a credible comparison baseline.
+The deterministic baseline still has residual seizure-free and cluster-family errors. The immediate LLM-side blocker is no longer provider timeout; `h003` now runs quickly, but it over-abstains and still has invalid/schema-near outputs on a minority of rows.
 
 ### Next Action
 
-Review the four `unknown` rows from `h003`, tighten prompt/schema handling for explicit frequency extraction, and rerun `h003` on 25 rows before returning to `h004` or further deterministic cleanup.
+Classify the 25-row `h003` abstentions, then add one narrow intervention for cluster/window/seizure-free extraction before returning to `h004` or further deterministic cleanup.
 
 ## Provider And Local Model Setup
 
@@ -41,15 +44,16 @@ Which local runtime and first model should be used for schema-constrained extrac
 - Ollama is installed locally and its API is responding at `http://localhost:11434/api`.
 - Local models currently visible through Ollama include `qwen3.5:4b`, `qwen3.5:9b`, `qwen3.5:35b-a3b`, and `llama3.1:latest`.
 - `provider-smoke` succeeded end to end against local `qwen3.5:4b`.
+- `h003` now sends `think: false` with a capped Ollama completion budget, avoiding the earlier timeout caused by model reasoning traces.
 - Candidate model tiers are documented in [local_model_feasibility.md](local_model_feasibility.md).
 
 ### Blocker Or Risk
 
-Local runtime installation is no longer the blocker. The active risk is whether the first chosen model plus prompt/schema setup can produce valid structured outputs at an acceptable latency.
+Local runtime installation is no longer the blocker. The active risk is whether the first chosen model plus prompt/schema setup can avoid excessive abstention while preserving evidence support.
 
 ### Next Action
 
-Keep Ollama as the active runtime, improve `h003` validity on `qwen3.5:4b`, and compare against `qwen3.5:9b` if the smaller model stays too abstention-heavy.
+Keep Ollama as the active runtime, improve `h003` extraction validity on `qwen3.5:4b`, and compare against `qwen3.5:9b` if the smaller model stays too abstention-heavy.
 
 ## Evidence Notebook Visibility
 

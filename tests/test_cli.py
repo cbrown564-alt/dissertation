@@ -62,6 +62,19 @@ class ProviderSmokeTests(unittest.TestCase):
         self.assertEqual(fake_provider.calls[0]["schema"]["required"], ["status", "label"])
 
 
+class OllamaProviderTests(unittest.TestCase):
+    def test_ollama_caps_completion_tokens(self) -> None:
+        with patch("epilepsy_agents.providers._post_json", return_value={"message": {"content": "{}"}}) as post_json:
+            provider = cli.local_ollama_provider(model="qwen-test", base_url="http://localhost:11434/api")
+
+            provider.chat_json([], {"type": "object"})
+
+        payload = post_json.call_args.args[1]
+        self.assertIs(payload["think"], False)
+        self.assertEqual(payload["options"]["temperature"], 0)
+        self.assertEqual(payload["options"]["num_predict"], 512)
+
+
 class _FakeProvider:
     def __init__(self) -> None:
         self.calls: list[dict[str, object]] = []

@@ -8,24 +8,24 @@ This page is the top-level Evidence Notebook snapshot. Each claim should stay sh
 
 ### Claim
 
-The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from provider setup to output reliability.
+The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour.
 
 ### Evidence
 
 - Project question and objectives are defined in [project_specification.md](project_specification.md).
 - The operating research posture is defined in [research_program.md](research_program.md).
 - Deterministic `single` and `multi` harnesses are registered in [project_state/harnesses/README.md](../project_state/harnesses/README.md).
-- A first LLM-backed run record now exists at [20260424T171400Z_h003_single_prompt_llm_n5.json](../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json).
+- A first 25-row LLM-backed smoke run now exists at [20260424T180629Z_h003_single_prompt_llm_n25.json](../project_state/runs/20260424T180629Z_h003_single_prompt_llm_n25.json).
 - The Evidence Notebook direction for project visibility is selected in [agent_visibility_plan.md](agent_visibility_plan.md).
 - Phase 1 project-state pages and the Phase 2 session logging convention now exist under `docs/` and `docs/run_logs/`.
 
 ### Uncertainty
 
-The current LLM path is only at smoke-test maturity. The first `h003` run shows valid local inference but a high invalid-output or fallback-to-`unknown` rate, so the dissertation question is not yet answerable from LLM results.
+The current LLM path is only at smoke-test maturity. Ollama/Qwen now returns fast structured or schema-near outputs, but `h003` still over-abstains on many rows and remains below the deterministic baselines.
 
 ### Next Action
 
-Keep iteration narrow: tighten the `h003` prompt/schema path until invalid-output and `unknown` fallbacks drop enough for a 25-row smoke.
+Keep iteration narrow: reduce `h003` over-abstention on cluster, seizure-free, and windowed frequency cases before starting `h004`.
 
 ## Visibility Claim
 
@@ -55,7 +55,7 @@ Regenerate the dashboard after substantial updates to project-state docs or sess
 
 ### Claim
 
-The latest completed evaluation work now has two layers: the deterministic paired 100-row smoke still defines the strongest baseline result, and the first local `h003_single_prompt_llm` smoke confirms end-to-end LLM execution but with poor extraction reliability.
+The latest completed evaluation work now has two layers: the deterministic paired 100-row smoke still defines the strongest baseline result, and the local `h003_single_prompt_llm` path now runs quickly enough for 25-row smoke testing but remains extraction-fragile.
 
 ### Evidence
 
@@ -66,19 +66,21 @@ The latest completed evaluation work now has two layers: the deterministic paire
 
 The manifest index is [project_state/experiments/manifest.csv](../project_state/experiments/manifest.csv). Session log: [20260424T144639Z_seizure_free_detection_expansion.md](run_logs/20260424T144639Z_seizure_free_detection_expansion.md).
 
-First LLM smoke:
+Current LLM smoke:
 
 | Harness | Run | Exact | Monthly 15 pct | Pragmatic micro-F1 | Purist micro-F1 | Invalid-output rate | Mean latency |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | `h003_single_prompt_llm` | [20260424T171400Z_h003_single_prompt_llm_n5.json](../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json) | 0.20 | 0.20 | 0.20 | 0.20 | 0.80 | 52.9 s |
+| `h003_single_prompt_llm` | [20260424T180607Z_h003_single_prompt_llm_n5.json](../project_state/runs/20260424T180607Z_h003_single_prompt_llm_n5.json) | 0.40 | 0.40 | 0.40 | 0.40 | 0.40 | 0.95 s |
+| `h003_single_prompt_llm` | [20260424T180629Z_h003_single_prompt_llm_n25.json](../project_state/runs/20260424T180629Z_h003_single_prompt_llm_n25.json) | 0.20 | 0.28 | 0.36 | 0.32 | 0.28 | 1.29 s |
 
 ### Uncertainty
 
-The deterministic 100-row comparison is still a smoke test. The new `h003` result is an even earlier smoke: only five rows, high latency, and a strong bias toward `unknown`, so it should be treated as plumbing validation rather than a real baseline comparison.
+The deterministic 100-row comparison is still a smoke test. The new `h003` 25-row result is a usable local-model smoke, but it is not yet a credible comparison baseline because `unknown` and `no seizure frequency reference` predictions dominate.
 
 ### Next Action
 
-Inspect the four `unknown` outputs in `h003`, tighten the prompt and schema handling, and rerun `h003` on 25 rows before starting `h004`.
+Classify the 25-row `h003` abstentions and add a narrow prompt or candidate-span aid for cluster/window/seizure-free cases, then rerun `h003` on the same 25-row slice.
 
 ## Data And Governance Claim
 
@@ -114,8 +116,8 @@ The local codebase already has the scaffolding needed for deterministic evaluati
 
 ### Uncertainty
 
-The local runtime now works through Ollama, but the first `h003` smoke suggests the prompt/schema path is fragile and slower than expected on `qwen3.5:4b`.
+The local runtime now works through Ollama, and `think: false` plus a completion cap makes `qwen3.5:4b` fast enough for short smoke runs. The remaining issue is extraction reliability, not provider availability.
 
 ### Next Action
 
-Tune the local `ollama` plus `qwen3.5:4b` path for `h003`, then compare whether `qwen3.5:9b` improves validity enough to justify the extra latency.
+Improve `h003` abstention behaviour on `qwen3.5:4b`, then compare whether `qwen3.5:9b` improves validity enough to justify the extra latency.

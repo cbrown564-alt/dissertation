@@ -46,7 +46,9 @@ OPENAI_RESPONSE_FORMAT: dict[str, object] = {
 
 def system_prompt() -> str:
     return (
+        "/no_think\n"
         "You extract seizure-frequency information from epilepsy clinic letters. "
+        "Do not include deliberation, hidden reasoning, markdown, or explanatory prose. "
         "Return only JSON conforming to the supplied schema. Use the structured "
         "label scheme: explicit rates such as '2 per week', windows such as "
         "'6 per 7 month', seizure-free durations, cluster labels such as "

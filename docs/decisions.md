@@ -142,3 +142,26 @@ Project-state files should be written as claim, evidence, uncertainty, and next-
 
 [agent_visibility_plan.md](agent_visibility_plan.md), [agent_visibility_ui_mockups.html](agent_visibility_ui_mockups.html).
 
+## D007: Freeze Further Deterministic Regex Expansion
+
+### Decision
+
+Do not continue broadening the deterministic regex extractor after the seizure-free detection expansion; use it as a comparison floor and move effort to the LLM-backed Phase A path.
+
+### Rationale
+
+The deterministic baseline has already served its purpose: it gives a reproducible, offline floor for paired comparisons. Further regex tuning would improve the scaffold but would not answer the dissertation's central question about evidence-grounded LLM harness reliability.
+
+### Rejected Alternatives
+
+- Keep tuning deterministic seizure-frequency patterns until the smoke score plateaus.
+- Treat the deterministic multi-agent variant as the primary research contribution.
+- Delay `h003` and `h004` until deterministic cluster and window cases are exhaustively covered.
+
+### Consequence
+
+Future work should preserve deterministic comparability, but the next useful research action is to reduce `h003` abstention and then build the role-separated LLM harness.
+
+### Evidence
+
+[milestones.md](milestones.md), [active_threads.md](active_threads.md), [run_logs/20260424T144639Z_seizure_free_detection_expansion.md](run_logs/20260424T144639Z_seizure_free_detection_expansion.md).
