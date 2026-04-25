@@ -33,6 +33,19 @@ Future harness variants should receive stable IDs before results are compared, f
 - `h004_multi_agent_self_consistency_3`
 - `h005_multi_agent_self_consistency_5`
 
+## Project Phases
+
+The project roadmap is tracked as explicit phases in [milestones.md](milestones.md). The phases align the harness IDs above to the dissertation's critical path:
+
+- **Delivered infrastructure**: repo scaffold, deterministic `single` and `multi` harnesses, evaluation harness, run manifest, session logging, and Evidence Notebook dashboard.
+- **Phase A — Stand up the LLM path**: local runtime live (M-A1), `h003_single_prompt_llm` schema-constrained smoke (M-A2), `h004_multi_agent_llm` role-separated pipeline with the first paired `h003` vs `h004` comparison (M-A3).
+- **Phase B — Reliability interventions**: evidence-requiring verification (M-B1), self-consistency `h005_*` at k=3 and k=5 (M-B2), evidence-required vs answer-only ablation (M-B3). Phase B is where the dissertation's primary results come from.
+- **Phase C — Scale and external baselines**: full synthetic corpus (M-C1), Gan et al. fine-tuned baseline comparison (M-C2), optional budget-matched closed-provider comparison on synthetic data (M-C3).
+- **Phase D — Locked-down real-data evaluation**: governance-gated real KCH letter evaluation with aggregate-metrics-only export (M-D1). Optional.
+- **Phase E — Dissertation and packaging**: first draft (M-E1), curated visual artifacts (M-E2), final paper and reproducibility guide (M-E3).
+
+The deterministic harnesses remain the reproducible offline floor per [D002](decisions.md), but further deterministic regex expansion is explicitly frozen per [D007](decisions.md). New research effort should improve Phase A quality (abstention and schema validity on `h003`) before building `h004`.
+
 ## Allowed Experimental Variables
 
 Good harness-level variables:

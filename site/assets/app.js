@@ -304,7 +304,17 @@ function renderSessions() {
   const sessions = filtered(data.sessions);
   return `<section class="archive-panel"><div class="panel-heading"><p class="app-kicker">Run ledger</p><h2>Recent Session Feed</h2></div>${rowsOrEmpty(sessions.map((session) => `
     <details class="session-record">
-      <summary><span>${session.date}</span><strong>${session.title}</strong><a href="${session.href}">source log</a></summary>
+      <summary>
+        <span>${session.date}</span>
+        <div class="session-summary-copy">
+          <strong>${session.title}</strong>
+          <p>${session.outcomePlain || textFromHtml(session.objective)}</p>
+        </div>
+        <div class="session-summary-meta">
+          <div class="session-tags">${(session.tags || []).map((tag) => `<small>${tag}</small>`).join("")}</div>
+          <a href="${session.href}">source log</a>
+        </div>
+      </summary>
       <p>${session.objective}</p>
       <div class="quad">
         <section><b>Outcome</b>${session.outcome}</section>
@@ -318,16 +328,25 @@ function renderSessions() {
 
 function renderWorkstreams() {
   const workstreams = filtered(data.workstreams);
-  return `<div class="card-grid">${rowsOrEmpty(workstreams.map((thread) => `
-    <article class="archive-panel">
-      <div class="panel-heading"><p class="app-kicker">Thread</p><h2>${thread.name}</h2></div>
-      <p class="body-lead">${thread.question}</p>
-      <div class="stacked-fields">
+  return `<section class="workstream-board">${rowsOrEmpty(workstreams.map((thread) => `
+    <article class="workstream-lane ${statusClass(thread.priority)}">
+      <header>
+        <div>
+          <p class="app-kicker">Research lane</p>
+          <h2>${thread.name}</h2>
+        </div>
+        <span class="lane-priority ${statusClass(thread.priority)}">${priorityLabel(thread.priority)}</span>
+      </header>
+      <section class="lane-question">
+        <b>Current question</b>
+        <p>${thread.question}</p>
+      </section>
+      <div class="lane-grid">
         <section><b>Latest evidence</b>${thread.evidence}</section>
-        <section><b>Risk</b>${thread.risk}</section>
-        <section><b>Next action</b>${thread.next}</section>
+        <section><b>Risk or blocker</b>${thread.risk}</section>
+        <section><b>Next move</b>${thread.next}</section>
       </div>
-    </article>`), "No matching workstreams.")}</div>`;
+    </article>`), "No matching workstreams.")}</section>`;
 }
 
 function renderArtifacts() {
@@ -344,9 +363,21 @@ function renderDecisions() {
   const decisions = filtered(data.decisions);
   return `<section class="archive-panel"><div class="panel-heading"><p class="app-kicker">Decision register</p><h2>Decisions</h2></div>${rowsOrEmpty(decisions.map((decision) => `
     <article class="decision-record">
-      <span>${decision.id}</span>
-      <div><h3>${decision.title}</h3><p>${decision.decision}</p></div>
-      <section><b>Consequence</b>${decision.consequence}<small>${decision.evidence}</small></section>
+      <div class="decision-anchor">
+        <span>${decision.id}</span>
+        <div class="decision-markers">${(decision.markers || []).map((marker) => `<small>${marker}</small>`).join("")}</div>
+      </div>
+      <div class="decision-body">
+        <header>
+          <h3>${decision.title}</h3>
+          <p>${decision.decision}</p>
+        </header>
+        <div class="decision-grid">
+          <section><b>Rationale</b>${decision.rationale}</section>
+          <section><b>Consequence</b>${decision.consequence}</section>
+          <section><b>Evidence</b><p>${decision.evidence}</p></section>
+        </div>
+      </div>
     </article>`), "No matching decisions.")}</section>`;
 }
 
@@ -438,6 +469,16 @@ function artifactGroupPurpose(label) {
     "Source documents": "Primary project-state inputs and reference notes.",
   };
   return purposes[label] || "Grouped by project use.";
+}
+
+function priorityLabel(priority) {
+  const labels = {
+    active: "active",
+    waiting: "waiting",
+    blocked: "blocked",
+    watch: "watch",
+  };
+  return labels[priority] || "active";
 }
 
 function claimRiskLabel(claim) {

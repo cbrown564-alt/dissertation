@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -177,11 +178,13 @@ def _shape_app_data(
                 "date": session.date or session.path.stem[:8],
                 "objective": inline(session.objective),
                 "outcome": block(session.outcome),
+                "outcomePlain": _plain_text(session.outcome),
                 "evidence": block(session.evidence),
                 "uncertainty": block(session.uncertainty),
                 "handoff": block(session.handoff),
                 "decision": inline(session.decision),
                 "href": relative_doc_path(session.path),
+                "tags": _session_tags(session),
             }
             for session in sessions
         ],
@@ -190,8 +193,12 @@ def _shape_app_data(
                 "name": thread.name,
                 "question": inline(thread.question),
                 "evidence": block(thread.evidence),
+                "evidencePlain": _plain_text(thread.evidence),
                 "risk": block(thread.risk),
+                "riskPlain": _plain_text(thread.risk),
                 "next": block(thread.next_action),
+                "nextPlain": _plain_text(thread.next_action),
+                "priority": _workstream_priority(thread),
             }
             for thread in workstreams
         ],
@@ -213,6 +220,7 @@ def _shape_app_data(
                 "rationale": block(decision.rationale),
                 "consequence": block(decision.consequence),
                 "evidence": inline(decision.evidence),
+                "markers": _decision_markers(decision),
             }
             for decision in decisions
         ],
@@ -234,3 +242,97 @@ def _first_incomplete_milestone(
         if status and status != "complete":
             return milestone
     return milestones[-1] if milestones else None
+
+
+def _plain_text(value: str) -> str:
+    text = re.sub(r"`([^`]+)`", r"\1", value or "")
+    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def _session_tags(session) -> list[str]:
+    tags: list[str] = []
+    evidence = session.evidence.lower()
+
+    if "files changed:" in evidence:
+        match = re.search(r"files changed:\s*(.+)", session.evidence, flags=re.IGNORECASE)
+        if match:
+            count = match.group(1).count("[")
+            if count:
+                tags.append(f"{count} files changed")
+            else:
+                tags.append("files changed")
+
+    if "tests or checks:" in evidence:
+        tags.append("tests run")
+
+    if any(
+        phrase in evidence
+        for phrase in ("generated artifact", "generated artifacts", ".png", ".svg", ".html", ".pptx")
+    ):
+        tags.append("artifacts updated")
+
+    if "run records:" in evidence or "manifest:" in evidence:
+        tags.append("run evidence")
+
+    if "decision" in (session.decision or "").lower():
+        tags.append(session.decision.strip())
+
+    seen: set[str] = set()
+    deduped: list[str] = []
+    for tag in tags:
+        if tag not in seen:
+            seen.add(tag)
+            deduped.append(tag)
+    return deduped[:4]
+
+
+def _workstream_priority(thread) -> str:
+    combined = " ".join(
+        [
+            thread.name or "",
+            thread.question or "",
+            thread.risk or "",
+            thread.next_action or "",
+        ]
+    ).lower()
+    if any(term in combined for term in ("blocked", "blocker", "cannot", "depends on")):
+        return "blocked"
+    if any(term in combined for term in ("future", "later", "not active", "watch")):
+        return "watch"
+    if any(term in combined for term in ("keep", "monitor", "waiting")):
+        return "waiting"
+    return "active"
+
+
+def _decision_markers(decision) -> list[str]:
+    markers: list[str] = []
+    text = " ".join(
+        [
+            decision.title or "",
+            decision.decision or "",
+            decision.rationale or "",
+            decision.consequence or "",
+            decision.evidence or "",
+        ]
+    ).lower()
+
+    if any(term in text for term in ("future work", "future sessions", "next useful research action", "govern")):
+        markers.append("governs future work")
+    if any(term in text for term in ("real-data", "real data", "clinical", "governance", "privacy")):
+        markers.append("real-data governance")
+    if any(term in text for term in ("evaluation", "metric", "metrics", "harness", "pareto")):
+        markers.append("evaluation protocol")
+    if any(term in text for term in ("local runtime", "provider", "ollama", "server")):
+        markers.append("runtime architecture")
+    if any(term in text for term in ("first", "start", "freeze", "prefer", "keep")):
+        markers.append("governs future work")
+
+    seen: set[str] = set()
+    deduped: list[str] = []
+    for marker in markers:
+        if marker not in seen:
+            seen.add(marker)
+            deduped.append(marker)
+    return deduped[:3]

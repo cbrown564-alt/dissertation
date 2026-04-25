@@ -64,3 +64,20 @@ Seizure-free detection expansion:
 - Ran paired 100-row synthetic smoke after the change: `20260424T144559Z_h002_multi_agent_verify_n100` and `20260424T144606Z_h001_single_pass_n100`.
 - Result: multi exact 0.20->0.31, monthly 0.35->0.48, pragmatic micro-F1 0.42->0.55, purist micro-F1 0.40->0.53, NS F1 0.26->0.82; single exact 0.18->0.25, monthly 0.33->0.43, pragmatic micro-F1 0.40->0.50, purist micro-F1 0.38->0.48, NS F1 0.00->0.73; `seizure_free_error` dropped from 18 to 9 on multi and from 19 to 13 on single; no regressions in other error categories.
 - Decision: keep this harness variant; next action is to audit residual NS false positives and move on to `unknown_or_no_reference_error` or `cluster_error`.
+
+Phase A kickoff:
+
+- Added a `provider-smoke` CLI command that probes `lmstudio`, `vllm`, or `ollama` and can round-trip a minimal schema-constrained JSON request through `src/epilepsy_agents/providers.py` (M-A1 verification path).
+- Brought Ollama online with `qwen3.5:4b` available locally at `http://localhost:11434/api`; `provider-smoke` succeeded end to end. M-A1 Complete.
+- Implemented `h003_single_prompt_llm` as a schema-constrained single-call LLM harness with retries, invalid-output rate, latency, and token-budget metadata in `src/epilepsy_agents/llm_pipeline.py`; registered it in `project_state/harnesses/README.md`.
+- First h003 run: `20260424T171400Z_h003_single_prompt_llm_n5.json` -> exact 0.20, invalid-output rate 0.80, mean latency 52.9 s. Slow latency traced to Ollama thinking traces.
+- Set `think: false` on the Ollama request and capped the completion budget; rerun `20260424T180607Z_h003_single_prompt_llm_n5.json` -> exact 0.40, invalid-output rate 0.40, mean latency 0.95 s.
+- First 25-row h003 smoke: `20260424T180629Z_h003_single_prompt_llm_n25.json` -> exact 0.20, monthly 0.28, pragmatic micro-F1 0.36, purist micro-F1 0.32, invalid-output rate 0.28, mean latency 1.29 s. Abstention dominates on cluster, window, and seizure-free rows.
+
+Project re-scope into phases:
+
+- Restructured [milestones.md](milestones.md) into Delivered Infrastructure plus Phase A (stand up the LLM path), Phase B (reliability interventions), Phase C (scale and external baselines), Phase D (locked-down real-data evaluation), Phase E (dissertation and packaging).
+- Added [D007](decisions.md) to freeze further deterministic regex expansion; the deterministic harnesses stay as the comparison floor per [D002](decisions.md) but are no longer an active development target.
+- Added a Project Phases section to [research_program.md](research_program.md) that aligns harness IDs and milestones with the phase structure.
+- Confirmed `current_state.md` and `active_threads.md` now describe the project as early Phase A with M-A2 in progress.
+- Next useful action stays on M-A2: classify the 25-row h003 abstentions and add one narrow intervention (prompt or candidate-span aid) for cluster/window/seizure-free cases, then rerun h003 on the same 25-row slice. Do not return to deterministic regex work (D007).
