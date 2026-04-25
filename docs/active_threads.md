@@ -1,6 +1,6 @@
 # Active Threads
 
-Last updated: 2026-04-24.
+Last updated: 2026-04-25.
 
 This page tracks the moving workstreams that should guide future sessions.
 
@@ -22,7 +22,8 @@ How can the deterministic and future LLM-backed harnesses reduce seizure-frequen
   - `h003_single_prompt_llm` n25: exact 0.20, monthly 0.28, pragmatic micro-F1 0.36, purist micro-F1 0.32, invalid-output rate 0.28, mean latency about 1.29 s.
 - `seizure_free_error` dropped from 18 to 9 on multi and from 19 to 13 on single; `correct` rose from 20 to 31 on multi.
 - Run records: [multi n100](../project_state/runs/20260424T144559Z_h002_multi_agent_verify_n100.json), [single n100](../project_state/runs/20260424T144606Z_h001_single_pass_n100.json), [h003 original n5](../project_state/runs/20260424T171400Z_h003_single_prompt_llm_n5.json), [h003 updated n25](../project_state/runs/20260424T180629Z_h003_single_prompt_llm_n25.json).
-- Session log: [20260424T144639Z_seizure_free_detection_expansion.md](run_logs/20260424T144639Z_seizure_free_detection_expansion.md).
+- The 17 abstentions in the latest `h003` 25-row smoke are now classified into seven failure families (9 window/aggregation, 4 cluster-shape, 2 NS-vs-no-reference, 2 qualitative, 2 actually-correct true-unknowns); see [run_logs/20260425T081533Z_h003_abstention_classification.md](run_logs/20260425T081533Z_h003_abstention_classification.md) for the per-row breakdown and an ordered three-step intervention list.
+- Session logs: [20260424T144639Z_seizure_free_detection_expansion.md](run_logs/20260424T144639Z_seizure_free_detection_expansion.md), [20260425T081533Z_h003_abstention_classification.md](run_logs/20260425T081533Z_h003_abstention_classification.md).
 
 ### Blocker Or Risk
 
@@ -30,7 +31,7 @@ The deterministic baseline still has residual seizure-free and cluster-family er
 
 ### Next Action
 
-Classify the 25-row `h003` abstentions, then add one narrow intervention for cluster/window/seizure-free extraction before returning to `h004` or further deterministic cleanup.
+Classification done (see [20260425T081533Z_h003_abstention_classification.md](run_logs/20260425T081533Z_h003_abstention_classification.md)). The next LLM-iteration session should: (1) confirm `multiple per week`, `multiple per day`, `1 per 4 day`, `1 per 6 week`, and `2 cluster per month, 6 per cluster` round-trip cleanly through `parse_label`; (2) apply intervention 1 (six worked label exemplars in `system_prompt()` in `src/epilepsy_agents/structured_schema.py`); (3) rerun `h003` on the same 25-row slice; (4) only if window and cluster cases improve but NS or qualitative cases remain, apply intervention 2 (NS-vs-no-reference rule in the user prompt) in a separate paired run.
 
 ## Provider And Local Model Setup
 
