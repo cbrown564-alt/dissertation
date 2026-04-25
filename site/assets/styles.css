@@ -3602,3 +3602,78 @@ dt {
     width: fit-content;
   }
 }
+
+/* Phase 5: Motion — state-driven, 150–250 ms, ease-out. Respects prefers-reduced-motion. */
+
+/* View-transition cross-fade: old content fades out, new content fades in. */
+@keyframes vt-out {
+  to { opacity: 0; }
+}
+
+@keyframes vt-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: vt-out 180ms ease-out both;
+  }
+
+  ::view-transition-new(root) {
+    animation: vt-in 180ms ease-out both;
+  }
+}
+
+/* Claim dossier: fade-slide in whenever rendered (view change or claim selection). */
+@keyframes dossier-in {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .claim-dossier {
+    animation: dossier-in 220ms ease-out both;
+  }
+}
+
+/* Session record: animate expanded content on open. */
+@keyframes session-expand {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .session-record[open] > :not(summary) {
+    animation: session-expand 220ms ease-out both;
+  }
+}
+
+/* Hover and state transitions on interactive elements. */
+.artifact-shelf-item {
+  transition: background 150ms ease-out;
+}
+
+.source-card {
+  transition: background 150ms ease-out;
+}
+
+.index-row {
+  transition: background 150ms ease-out;
+}
+
+.app-rail button {
+  transition: background 150ms ease-out, border-left-color 150ms ease-out, color 150ms ease-out;
+}
+
+.record-list button {
+  transition: background 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.panel-heading button,
+.action-panel button {
+  transition: background 150ms ease-out;
+}
+
+.app-stats button {
+  transition: background 150ms ease-out, color 150ms ease-out;
+}

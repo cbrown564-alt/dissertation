@@ -84,7 +84,11 @@ function filtered(records) {
 function setView(view) {
   state.view = view;
   location.hash = view;
-  render();
+  if (typeof document.startViewTransition === "function") {
+    document.startViewTransition(render);
+  } else {
+    render();
+  }
 }
 
 function render() {
