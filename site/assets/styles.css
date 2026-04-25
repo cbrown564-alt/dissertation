@@ -463,6 +463,11 @@ b {
   line-height: 1.5;
 }
 
+.body-lead {
+  padding: 16px 20px;
+  max-width: 78ch;
+}
+
 .overview-grid {
   grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.75fr);
   align-items: start;
@@ -501,6 +506,74 @@ b {
   border-top: 2px solid rgba(10, 125, 130, 0.4);
 }
 
+.evaluation-snapshot {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid var(--border);
+  background: var(--border);
+}
+
+.evaluation-snapshot article {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px 16px 16px;
+  background: rgba(244, 240, 231, 0.76);
+}
+
+.evaluation-snapshot span {
+  overflow-wrap: anywhere;
+  color: var(--ink-muted);
+  font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.evaluation-snapshot strong {
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  line-height: 0.95;
+}
+
+.evaluation-snapshot small {
+  color: var(--ink-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.evaluation-snapshot dl {
+  display: grid;
+  gap: 1px;
+  margin: 2px 0 0;
+  background: rgba(207, 197, 180, 0.72);
+}
+
+.evaluation-snapshot div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 7px 0;
+  background: rgba(244, 240, 231, 0.76);
+}
+
+.evaluation-snapshot dt,
+.evaluation-snapshot dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.evaluation-snapshot dd {
+  color: var(--ink);
+  font-weight: 800;
+}
+
 .review-risk-panel {
   border-top: 2px solid rgba(180, 122, 22, 0.42);
 }
@@ -532,6 +605,27 @@ b {
 
 .evaluation-panel .compact-fields {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.evaluation-evidence details {
+  margin-top: 2px;
+}
+
+.evaluation-evidence summary {
+  min-height: 34px;
+  padding: 9px 11px;
+  border: 1px solid rgba(10, 125, 130, 0.24);
+  background: var(--paper-raised);
+  color: var(--evidence);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.evaluation-evidence summary:hover {
+  border-color: rgba(10, 125, 130, 0.42);
+  background: var(--paper);
 }
 
 .compact-fields section,
@@ -1272,6 +1366,7 @@ b {
 .action-panel button:focus-visible,
 .app-stats button:focus-visible,
 .source-card:focus-visible,
+.evaluation-evidence summary:focus-visible,
 .session-record summary:focus-visible {
   outline: 2px solid var(--warning);
   outline-offset: 2px;
@@ -1479,6 +1574,25 @@ b {
   }
 }
 
+@media (max-width: 1240px) and (min-width: 1101px) {
+  .app-main {
+    width: min(1120px, calc(100vw - 104px));
+  }
+
+  .overview-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .overview-grid .action-panel,
+  .overview-grid .decision-brief {
+    grid-column: 1;
+  }
+
+  .evaluation-snapshot {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 680px) {
   .app-main {
     padding-right: 16px;
@@ -1487,6 +1601,7 @@ b {
 
   .source-ledger,
   .app-stats,
+  .evaluation-snapshot,
   .phase-strip {
     grid-template-columns: 1fr;
   }

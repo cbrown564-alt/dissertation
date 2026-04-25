@@ -174,10 +174,11 @@ function renderOverview() {
           <button type="button" data-view-link="claims">Open claim</button>
         </div>
         <p class="body-lead">${data.evaluationClaim.claim}</p>
+        ${evaluationSnapshot(data.evaluationClaim.evidence)}
         <div class="compact-fields">
-          <section><b>Evidence</b>${data.evaluationClaim.evidence}</section>
-          <section><b>Uncertainty</b>${data.evaluationClaim.uncertainty}</section>
-          <section><b>Next experiment</b>${data.evaluationClaim.next}</section>
+          <section class="evaluation-evidence"><b>Evidence</b><details><summary>Raw evidence tables and source links</summary>${data.evaluationClaim.evidence}</details></section>
+          <section class="evaluation-uncertainty"><b>Uncertainty</b>${data.evaluationClaim.uncertainty}</section>
+          <section class="evaluation-next"><b>Next experiment</b>${data.evaluationClaim.next}</section>
         </div>
       </section>
       <section class="archive-panel review-risk-panel">
@@ -264,6 +265,50 @@ function renderTimelineSummary(milestones) {
       </li>`).join("")}</ol>
     </section>
   </div>`;
+}
+
+function evaluationSnapshot(evidenceHtml) {
+  const rows = compactEvaluationRows(evaluationRows(evidenceHtml));
+  if (!rows.length) return "";
+  return `<div class="evaluation-snapshot">${rows.map((row) => `
+    <article>
+      <span>${row.harness || "Harness"}</span>
+      <strong>${row.exact || "n/a"}</strong>
+      <small>Exact label</small>
+      <dl>
+        <div><dt>Pragmatic F1</dt><dd>${row.pragmatic || "n/a"}</dd></div>
+        <div><dt>Invalid</dt><dd>${row.invalid || "n/a"}</dd></div>
+        <div><dt>Latency</dt><dd>${row.latency || "n/a"}</dd></div>
+      </dl>
+    </article>`).join("")}</div>`;
+}
+
+function compactEvaluationRows(rows) {
+  if (rows.length <= 4) return rows;
+  const picked = [...rows.slice(0, 2), ...rows.slice(-2)];
+  return picked.filter((row, index) => picked.findIndex((item) => item.harness === row.harness && item.exact === row.exact && item.latency === row.latency) === index);
+}
+
+function evaluationRows(evidenceHtml) {
+  const container = document.createElement("div");
+  container.innerHTML = evidenceHtml || "";
+  return Array.from(container.querySelectorAll("table")).flatMap((table) => {
+    const headings = Array.from(table.querySelectorAll("thead th")).map((cell) => cell.textContent.trim().toLowerCase());
+    return Array.from(table.querySelectorAll("tbody tr")).map((row) => {
+      const cells = Array.from(row.children);
+      const value = (label) => {
+        const index = headings.findIndex((heading) => heading === label || heading.includes(label));
+        return index >= 0 && cells[index] ? cells[index].textContent.trim() : "";
+      };
+      return {
+        harness: value("harness"),
+        exact: value("exact"),
+        pragmatic: value("pragmatic"),
+        invalid: value("invalid-output"),
+        latency: value("mean latency"),
+      };
+    });
+  }).filter((row) => row.harness);
 }
 
 function renderPhaseStrip(milestones) {
