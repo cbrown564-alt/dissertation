@@ -11,6 +11,30 @@ Turn the Evidence Notebook from a strong static dashboard into a research-grade 
 
 The product should evolve toward exceptionally crafted product UI with editorial character. It should not become a marketing page, generic SaaS dashboard, or decorative AI control room.
 
+## Status Snapshot
+
+This plan is now partly implemented in the deployable `site/` notebook.
+
+Completed to date:
+
+- `DESIGN.md` and `PRODUCT.md` are now active design inputs for the notebook.
+- `site/assets/styles.css` has been consolidated around named visual tokens aligned to `DESIGN.md`.
+- Non-overview views now use a more compact header treatment.
+- Claims now render as a dossier reader with a left index and fixed Claim/Evidence/Uncertainty/Next action sections.
+- Timeline now includes phase grouping, status treatment, and a "next visible move" panel.
+- Artifacts now render as a grouped shelf instead of a flat register.
+- Decisions now use an ADR-like structure with rationale, consequence, evidence, and derived markers.
+- Sessions now render as an expandable ledger with tags and structured session metadata.
+- Overview now includes a review-risk area to surface what should not be overclaimed.
+- Responsive fixes have started, including rail collapse, header compaction, focus states, and table/path overflow control.
+
+Still open or only partially complete:
+
+- The overview and evaluation sections still need further polish at awkward intermediate viewport widths.
+- Motion has not been intentionally designed yet; current transitions are minimal and mostly CSS-state based.
+- The component-system pass is implemented in practice through CSS/DOM patterns, but not yet documented as a formal reusable system.
+- Responsive QA is in progress, especially for dense evidence tables and other high-information blocks.
+
 ## Design Skill Operating Guidance
 
 Use `impeccable` and `gpt-taste` together, but give them different jobs.
@@ -72,6 +96,8 @@ The final design should feel like an excellent research tool with editorial tast
 
 Goal: make future design work consistent.
 
+Status: substantially complete.
+
 - Treat `DESIGN.md` as the visual source of truth.
 - Treat `PRODUCT.md` as the product intent source.
 - Refactor the current `site/assets/styles.css` toward named tokens:
@@ -85,9 +111,17 @@ Goal: make future design work consistent.
 
 Success test: a future agent can read `DESIGN.md` and generate a compatible screen without asking what the product should look like.
 
+Completed notes:
+
+- `DESIGN.md` now exists as the notebook visual contract.
+- `PRODUCT.md` now exists as the notebook product-intent contract.
+- `site/assets/styles.css` has already been reduced to a named token system and the previous repeated style drift has been consolidated.
+
 ## Phase 2: Fix Information Hierarchy
 
 Goal: reduce repeated chrome and bring substance above the fold.
+
+Status: mostly complete, with some viewport-specific polish still needed.
 
 Keep the large "Evidence Notebook" editorial hero only on Overview. On Claims, Timeline, Sessions, Workstreams, Artifacts, and Decisions, use a compact header.
 
@@ -110,15 +144,30 @@ Specific improvements:
 
 Success test: on a 1440x1000 viewport, every view shows meaningful screen-specific content without scrolling.
 
+Completed notes:
+
+- The editorial hero is now effectively reserved for Overview while inner views use compact headers.
+- Source ledger and stats are already compressed on inner views.
+- Search is integrated into the header rather than rendered as a detached floating control.
+- Above-the-fold usefulness has improved substantially across Claims, Timeline, Sessions, Workstreams, Artifacts, and Decisions.
+
 ## Phase 3: Redesign Each View Around Its Job
 
 Goal: each screen gets a distinct information model, not the same panel treatment.
+
+Status: largely complete for the first redesign pass.
 
 ### Overview
 
 - Keep as the front page.
 - Show current claim, active milestone, latest evaluation, latest decision, and next move.
 - Add a compact review-risk area: what should not be overclaimed.
+
+Completed notes:
+
+- Overview now functions as the front page.
+- Current claim, active research path, evaluation signal, recent sessions, artifact shelf, and latest decision are all surfaced.
+- A review-risk panel has now been added.
 
 ### Claims
 
@@ -131,12 +180,21 @@ Goal: each screen gets a distinct information model, not the same panel treatmen
   - Next action.
 - Consider tabs or anchored subsections only if the content gets too long.
 
+Completed notes:
+
+- Claims now follow the intended dossier-reader split with a left index and fixed reading frame.
+- Risk labels are already surfaced in the claim index.
+
 ### Timeline
 
 - Group milestones by phase.
 - Make active milestone visually dominant.
 - Show complete, planned, blocked, and review-needed states.
 - Add "next visible move" as a sticky right-side note.
+
+Completed notes:
+
+- Timeline now groups milestones into phases, distinguishes status visually, and includes the sticky next-move panel.
 
 ### Sessions
 
@@ -145,11 +203,22 @@ Goal: each screen gets a distinct information model, not the same panel treatmen
 - Expanded row should show outcome, evidence, uncertainty, and handoff.
 - Add tags for tests run, files changed, and generated artifacts if available.
 
+Completed notes:
+
+- Sessions now render as a ledger with stronger collapsed summaries.
+- Expanded records already show outcome, evidence, uncertainty, and handoff.
+- Tags and derived metadata for files changed, checks run, artifacts updated, and run evidence are now surfaced where available.
+
 ### Workstreams
 
 - Treat each as a research lane.
 - Show current question, latest evidence, risk/blocker, and next move.
 - Add visual priority: active, waiting, blocked, watch.
+
+Completed notes:
+
+- Workstreams now render as research lanes with question, evidence, risk, and next move.
+- Priority treatment for active, waiting, blocked, and watch is already implemented.
 
 ### Artifacts
 
@@ -162,6 +231,11 @@ Goal: each screen gets a distinct information model, not the same panel treatmen
 - Each artifact should show purpose, status, path, source inputs, and intended use.
 - This screen can be more visually distinctive than the others while staying source-backed.
 
+Completed notes:
+
+- Artifacts now render as grouped shelf sections rather than a flat table treatment.
+- Current grouping includes Active evidence, Generated visuals, Session logs, Planned visuals, Dissertation support, and Source documents.
+
 ### Decisions
 
 - Make it ADR-like.
@@ -172,9 +246,16 @@ Goal: each screen gets a distinct information model, not the same panel treatmen
   - evidence.
 - Add markers for "governs future work," "reversible," "real-data governance," or "evaluation protocol" when available.
 
+Completed notes:
+
+- Decisions now render in an ADR-like record format.
+- Derived markers are already shown for governance and protocol-related decisions.
+
 ## Phase 4: Component System Pass
 
 Goal: one coherent interaction vocabulary.
+
+Status: partly complete in implementation, not yet fully formalized in documentation.
 
 Define and apply:
 
@@ -203,9 +284,17 @@ Each component needs:
 
 Success test: clickable things look clickable; selected things look selected; evidence links are never visually lost.
 
+Completed notes:
+
+- `AppRail`, `CompactHeader`, `SourceLedger`, `StatsStrip`, `ClaimDossier`, `TimelineMilestone`, `SessionRecord`, `WorkstreamLane`, `ArtifactShelfItem`, and `DecisionRecord` are now effectively present as working UI patterns.
+- Focus-visible styling and selected/active states are already implemented across navigation, cards, buttons, and records.
+- Remaining work is to formalize the component vocabulary and document the interaction states more explicitly.
+
 ## Phase 5: Motion, Carefully
 
 Goal: add polish without turning the tool into a showpiece.
+
+Status: not intentionally started.
 
 Use motion only for:
 
@@ -228,6 +317,8 @@ Motion should be 150 to 250ms, ease-out, and state-driven.
 
 Goal: make the notebook usable on laptop, tablet, and mobile.
 
+Status: in progress.
+
 Checks:
 
 - Left rail collapses cleanly on mobile.
@@ -240,6 +331,14 @@ Checks:
 - No content requires hover only.
 
 Success test: mobile view still answers "what is true, what proves it, what is next?"
+
+Completed notes:
+
+- The rail already collapses on smaller widths.
+- Search remains present and reachable.
+- Focus-visible styling is present.
+- Long paths and run IDs now wrap more safely.
+- Table overflow handling has been improved, though dense tables still need more layout-specific treatment in some overview contexts.
 
 ## Phase 7: Implementation Strategy
 
@@ -277,6 +376,18 @@ Start with these five changes:
 5. Tokenize CSS against `DESIGN.md`.
 
 This gives the biggest improvement without destabilizing the whole generated notebook.
+
+Status update:
+
+All five recommended first-sprint items have now been implemented in the current notebook.
+
+Suggested next sprint:
+
+1. Continue responsive and viewport-specific cleanup on Overview and the evaluation block.
+2. Formalize the component-system vocabulary in code comments or design docs.
+3. Decide whether the evaluation evidence area should remain table-first or move to a comparison-summary pattern on narrower laptop widths.
+4. Add a minimal motion pass for session expansion, claim switching, and artifact hover states.
+5. Run a deliberate accessibility QA pass across keyboard navigation, contrast, and small-screen reading order.
 
 ## References
 

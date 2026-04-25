@@ -180,6 +180,13 @@ function renderOverview() {
           <section><b>Next experiment</b>${data.evaluationClaim.next}</section>
         </div>
       </section>
+      <section class="archive-panel review-risk-panel">
+        <div class="panel-heading">
+          <p class="app-kicker">Review risk</p>
+          <h2>Do Not Overclaim</h2>
+        </div>
+        <div class="risk-list">${rowsOrEmpty((data.reviewRisks || []).map(reviewRiskItem), "No review-risk notes recorded.")}</div>
+      </section>
       <section class="archive-panel index-panel session-panel">
         <div class="panel-heading row">
           <div><p class="app-kicker">Run ledger</p><h2>Recent Sessions</h2></div>
@@ -311,11 +318,20 @@ function renderSessions() {
           <p>${session.outcomePlain || textFromHtml(session.objective)}</p>
         </div>
         <div class="session-summary-meta">
+          <div class="session-ledger-meta">
+            ${sessionMetaPill("Files", session.filesChangedCount)}
+            ${sessionMetaPill("Checks", session.checksRunCount)}
+            ${sessionMetaPill("Artifacts", session.artifactsUpdatedCount)}
+            ${sessionMetaPill("Runs", session.runEvidenceCount)}
+          </div>
           <div class="session-tags">${(session.tags || []).map((tag) => `<small>${tag}</small>`).join("")}</div>
           <a href="${session.href}">source log</a>
         </div>
       </summary>
-      <p>${session.objective}</p>
+      <div class="session-detail-band">
+        <p class="session-objective"><b>Objective</b>${session.objective}</p>
+        ${session.hasDecision ? `<p class="session-decision"><b>Decision</b>${session.decision}</p>` : ""}
+      </div>
       <div class="quad">
         <section><b>Outcome</b>${session.outcome}</section>
         <section><b>Evidence</b>${session.evidence}</section>
@@ -432,6 +448,13 @@ function artifactShelfItem(item) {
   </article>`;
 }
 
+function reviewRiskItem(item) {
+  return `<article class="risk-item is-${item.tone || "info"}">
+    <span class="status-chip is-${item.tone || "info"}">${item.title}</span>
+    <p>${item.detail}</p>
+  </article>`;
+}
+
 function rowsOrEmpty(rows, message) {
   return rows.length ? rows.join("") : emptyState(message);
 }
@@ -479,6 +502,11 @@ function priorityLabel(priority) {
     watch: "watch",
   };
   return labels[priority] || "active";
+}
+
+function sessionMetaPill(label, count) {
+  const value = Number.isFinite(Number(count)) ? Number(count) : 0;
+  return `<small>${label} ${value}</small>`;
 }
 
 function claimRiskLabel(claim) {

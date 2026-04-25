@@ -283,6 +283,9 @@ documentation/visibility updated, no metric decision needed.
         self.assertEqual(data["latestClaim"]["title"], "Project Snapshot")
         self.assertIn("Dashboard claim", data["latestClaim"]["claim"])
         self.assertEqual(data["sessions"][0]["title"], "Visibility Session")
+        self.assertEqual(data["sessions"][0]["artifactsUpdatedCount"], 1)
+        self.assertTrue(data["sessions"][0]["hasDecision"])
+        self.assertEqual(data["reviewRisks"][0]["title"], "Current delivery risk")
         evidence_html = data["claims"][0]["evidence"]
         self.assertIn("../src/epilepsy_agents/visibility", evidence_html)
         self.assertIn("<table>", evidence_html)

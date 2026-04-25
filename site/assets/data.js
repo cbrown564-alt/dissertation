@@ -1,5 +1,5 @@
 window.__NOTEBOOK_DATA__ = {
-  "generatedAt": "2026-04-25 04:49 UTC",
+  "generatedAt": "2026-04-25 05:20 UTC",
   "latestClaim": {
     "title": "Project Snapshot",
     "claim": "The repository is now in early Phase A of the dissertation: a local LLM runtime is live, the first single-prompt LLM harness exists, and the main blocker has shifted from runtime/schema setup to extraction reliability and abstention behaviour."
@@ -19,6 +19,23 @@ window.__NOTEBOOK_DATA__ = {
     "uncertainty": "<p>The deterministic 100-row comparison is still a smoke test. The new <code>h003</code> 25-row result is a usable local-model smoke, but it is not yet a credible comparison baseline because <code>unknown</code> and <code>no seizure frequency reference</code> predictions dominate.</p>",
     "next": "<p>Classify the 25-row <code>h003</code> abstentions and add a narrow prompt or candidate-span aid for cluster/window/seizure-free cases, then rerun <code>h003</code> on the same 25-row slice.</p>"
   },
+  "reviewRisks": [
+    {
+      "title": "Evaluation confidence limit",
+      "detail": "The deterministic 100-row comparison is still a smoke test. The new <code>h003</code> 25-row result is a usable local-model smoke, but it is not yet a credible comparison baseline because <code>unknown</code> and <code>no seizure frequency reference</code> predictions dominate.",
+      "tone": "warning"
+    },
+    {
+      "title": "Current delivery risk",
+      "detail": "The first n=5 smoke has invalid-output rate 0.80 and mean latency about 52.9 seconds, so the prompt/schema path is not yet strong enough for a 25-50 row comparison.",
+      "tone": "review-needed"
+    },
+    {
+      "title": "Governance boundary",
+      "detail": "Maintain the no-raw-real-text rule for logs, prompts, screenshots, run records, and dashboard artifacts.",
+      "tone": "info"
+    }
+  ],
   "stats": [
     {
       "label": "Claims",
@@ -345,7 +362,12 @@ window.__NOTEBOOK_DATA__ = {
         "tests run",
         "artifacts updated",
         "run evidence"
-      ]
+      ],
+      "filesChangedCount": 4,
+      "checksRunCount": 4,
+      "artifactsUpdatedCount": 1,
+      "runEvidenceCount": 1,
+      "hasDecision": true
     },
     {
       "title": "Project Phase Re-scope",
@@ -360,7 +382,12 @@ window.__NOTEBOOK_DATA__ = {
       "href": "run_logs/20260424T185000Z_project_phase_rescope.md",
       "tags": [
         "documentation/visibility updated, no metric decision needed"
-      ]
+      ],
+      "filesChangedCount": 0,
+      "checksRunCount": 0,
+      "artifactsUpdatedCount": 5,
+      "runEvidenceCount": 0,
+      "hasDecision": true
     },
     {
       "title": "h003 Ollama Think-Disabled Smoke",
@@ -377,7 +404,12 @@ window.__NOTEBOOK_DATA__ = {
         "7 files changed",
         "tests run",
         "run evidence"
-      ]
+      ],
+      "filesChangedCount": 1,
+      "checksRunCount": 1,
+      "artifactsUpdatedCount": 1,
+      "runEvidenceCount": 1,
+      "hasDecision": true
     },
     {
       "title": "h003 Local Ollama Smoke",
@@ -395,7 +427,12 @@ window.__NOTEBOOK_DATA__ = {
         "tests run",
         "artifacts updated",
         "run evidence"
-      ]
+      ],
+      "filesChangedCount": 5,
+      "checksRunCount": 3,
+      "artifactsUpdatedCount": 1,
+      "runEvidenceCount": 1,
+      "hasDecision": true
     },
     {
       "title": "Local Provider Smoke Path",
@@ -412,7 +449,12 @@ window.__NOTEBOOK_DATA__ = {
         "1 files changed",
         "tests run",
         "artifacts updated"
-      ]
+      ],
+      "filesChangedCount": 4,
+      "checksRunCount": 2,
+      "artifactsUpdatedCount": 1,
+      "runEvidenceCount": 0,
+      "hasDecision": true
     },
     {
       "title": "Seizure-Free Detection Expansion",
@@ -425,7 +467,12 @@ window.__NOTEBOOK_DATA__ = {
       "handoff": "<p>Review the six NS false positives in the new multi confusion matrix and the remaining nine <code>seizure_free_error</code> cases to decide whether to add past-tense guards in specific patterns, then move on to the next failure family — most likely <code>unknown_or_no_reference_error</code> (34 cases on multi) or <code>cluster_error</code> (13 cases on multi) — before broadening beyond deterministic changes.</p>",
       "decision": "keep this harness variant",
       "href": "run_logs/20260424T144639Z_seizure_free_detection_expansion.md",
-      "tags": []
+      "tags": [],
+      "filesChangedCount": 0,
+      "checksRunCount": 0,
+      "artifactsUpdatedCount": 0,
+      "runEvidenceCount": 0,
+      "hasDecision": true
     }
   ],
   "workstreams": [

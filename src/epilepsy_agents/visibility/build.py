@@ -69,6 +69,7 @@ def _shape_app_data(
     active_milestone = _first_incomplete_milestone(milestones) or {}
     latest_claim = claims[0] if claims else None
     evaluation_claim = _claim_by_title(claims, "Latest Evaluation Claim")
+    review_risks = _overview_review_risks(claims, active_milestone)
 
     return {
         "generatedAt": generated_at,
@@ -110,6 +111,7 @@ def _shape_app_data(
             else "",
             "next": block(evaluation_claim.next_action) if evaluation_claim else "",
         },
+        "reviewRisks": review_risks,
         "stats": [
             {"label": "Claims", "value": len(claims)},
             {"label": "Milestones", "value": len(milestones)},
@@ -174,17 +176,20 @@ def _shape_app_data(
         ],
         "sessions": [
             {
-                "title": session.title,
-                "date": session.date or session.path.stem[:8],
-                "objective": inline(session.objective),
-                "outcome": block(session.outcome),
-                "outcomePlain": _plain_text(session.outcome),
-                "evidence": block(session.evidence),
-                "uncertainty": block(session.uncertainty),
-                "handoff": block(session.handoff),
-                "decision": inline(session.decision),
-                "href": relative_doc_path(session.path),
-                "tags": _session_tags(session),
+                **{
+                    "title": session.title,
+                    "date": session.date or session.path.stem[:8],
+                    "objective": inline(session.objective),
+                    "outcome": block(session.outcome),
+                    "outcomePlain": _plain_text(session.outcome),
+                    "evidence": block(session.evidence),
+                    "uncertainty": block(session.uncertainty),
+                    "handoff": block(session.handoff),
+                    "decision": inline(session.decision),
+                    "href": relative_doc_path(session.path),
+                    "tags": _session_tags(session),
+                },
+                **_session_meta(session),
             }
             for session in sessions
         ],
@@ -251,6 +256,65 @@ def _plain_text(value: str) -> str:
     return text.strip()
 
 
+def _overview_review_risks(
+    claims: list[Claim], active_milestone: dict[str, str]
+) -> list[dict[str, str]]:
+    items: list[dict[str, str]] = []
+    evaluation_claim = _claim_by_title(claims, "Latest Evaluation Claim")
+    governance_claim = _claim_by_title(claims, "Data And Governance Claim")
+
+    if evaluation_claim and evaluation_claim.uncertainty:
+        items.append(
+            {
+                "title": "Evaluation confidence limit",
+                "detail": inline(evaluation_claim.uncertainty),
+                "tone": "warning",
+            }
+        )
+
+    risk_text = active_milestone.get("Remaining Risk", "")
+    if risk_text:
+        items.append(
+            {
+                "title": "Current delivery risk",
+                "detail": inline(risk_text),
+                "tone": "review-needed",
+            }
+        )
+
+    if governance_claim and governance_claim.next_action:
+        items.append(
+            {
+                "title": "Governance boundary",
+                "detail": inline(governance_claim.next_action),
+                "tone": "info",
+            }
+        )
+
+    if not items:
+        items.append(
+            {
+                "title": "Review stance",
+                "detail": "No explicit overclaim guardrails are recorded yet.",
+                "tone": "info",
+            }
+        )
+    return items[:3]
+
+
+def _session_meta(session) -> dict[str, object]:
+    artifact_count = _count_session_list_items(session.evidence, "Generated artifacts")
+    if not artifact_count:
+        artifact_count = _count_artifact_mentions(session.evidence)
+    return {
+        "filesChangedCount": _count_session_list_items(session.evidence, "Files changed"),
+        "checksRunCount": _count_session_list_items(session.evidence, "Tests or checks"),
+        "artifactsUpdatedCount": artifact_count,
+        "runEvidenceCount": _count_session_list_items(session.evidence, "Run records"),
+        "hasDecision": bool((session.decision or "").strip()),
+    }
+
+
 def _session_tags(session) -> list[str]:
     tags: list[str] = []
     evidence = session.evidence.lower()
@@ -286,6 +350,43 @@ def _session_tags(session) -> list[str]:
             seen.add(tag)
             deduped.append(tag)
     return deduped[:4]
+
+
+def _count_session_list_items(markdown: str, label: str) -> int:
+    lines = [line.strip() for line in (markdown or "").splitlines()]
+    label_prefix = f"- {label.lower()}:"
+    all_labels = {
+        "- files changed:",
+        "- tests or checks:",
+        "- generated artifacts:",
+        "- run records:",
+        "- manifest:",
+    }
+    for index, line in enumerate(lines):
+        if line.lower().startswith(label_prefix):
+            trailing = line.split(":", 1)[1].strip()
+            if trailing and trailing.lower() != "none":
+                return 1
+            count = 0
+            for follower in lines[index + 1 :]:
+                lowered = follower.lower()
+                if lowered in all_labels:
+                    break
+                if follower.startswith("- "):
+                    count += 1
+            return count
+    return 0
+
+
+def _count_artifact_mentions(markdown: str) -> int:
+    lines = [line.strip() for line in (markdown or "").splitlines()]
+    count = 0
+    for line in lines:
+        if not line.startswith("- "):
+            continue
+        if re.search(r"\.(png|svg|html|pptx|pdf|docx|md)\b", line, flags=re.IGNORECASE):
+            count += 1
+    return count
 
 
 def _workstream_priority(thread) -> str:
