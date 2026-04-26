@@ -1,6 +1,6 @@
 # Current State
 
-Last updated: 2026-04-24.
+Last updated: 2026-04-25.
 
 This page is the top-level Evidence Notebook snapshot. Each claim should stay short, source-backed, and reviewable.
 
@@ -25,7 +25,7 @@ The current LLM path is only at smoke-test maturity. Ollama/Qwen now returns fas
 
 ### Next Action
 
-Keep iteration narrow: reduce `h003` over-abstention on cluster, seizure-free, and windowed frequency cases before starting `h004`.
+Keep iteration narrow: reduce `h003` over-abstention on cluster, seizure-free, and windowed frequency cases before starting `h004`. The 17 abstentions in the latest 25-row smoke have now been classified into seven failure families in [run_logs/20260425T081533Z_h003_abstention_classification.md](run_logs/20260425T081533Z_h003_abstention_classification.md); the next LLM-iteration session should apply intervention 1 (six worked label exemplars in `system_prompt()`) and rerun on the same 25-row slice.
 
 ## Visibility Claim
 
@@ -80,7 +80,7 @@ The deterministic 100-row comparison is still a smoke test. The new `h003` 25-ro
 
 ### Next Action
 
-Classify the 25-row `h003` abstentions and add a narrow prompt or candidate-span aid for cluster/window/seizure-free cases, then rerun `h003` on the same 25-row slice.
+The 25-row `h003` abstentions are now classified into seven families in [run_logs/20260425T081533Z_h003_abstention_classification.md](run_logs/20260425T081533Z_h003_abstention_classification.md): 9 of 15 real abstention-errors are window/aggregation, 4 are cluster-shape, 2 are NS-vs-no-reference, and 2 are qualitative-frequency phrasings. Apply intervention 1 (six worked label exemplars in `system_prompt()`) and rerun `h003` on the same 25-row slice.
 
 ## Data And Governance Claim
 
