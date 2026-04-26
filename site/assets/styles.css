@@ -402,6 +402,7 @@ b {
 
 .app-view {
   min-width: 0;
+  view-transition-name: app-view;
 }
 
 .archive-panel,
@@ -1173,7 +1174,7 @@ b {
   padding: 16px 18px;
   border-bottom: 1px solid var(--border);
   background: rgba(251, 248, 241, 0.76);
-  transition: background var(--transition-fast);
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .artifact-shelf-item:last-child {
@@ -1182,6 +1183,7 @@ b {
 
 .artifact-shelf-item:hover {
   background: var(--paper-raised);
+  box-shadow: 0 2px 8px rgba(28, 33, 29, 0.08);
 }
 
 .artifact-shelf-item header {
@@ -1631,5 +1633,84 @@ b {
 
   .index-row small {
     grid-column: auto;
+  }
+}
+
+/* === Motion === */
+
+@keyframes nb-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes nb-fade-slide-in {
+  from {
+    opacity: 0;
+    translate: 0 7px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    translate: 0 -5px;
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+}
+
+/* Suppress default root cross-fade; only the named app-view animates */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(app-view) {
+  animation: vt-out 160ms ease-out both;
+}
+
+::view-transition-new(app-view) {
+  animation: vt-in 220ms ease-out both;
+}
+
+/* Session record: reset animation when closed so it re-fires on next open */
+.session-record > :not(summary) {
+  animation: none;
+}
+
+.session-record[open] > :not(summary) {
+  animation: nb-fade-in var(--transition-medium) ease-out both;
+}
+
+/* Claim dossier: fade-slide when switching to a different claim */
+.claim-dossier.is-entering .dossier-grid {
+  animation: nb-fade-slide-in var(--transition-medium) ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-view {
+    view-transition-name: none;
+  }
+
+  .session-record > :not(summary),
+  .session-record[open] > :not(summary),
+  .claim-dossier.is-entering .dossier-grid {
+    animation: none;
+  }
+
+  *,
+  ::before,
+  ::after {
+    transition-duration: 1ms !important;
   }
 }
