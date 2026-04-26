@@ -65,6 +65,8 @@ let state = {
   selectedClaim: 0,
 };
 
+let _claimChanged = false;
+
 function textFromHtml(value) {
   const div = document.createElement("div");
   div.innerHTML = value || "";
@@ -84,7 +86,11 @@ function filtered(records) {
 function setView(view) {
   state.view = view;
   location.hash = view;
-  render();
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && document.startViewTransition) {
+    document.startViewTransition(render);
+  } else {
+    render();
+  }
 }
 
 function render() {
@@ -138,8 +144,13 @@ function render() {
 
   app.querySelectorAll("[data-select-claim]").forEach((button) => {
     button.addEventListener("click", () => {
-      state.selectedClaim = Number(button.dataset.selectClaim);
-      render();
+      const next = Number(button.dataset.selectClaim);
+      if (next !== state.selectedClaim) {
+        _claimChanged = true;
+        state.selectedClaim = next;
+        render();
+        _claimChanged = false;
+      }
     });
   });
 }
@@ -443,7 +454,8 @@ function renderDecisions() {
 }
 
 function claimDossier(claim, label) {
-  return `<section class="archive-panel primary-panel claim-dossier">
+  const enterClass = _claimChanged ? " is-entering" : "";
+  return `<section class="archive-panel primary-panel claim-dossier${enterClass}">
     <div class="panel-heading">
       <p class="app-kicker">${label}</p>
       <h2>${claim.title}</h2>
