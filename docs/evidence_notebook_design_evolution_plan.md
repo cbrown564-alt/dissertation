@@ -31,7 +31,6 @@ Completed to date:
 Still open or only partially complete:
 
 - The overview and evaluation sections still need further polish at awkward intermediate viewport widths.
-- Motion has not been intentionally designed yet; current transitions are minimal and mostly CSS-state based.
 - The component-system pass is implemented in practice through CSS/DOM patterns, but not yet documented as a formal reusable system.
 - Responsive QA is in progress, especially for dense evidence tables and other high-information blocks.
 
@@ -294,7 +293,7 @@ Completed notes:
 
 Goal: add polish without turning the tool into a showpiece.
 
-Status: not intentionally started.
+Status: complete.
 
 Use motion only for:
 
@@ -336,9 +335,17 @@ Completed notes:
 
 - The rail already collapses on smaller widths.
 - Search remains present and reachable.
-- Focus-visible styling is present.
+- Focus-visible styling is present on all interactive controls.
+- `a:focus-visible` rule now applies the amber outline to content links, not just chrome controls.
 - Long paths and run IDs now wrap more safely.
 - Table overflow handling has been improved, though dense tables still need more layout-specific treatment in some overview contexts.
+- Skip navigation link added (`#main-content` target on the `<main>` element), visible on focus.
+- ARIA landmark labels added: `aria-label="Site navigation"` on rail nav, `aria-label="Evidence Notebook home"` on the EN mark.
+- `aria-current="page"` now marks the active rail button on every render.
+- `aria-pressed` now marks the selected claim in the claim index (true/false per button).
+- `aria-live="polite"` region added to the static HTML; view changes trigger a textContent announcement so screen readers hear "Claims view", "Timeline view", etc.
+- Source card links now carry an explicit `aria-label` so screen readers announce label and freshness without the redundant "Source" prefix.
+- Decorative elements (rail timestamp paragraph, source card "Source" label) marked `aria-hidden="true"`.
 
 ## Phase 7: Implementation Strategy
 
@@ -386,8 +393,8 @@ Suggested next sprint:
 1. Continue responsive and viewport-specific cleanup on Overview and the evaluation block.
 2. Formalize the component-system vocabulary in code comments or design docs.
 3. Decide whether the evaluation evidence area should remain table-first or move to a comparison-summary pattern on narrower laptop widths.
-4. Add a minimal motion pass for session expansion, claim switching, and artifact hover states.
-5. Run a deliberate accessibility QA pass across keyboard navigation, contrast, and small-screen reading order.
+4. ~~Add a minimal motion pass for session expansion, claim switching, and artifact hover states.~~ Complete (commit 8a85138).
+5. ~~Run a deliberate accessibility QA pass across keyboard navigation, contrast, and small-screen reading order.~~ Complete: skip link, ARIA landmarks, `aria-current`, `aria-pressed`, live-region announcements, content link focus styles.
 
 ## References
 

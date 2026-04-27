@@ -86,6 +86,8 @@ function filtered(records) {
 function setView(view) {
   state.view = view;
   location.hash = view;
+  const announcer = document.getElementById("a11y-announce");
+  if (announcer) announcer.textContent = `${activeViewLabel(view)} view`;
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && document.startViewTransition) {
     document.startViewTransition(render);
   } else {
@@ -100,11 +102,11 @@ function render() {
   app.dataset.view = activeView;
   app.innerHTML = `
     <aside class="app-rail">
-      <a class="app-mark" href="#overview" data-view-link="overview">EN</a>
-      <nav>${views.map(([id, label]) => `<button type="button" class="${id === activeView ? "is-active" : ""}" data-view-link="${id}">${label}</button>`).join("")}</nav>
-      <p>Local archive<br>${data.generatedAt}</p>
+      <a class="app-mark" href="#overview" data-view-link="overview" aria-label="Evidence Notebook home">EN</a>
+      <nav aria-label="Site navigation">${views.map(([id, label]) => `<button type="button" class="${id === activeView ? "is-active" : ""}" data-view-link="${id}"${id === activeView ? ' aria-current="page"' : ""}>${label}</button>`).join("")}</nav>
+      <p aria-hidden="true">Local archive<br>${data.generatedAt}</p>
     </aside>
-    <main class="app-main">
+    <main id="main-content" class="app-main">
       <header class="app-header">
         <div>
           <p class="app-kicker">${meta.kicker}</p>
@@ -231,7 +233,7 @@ function renderClaims() {
   return `
     <div class="claim-app">
       <aside class="record-list">
-        ${claims.map((claim, index) => `<button type="button" class="${claim === selected ? "is-active" : ""}" data-select-claim="${index}"><span>${pad(index + 1)}</span>${claim.title}<small>${claimRiskLabel(claim)}</small></button>`).join("")}
+        ${claims.map((claim, index) => `<button type="button" class="${claim === selected ? "is-active" : ""}" data-select-claim="${index}" aria-pressed="${claim === selected ? "true" : "false"}"><span>${pad(index + 1)}</span>${claim.title}<small>${claimRiskLabel(claim)}</small></button>`).join("")}
       </aside>
       ${claimDossier(selected, "Claim record")}
     </div>
@@ -476,8 +478,8 @@ function claimDossier(claim, label) {
 }
 
 function sourceCard(source, freshness) {
-  return `<a class="source-card" href="${source.href}">
-    <span>Source</span>
+  return `<a class="source-card" href="${source.href}" aria-label="${source.label}, updated ${freshness ? freshness.updated : "not recorded"}">
+    <span aria-hidden="true">Source</span>
     <strong>${source.label}</strong>
     <small>Updated ${freshness ? freshness.updated : "Not recorded"}</small>
   </a>`;
